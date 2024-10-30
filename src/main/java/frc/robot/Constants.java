@@ -21,16 +21,7 @@ public final class Constants {
 
 
   public static final class MechanismConstants {
-    public static final int kFrontIntakePort = 15;
-    public static final int kRearIntakePort = 16;
-    public static final int kTopShooterPort = 17; // Runs forward
-    public static final int kIndexShooterPort = 18;
-    public static final int kBottomShooterPort = 19; // Runs backward
-    public static final int kRightPivotShooterPort = 20;
-    public static final int kLeftPivotShooterPort = 21; // Has absolute encoder
-    public static final int kUndertakerIntakePort = 22;
-    public static final int kLeftClimberPort = 23;
-    public static final int kRightClimberPort = 24;
+
   }
 
   public static final class SwerveConstants {
@@ -50,16 +41,6 @@ public final class Constants {
     public static final int kFrontRightTurningMotorPort = 2;
     public static final int kRearLeftTurningMotorPort = 7;
     public static final int kRearRightTurningMotorPort = 3;
-
-    // public static final boolean kFrontLeftTurningEncoderReversed = true;
-    // public static final boolean kFrontRightTurningEncoderReversed = false;
-    // public static final boolean kRearLeftTurningEncoderReversed = true;
-    // public static final boolean kRearRightTurningEncoderReversed = true;
-
-    // public static final boolean kFrontLeftDriveEncoderReversed = false;
-    // public static final boolean kFrontRightDriveEncoderReversed = false;
-    // public static final boolean kRearLeftDriveEncoderReversed = true;
-    // public static final boolean kRearRightDriveEncoderReversed = true;
 
     public static final int kFrontLeftMagEncoderPort = 12;
     public static final int kFrontRightMagEncoderPort = 9;
@@ -95,7 +76,6 @@ public final class Constants {
             new Translation2d(-kWheelBase / 2, -kTrackWidth / 2));  // Rear Right Quadrant
 
     public static final int kIMU_ID = 13;
-    // public static final boolean kGyroReversed = false;
 
     public static int kSwerveFL_enum = 0;
     public static int kSwerveFR_enum = 1;
@@ -114,10 +94,6 @@ public final class Constants {
     public static final double ANGLE_GEAR_RATIO = (150 / 7) / 1.0; // 150/7:1
     public static final double ANGLE_ROTATIONS_TO_RADIANS = (Math.PI * 2) / ANGLE_GEAR_RATIO;
     public static final double ANGLE_RPM_TO_RADIANS_PER_SECOND = DRIVE_ROTATIONS_TO_METERS / 60.0;
-
-    /** Speed ramp. */
-    // public static final double OPEN_LOOP_RAMP = 0.25;
-    // public static final double CLOSED_LOOP_RAMP = 0.0;
 
     /** Current limiting. */
     public static final int DRIVE_CURRENT_LIMIT = 40;
@@ -166,17 +142,10 @@ public final class Constants {
     /** Inversions. */
     public static final boolean DRIVE_MOTOR_INVERSION = true;
     public static final boolean ANGLE_MOTOR_INVERSION = true;
-    // public static final boolean CANCODER_INVERSION = false;
-
-    /** Idle modes. */
-    // public static final IdleMode DRIVE_IDLE_MODE = IdleMode.kBrake;
-    // public static final IdleMode ANGLE_IDLE_MODE = IdleMode.kBrake;
-
   }
 
   public static final class OIConstants {
     public static final int kDriverControllerPort = 0;
-    public static final int kCodriverControllerPort = 1;
     public static final double kDeadband = 0.03;
   }
 

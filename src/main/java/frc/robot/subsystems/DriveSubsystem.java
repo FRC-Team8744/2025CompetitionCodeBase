@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix6.hardware.Pigeon2;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.PIDConstants;
@@ -49,10 +50,8 @@ public class DriveSubsystem extends SubsystemBase {
 
   Joystick m_Joystick = new Joystick(OIConstants.kDriverControllerPort);
 
-  private final String controllerMode = "x";
-
   // The imu sensor
-  public final Multi_IMU m_imu = new Multi_IMU();
+  public final Pigeon2 m_imu = new Pigeon2(0);
   
   // Odometry class for tracking robot pose
   SwerveDriveOdometry m_odometry;
@@ -116,7 +115,7 @@ public class DriveSubsystem extends SubsystemBase {
   m_odometry =
       new SwerveDriveOdometry(
           SwerveConstants.kDriveKinematics,
-          m_imu.getHeading(),
+          m_imu.getRotation2d(),
           new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
             m_frontRight.getPosition(),
@@ -168,7 +167,7 @@ public class DriveSubsystem extends SubsystemBase {
   public void periodic() {
     // Update the odometry in the periodic block
     m_odometry.update(
-        m_imu.getHeading(),
+        m_imu.getRotation2d(),
         new SwerveModulePosition[] {
           m_frontLeft.getPosition(),
           m_frontRight.getPosition(),
@@ -178,15 +177,6 @@ public class DriveSubsystem extends SubsystemBase {
     
     // Update robot position on Field2d.
     m_field.setRobotPose(getPose());
-
-    if (controllerMode == "j") {
-      if (m_Joystick.getRawAxis(3) < 0) {
-        m_DriverSpeedScale = 1.0;
-      }
-      else {
-        m_DriverSpeedScale = Constants.kDriverSpeedLimit;
-      }
-    }
 
     pose_publisher.set(getPose());
     swerve_publisher.set(new SwerveModuleState[] {
@@ -228,7 +218,7 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void zeroIMU() {
-    m_imu.zeroHeading();
+    m_imu.setYaw(0.0);
   }
 
   /**
@@ -238,7 +228,7 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public void resetOdometry(Pose2d pose) {
     m_odometry.resetPosition(
-        m_imu.getHeading(),
+        m_imu.getRotation2d(),
         new SwerveModulePosition[] {
           m_frontLeft.getPosition(),
           m_frontRight.getPosition(),
@@ -278,10 +268,10 @@ public class DriveSubsystem extends SubsystemBase {
     var swerveModuleStates =
         SwerveConstants.kDriveKinematics.toSwerveModuleStates(
             fieldRelative
-                ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, m_imu.getHeading()) // Rotation2d.fromDegrees(m_imu.getYaw()))
+                ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, m_imu.getRotation2d()) // Rotation2d.fromDegrees(m_imu.getYaw()))
                 : new ChassisSpeeds(xSpeed, ySpeed, rot));
     SwerveDriveKinematics.desaturateWheelSpeeds(
-        swerveModuleStates, SwerveConstants.kMaxSpeedMetersPerSecond);
+    swerveModuleStates, SwerveConstants.kMaxSpeedMetersPerSecond);
     m_frontLeft.setDesiredState(swerveModuleStates[SwerveConstants.kSwerveFL_enum]);
     m_frontRight.setDesiredState(swerveModuleStates[SwerveConstants.kSwerveFR_enum]);
     m_rearLeft.setDesiredState(swerveModuleStates[SwerveConstants.kSwerveRL_enum]);
@@ -295,7 +285,7 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public void setModuleStates(SwerveModuleState[] desiredStates) {
     SwerveDriveKinematics.desaturateWheelSpeeds(
-        desiredStates, SwerveConstants.kMaxSpeedMetersPerSecond);
+    desiredStates, SwerveConstants.kMaxSpeedMetersPerSecond);
     m_frontLeft.setDesiredState(desiredStates[SwerveConstants.kSwerveFL_enum]);
     m_frontRight.setDesiredState(desiredStates[SwerveConstants.kSwerveFR_enum]);
     m_rearLeft.setDesiredState(desiredStates[SwerveConstants.kSwerveRL_enum]);
