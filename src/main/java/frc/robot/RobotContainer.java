@@ -12,7 +12,10 @@ import frc.robot.Constants.ConstantsOffboard;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.SwerveConstants;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.Index;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -26,6 +29,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
  */
 public class RobotContainer {
   // The robot's subsystems
+  private Index m_index = new Index();
   // The driver's controller
   DriveSubsystem m_robotDrive = new DriveSubsystem();
   CommandXboxController m_driver = new CommandXboxController(OIConstants.kDriverControllerPort);
@@ -52,9 +56,9 @@ public class RobotContainer {
           new RunCommand(
               () ->
                   m_robotDrive.drive(
-                      m_xSpeedLimiter.calculate( -m_driver.getLeftY() )*SwerveConstants.kMaxSpeedTeleop,
-                      m_ySpeedLimiter.calculate( -m_driver.getLeftX() )*SwerveConstants.kMaxSpeedTeleop,
-                      m_RotLimiter.calculate( -m_driver.getRightX() )*ConstantsOffboard.MAX_ANGULAR_RADIANS_PER_SECOND,
+                      m_xSpeedLimiter.calculate( -m_driver.getLeftY() ) * SwerveConstants.kMaxSpeedTeleop,
+                      m_ySpeedLimiter.calculate( -m_driver.getLeftX() ) * SwerveConstants.kMaxSpeedTeleop,
+                      m_RotLimiter.calculate( -m_driver.getRightX() ) * ConstantsOffboard.MAX_ANGULAR_RADIANS_PER_SECOND,
                       true),
               m_robotDrive));
   }
@@ -70,7 +74,9 @@ public class RobotContainer {
    * {@link JoystickButton}.
    */
   
-  private void configureButtonBindings() {}
+  private void configureButtonBindings() {
+    m_driver.leftBumper().whileTrue(Commands.runOnce(() -> m_index.runIndex(), m_index));
+  }
 
  public Command getAutonomousCommand() {return m_autoChooser.getSelected();}
 }
