@@ -102,6 +102,7 @@ public class SwerveModuleOffboard {
       // Optimize the reference state to avoid spinning further than 90 degrees
       // state = SwerveModuleState.optimize(desiredState, new Rotation2d(m_turningEncoder.getPosition()));
       state = desiredState;
+      m_turningEncoder.setPosition(Units.degreesToRadians(m_canCoder.getAbsolutePosition().getValueAsDouble() * 360.0 - m_canCoderOffsetDegrees));
       state.optimize(new Rotation2d(m_turningEncoder.getPosition()));
     }
 
@@ -120,7 +121,7 @@ public class SwerveModuleOffboard {
   }
 
   /** Zeroes all the SwerveModule encoders. */
-  public void resetEncoders() {
+  public void resetEncoder() {
     m_driveEncoder.setPosition(0.0);
     m_turningEncoder.setPosition(0.0);
   }

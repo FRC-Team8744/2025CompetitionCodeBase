@@ -305,10 +305,10 @@ public class DriveSubsystem extends SubsystemBase {
 
   /** Resets the drive encoders to currently read a position of 0. */
   public void resetEncoders() {
-    m_frontLeft.resetEncoders();
-    m_rearLeft.resetEncoders();
-    m_frontRight.resetEncoders();
-    m_rearRight.resetEncoders();
+    m_frontLeft.resetEncoder();
+    m_rearLeft.resetEncoder();
+    m_frontRight.resetEncoder();
+    m_rearRight.resetEncoder();
   }
 
   /* Sets how fast the human driver can drive */
