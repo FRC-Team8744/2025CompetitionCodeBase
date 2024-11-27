@@ -23,7 +23,6 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructArrayPublisher;
 import edu.wpi.first.networktables.StructPublisher;
-import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
@@ -51,37 +50,35 @@ public class DriveSubsystem extends SubsystemBase {
   Joystick m_Joystick = new Joystick(OIConstants.kDriverControllerPort);
 
   // The imu sensor
-  public final Pigeon2 m_imu = new Pigeon2(0);
+  public final Pigeon2 m_imu = new Pigeon2(Constants.SwerveConstants.kIMU_ID);
   
   // Odometry class for tracking robot pose
   SwerveDriveOdometry m_odometry;
 
   // Create Field2d for robot and trajectory visualizations.
   public Field2d m_field;
-
-  private String MyName;
   
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
-    MyName = Preferences.getString("RobotName", "NoDefault");
-    System.out.println("Robot ID: " + MyName);
-    switch(MyName) {
-      case "Swivels":
-        offset_FL = SwerveConstants.kFrontLeftMagEncoderOffsetDegrees_Swivels;
-        offset_RL = SwerveConstants.kRearLeftMagEncoderOffsetDegrees_Swivels;
-        offset_FR = SwerveConstants.kFrontRightMagEncoderOffsetDegrees_Swivels;
-        offset_RR = SwerveConstants.kRearRightMagEncoderOffsetDegrees_Swivels;
-      break;
-      case "NoNo":
-        offset_FL = SwerveConstants.kFrontLeftMagEncoderOffsetDegrees_NoNo;
-        offset_RL = SwerveConstants.kRearLeftMagEncoderOffsetDegrees_NoNo;
-        offset_FR = SwerveConstants.kFrontRightMagEncoderOffsetDegrees_NoNo;
-        offset_RR = SwerveConstants.kRearRightMagEncoderOffsetDegrees_NoNo;
-        System.out.println("Offsets loaded for NoNo");
-        break;
-      default:
-        // Raise error!
-    }
+    // MyName = Preferences.getString("RobotName", "NoNo");
+    // System.out.println("Robot ID: " + MyName);
+    // switch(MyName) {
+    //   case "Swivels":
+    //     offset_FL = SwerveConstants.kFrontLeftMagEncoderOffsetDegrees_Swivels;
+    //     offset_RL = SwerveConstants.kRearLeftMagEncoderOffsetDegrees_Swivels;
+    //     offset_FR = SwerveConstants.kFrontRightMagEncoderOffsetDegrees_Swivels;
+    //     offset_RR = SwerveConstants.kRearRightMagEncoderOffsetDegrees_Swivels;
+    //   break;
+    //   case "NoNo":
+      offset_FL = SwerveConstants.kFrontLeftMagEncoderOffsetDegrees_NoNo;
+      offset_RL = SwerveConstants.kRearLeftMagEncoderOffsetDegrees_NoNo;
+      offset_FR = SwerveConstants.kFrontRightMagEncoderOffsetDegrees_NoNo;
+      offset_RR = SwerveConstants.kRearRightMagEncoderOffsetDegrees_NoNo;
+    //     System.out.println("Offsets loaded for NoNo");
+    //     break;
+    //   default:
+    //     // Raise error!
+    // }
   
   m_frontLeft =
     new SwerveModuleOffboard(
@@ -178,6 +175,13 @@ public class DriveSubsystem extends SubsystemBase {
     // Update robot position on Field2d.
     m_field.setRobotPose(getPose());
 
+    SmartDashboard.putNumber("Gyro angle", m_imu.getYaw().getValueAsDouble());
+    SmartDashboard.putNumber("Gyro pitch", m_imu.getPitch().getValueAsDouble());
+    SmartDashboard.putNumber("Gyro roll", m_imu.getRoll().getValueAsDouble());
+
+    SmartDashboard.putNumber("Yep", m_frontLeft.getVelocity()
+    );
+
     pose_publisher.set(getPose());
     swerve_publisher.set(new SwerveModuleState[] {
             m_frontLeft.getState(),
@@ -247,13 +251,6 @@ public class DriveSubsystem extends SubsystemBase {
    * @param fieldRelative Whether the provided x and y speeds are relative to the field.
    */
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
-    SmartDashboard.putNumber("xSpeed", xSpeed);
-    SmartDashboard.putNumber("ySpeed", ySpeed);
-    SmartDashboard.putNumber("rot", rot);
-    //Square inputs
-    xSpeed=Math.signum(xSpeed)* xSpeed*xSpeed;
-    ySpeed=Math.signum(ySpeed)* ySpeed*ySpeed;
-    rot=Math.signum(rot)* rot*rot;
 
     // Apply joystick deadband
     xSpeed = MathUtil.applyDeadband(xSpeed, OIConstants.kDeadband, 1.0);
@@ -272,10 +269,10 @@ public class DriveSubsystem extends SubsystemBase {
                 : new ChassisSpeeds(xSpeed, ySpeed, rot));
     SwerveDriveKinematics.desaturateWheelSpeeds(
     swerveModuleStates, SwerveConstants.kMaxSpeedMetersPerSecond);
-    m_frontLeft.setDesiredState(swerveModuleStates[SwerveConstants.kSwerveFL_enum]);
-    m_frontRight.setDesiredState(swerveModuleStates[SwerveConstants.kSwerveFR_enum]);
-    m_rearLeft.setDesiredState(swerveModuleStates[SwerveConstants.kSwerveRL_enum]);
-    m_rearRight.setDesiredState(swerveModuleStates[SwerveConstants.kSwerveRR_enum]);
+    m_frontLeft.setDesiredState(swerveModuleStates[SwerveConstants.kSwerveFL_enum], "1");
+    m_frontRight.setDesiredState(swerveModuleStates[SwerveConstants.kSwerveFR_enum], "2");
+    m_rearLeft.setDesiredState(swerveModuleStates[SwerveConstants.kSwerveRL_enum], "3");
+    m_rearRight.setDesiredState(swerveModuleStates[SwerveConstants.kSwerveRR_enum], "4");
   }
 
   /**
@@ -286,10 +283,10 @@ public class DriveSubsystem extends SubsystemBase {
   public void setModuleStates(SwerveModuleState[] desiredStates) {
     SwerveDriveKinematics.desaturateWheelSpeeds(
     desiredStates, SwerveConstants.kMaxSpeedMetersPerSecond);
-    m_frontLeft.setDesiredState(desiredStates[SwerveConstants.kSwerveFL_enum]);
-    m_frontRight.setDesiredState(desiredStates[SwerveConstants.kSwerveFR_enum]);
-    m_rearLeft.setDesiredState(desiredStates[SwerveConstants.kSwerveRL_enum]);
-    m_rearRight.setDesiredState(desiredStates[SwerveConstants.kSwerveRR_enum]);
+    m_frontLeft.setDesiredState(desiredStates[SwerveConstants.kSwerveFL_enum], "1");
+    m_frontRight.setDesiredState(desiredStates[SwerveConstants.kSwerveFR_enum], "2");
+    m_rearLeft.setDesiredState(desiredStates[SwerveConstants.kSwerveRL_enum], "3");
+    m_rearRight.setDesiredState(desiredStates[SwerveConstants.kSwerveRR_enum], "4");
   }
 
   public void driveRobotRelative(ChassisSpeeds speeds){
@@ -327,4 +324,7 @@ public class DriveSubsystem extends SubsystemBase {
     }
   }
 
+  public void zeroGyro() {
+    m_imu.setYaw(0);
+  }
 }
