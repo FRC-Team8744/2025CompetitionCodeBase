@@ -6,7 +6,6 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.TalonFX;
-import com.ctre.phoenix6.signals.AbsoluteSensorRangeValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.ctre.phoenix6.signals.SensorDirectionValue;
 import com.ctre.phoenix6.configs.CANcoderConfiguration;
@@ -158,7 +157,7 @@ public class SwerveModuleOffboard {
    * Returns the SparkMax internal encoder's measured position in meters.
    */
   public SwerveModulePosition getPosition() {
-    double distance = m_driveMotor.getPosition().getValueAsDouble();
+    double distance = m_driveMotor.getPosition().getValueAsDouble() / (5.36 / (Units.inchesToMeters(4) * Math.PI));
     Rotation2d rot = new Rotation2d(m_turningEncoder.getPosition());
     return new SwerveModulePosition(distance, rot);
   }
@@ -179,7 +178,7 @@ public class SwerveModuleOffboard {
   private void configureDevices() {
     /* Configure CANcoder */
     var toApply = new CANcoderConfiguration();
-    toApply.MagnetSensor.AbsoluteSensorRange = AbsoluteSensorRangeValue.Unsigned_0To1;
+    toApply.MagnetSensor.AbsoluteSensorDiscontinuityPoint = 1;
     toApply.MagnetSensor.SensorDirection = SensorDirectionValue.CounterClockwise_Positive;
     m_canCoder.getConfigurator().apply(toApply);
 

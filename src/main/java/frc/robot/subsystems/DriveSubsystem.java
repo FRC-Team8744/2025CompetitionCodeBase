@@ -209,6 +209,8 @@ public class DriveSubsystem extends SubsystemBase {
       SmartDashboard.putNumber("FR Turn Enc", m_frontRight.getPosition().angle.getDegrees());
       SmartDashboard.putNumber("RL Turn Enc", m_rearLeft.getPosition().angle.getDegrees());
       SmartDashboard.putNumber("RR Turn Enc", m_rearRight.getPosition().angle.getDegrees());
+
+      SmartDashboard.putNumber("RL Drive encoder", m_rearLeft.getPosition().distanceMeters);
     }
 }
 
