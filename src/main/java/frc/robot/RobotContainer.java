@@ -23,11 +23,10 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  */
 public class RobotContainer {
   // The robot's subsystems
-  DriveSubsystem m_robotDrive = new DriveSubsystem();
+  private DriveSubsystem m_robotDrive = new DriveSubsystem();
   // The driver's controller
-  CommandXboxController m_driver = new CommandXboxController(OIConstants.kDriverControllerPort);
-
-  AutoCommandManager m_autoManager = new AutoCommandManager(m_robotDrive);
+  private CommandXboxController m_driver = new CommandXboxController(OIConstants.kDriverControllerPort);
+  private AutoCommandManager m_autoManager = new AutoCommandManager(m_robotDrive);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {

@@ -30,7 +30,6 @@ public final class Constants {
     cfg.Voltage.PeakReverseVoltage = -12;
     cfg.TorqueCurrent.PeakForwardTorqueCurrent = 800;
     cfg.TorqueCurrent.PeakReverseTorqueCurrent = -800;
-    // cfg.Feedback.SensorToMechanismRatio = 5.36;
     cfg.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
     cfg.CurrentLimits.StatorCurrentLimitEnable = true;
     cfg.CurrentLimits.StatorCurrentLimit = 40.0;

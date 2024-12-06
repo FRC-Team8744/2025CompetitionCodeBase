@@ -13,6 +13,8 @@ import com.pathplanner.lib.util.PathPlannerLogging;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
@@ -151,7 +153,7 @@ public class DriveSubsystem extends SubsystemBase {
        // Reference to this subsystem to set requirements
     );
   } catch (Exception e) {
-    DriverStation.reportError("Failed to load PathPlanner config and configure AutoBuilder", e.getStackTrace());
+    DriverStation.reportError(e.getMessage(), e.getStackTrace());
   }
     // Reference: https://www.chiefdelphi.com/t/has-anyone-gotten-pathplanner-integrated-with-the-maxswerve-template/443646
 
@@ -329,5 +331,6 @@ public class DriveSubsystem extends SubsystemBase {
 
   public void zeroGyro() {
     m_imu.setYaw(0);
+    resetOdometry(new Pose2d());
   }
 }

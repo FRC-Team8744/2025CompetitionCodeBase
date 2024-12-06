@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.commands.PathPlannerAuto;
+
 import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -61,9 +63,13 @@ public class AutoCommandManager {
 
         isSim = true;
 
+        PathPlannerAuto m_test = new PathPlannerAuto("Test");
+
         m_chooser.setDefaultOption("None", new InstantCommand());
 
-        SmartDashboard.putData("W Auto Chooser", m_chooser);
+        m_chooser.addOption("Test", m_test);
+
+        SmartDashboard.putData(m_chooser);
     }
 
     public SendableChooser<Command> getChooser() {
