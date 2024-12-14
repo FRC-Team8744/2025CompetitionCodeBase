@@ -9,6 +9,7 @@ import frc.robot.Constants.ConstantsOffboard;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.SwerveConstants;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -24,6 +25,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 public class RobotContainer {
   // The robot's subsystems
   private DriveSubsystem m_robotDrive = new DriveSubsystem();
+  private Shooter m_shooter = new Shooter();
   // The driver's controller
   private CommandXboxController m_driver = new CommandXboxController(OIConstants.kDriverControllerPort);
   private AutoCommandManager m_autoManager = new AutoCommandManager(m_robotDrive);
@@ -59,6 +61,8 @@ public class RobotContainer {
   
   private void configureButtonBindings() {
     m_driver.back().onTrue(Commands.runOnce (() -> m_robotDrive.zeroGyro()));
+    m_driver.rightTrigger().whileTrue(Commands.runOnce(() -> m_shooter.shootRing()))
+    .whileFalse(Commands.runOnce(() -> m_shooter.stopShooter()));
   }
 
   public Command getAutonomousCommand() {
