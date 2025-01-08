@@ -27,8 +27,8 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 
 public class PhotonVisionGS extends SubsystemBase {
   private PhotonCamera camera = new PhotonCamera("Camera_Module_v1");
-  private Rotation3d rd = new Rotation3d(0, Units.degreesToRadians(-28.9), Units.degreesToRadians(180));
-  private Transform3d td = new Transform3d(-.237, -0.246, 0.284, rd);
+  private Rotation3d rd = new Rotation3d(0, Units.degreesToRadians(0), Units.degreesToRadians(180));
+  private Transform3d td = new Transform3d(-0.36, 0, 0.11, rd);
   private Pose3d targetTd;
   private double apriltagTime; 
   public double distanceToApriltag = 0;
