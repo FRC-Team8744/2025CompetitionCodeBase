@@ -9,6 +9,7 @@ import frc.robot.Constants.ConstantsOffboard;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.SwerveConstants;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.PhotonVisionGS;
 import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -24,7 +25,8 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  */
 public class RobotContainer {
   // The robot's subsystems
-  private DriveSubsystem m_robotDrive = new DriveSubsystem();
+  private PhotonVisionGS m_vision = new PhotonVisionGS();
+  private DriveSubsystem m_robotDrive = new DriveSubsystem(m_vision);
   private Shooter m_shooter = new Shooter();
   // The driver's controller
   private CommandXboxController m_driver = new CommandXboxController(OIConstants.kDriverControllerPort);
@@ -63,6 +65,8 @@ public class RobotContainer {
     m_driver.back().onTrue(Commands.runOnce (() -> m_robotDrive.zeroGyro()));
     m_driver.rightTrigger().whileTrue(Commands.runOnce(() -> m_shooter.shootRing()))
     .whileFalse(Commands.runOnce(() -> m_shooter.stopShooter()));
+    m_driver.rightStick()
+    .toggleOnTrue(Commands.runOnce(() -> m_robotDrive.isAutoRotate = !m_robotDrive.isAutoRotate));
   }
 
   public Command getAutonomousCommand() {
