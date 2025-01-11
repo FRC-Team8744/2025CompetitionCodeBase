@@ -10,6 +10,7 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.SwerveConstants;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.PhotonVisionGS;
+import frc.robot.subsystems.PhotonVisionGS2;
 import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -26,7 +27,8 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 public class RobotContainer {
   // The robot's subsystems
   private PhotonVisionGS m_vision = new PhotonVisionGS();
-  private DriveSubsystem m_robotDrive = new DriveSubsystem(m_vision);
+  private PhotonVisionGS2 m_vision2 = new PhotonVisionGS2();
+  private DriveSubsystem m_robotDrive = new DriveSubsystem(m_vision, m_vision2);
   private Shooter m_shooter = new Shooter();
   // The driver's controller
   private CommandXboxController m_driver = new CommandXboxController(OIConstants.kDriverControllerPort);

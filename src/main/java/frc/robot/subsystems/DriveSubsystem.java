@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import java.lang.reflect.Field;
 import java.util.Vector;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
@@ -81,6 +82,7 @@ public class DriveSubsystem extends SubsystemBase {
   public final LockOnTarget m_lock = new LockOnTarget();
   public final Pigeon2 m_imu = new Pigeon2(Constants.SwerveConstants.kIMU_ID);
   private final PhotonVisionGS m_vision;
+  private final PhotonVisionGS2 m_vision2;
 
   public boolean isAutoRotate = false;
   public boolean isAutoRotateToggle = true;
@@ -103,29 +105,15 @@ public class DriveSubsystem extends SubsystemBase {
   public Field2d m_field;
   
   /** Creates a new DriveSubsystem. */
-  public DriveSubsystem(PhotonVisionGS m_vision) {
+  public DriveSubsystem(PhotonVisionGS m_vision, PhotonVisionGS2 m_vision2) {
     m_turnCtrl.setTolerance(10.00);
-    // MyName = Preferences.getString("RobotName", "NoNo");
-    // System.out.println("Robot ID: " + MyName);
-    // switch(MyName) {
-    //   case "Swivels":
-    //     offset_FL = SwerveConstants.kFrontLeftMagEncoderOffsetDegrees_Swivels;
-    //     offset_RL = SwerveConstants.kRearLeftMagEncoderOffsetDegrees_Swivels;
-    //     offset_FR = SwerveConstants.kFrontRightMagEncoderOffsetDegrees_Swivels;
-    //     offset_RR = SwerveConstants.kRearRightMagEncoderOffsetDegrees_Swivels;
-    //   break;
-    //   case "NoNo":
     this.m_vision = m_vision;
+    this.m_vision2 = m_vision2;
     
     offset_FL = SwerveConstants.kFrontLeftMagEncoderOffsetDegrees_NoNo;
     offset_RL = SwerveConstants.kRearLeftMagEncoderOffsetDegrees_NoNo;
     offset_FR = SwerveConstants.kFrontRightMagEncoderOffsetDegrees_NoNo;
     offset_RR = SwerveConstants.kRearRightMagEncoderOffsetDegrees_NoNo;
-    //     System.out.println("Offsets loaded for NoNo");
-    //     break;
-    //   default:
-    //     // Raise error!
-    // }
 
   m_frontLeft =
     new SwerveModuleOffboard(
@@ -225,8 +213,19 @@ public class DriveSubsystem extends SubsystemBase {
   public void periodic() {
     // Update the odometry in the periodic block
 
-    if (m_vision.getTarget().map((t) -> t.getPoseAmbiguity()).orElse(1.0) <= .2) { 
+    if (m_vision.getTarget().map((t) -> t.getPoseAmbiguity()).orElse(1.0) <= .2 && m_vision.getTarget().map((t) -> t.getPoseAmbiguity()).orElse(1.0) <= .2) {
+      if (m_vision.getTarget().map((t) -> t.getPoseAmbiguity()).orElse(1.0) <= m_vision2.getTarget().map((t) -> t.getPoseAmbiguity()).orElse(1.0)) {
+        m_vision.getRobotPose().ifPresent((robotPose) -> m_poseEstimator.addVisionMeasurement(robotPose, m_vision.getApriltagTime()));
+      }
+      else {
+        m_vision2.getRobotPose().ifPresent((robotPose) -> m_poseEstimator.addVisionMeasurement(robotPose, m_vision.getApriltagTime()));
+      }
+      }
+    else if (m_vision.getTarget().map((t) -> t.getPoseAmbiguity()).orElse(1.0) <= .2) {
       m_vision.getRobotPose().ifPresent((robotPose) -> m_poseEstimator.addVisionMeasurement(robotPose, m_vision.getApriltagTime()));
+    }
+    else if (m_vision2.getTarget().map((t) -> t.getPoseAmbiguity()).orElse(1.0) < .2) {
+        m_vision2.getRobotPose().ifPresent((robotPose) -> m_poseEstimator.addVisionMeasurement(robotPose, m_vision.getApriltagTime()));
     }
 
     m_poseEstimator.update(m_imu.getRotation2d(), getModulePositions());
