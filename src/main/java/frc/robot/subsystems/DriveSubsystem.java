@@ -104,6 +104,7 @@ public class DriveSubsystem extends SubsystemBase {
   
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem(PhotonVisionGS m_vision) {
+    m_turnCtrl.setTolerance(10.00);
     // MyName = Preferences.getString("RobotName", "NoNo");
     // System.out.println("Robot ID: " + MyName);
     // switch(MyName) {
@@ -213,7 +214,7 @@ public class DriveSubsystem extends SubsystemBase {
       getPose(),
       VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(5)),
       VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(30)));
-      originalX = m_poseEstimator.getEstimatedPosition().getX();
+    originalX = m_poseEstimator.getEstimatedPosition().getX();
     originalY = m_poseEstimator.getEstimatedPosition().getY();
     m_timerX.start();
     m_timerY.start();
@@ -245,9 +246,11 @@ public class DriveSubsystem extends SubsystemBase {
     // Update robot position on Field2d.
     m_field.setRobotPose(getEstimatedPose());
 
-    SmartDashboard.putNumber("Gyro angle", m_imu.getYaw().getValueAsDouble());
-    SmartDashboard.putNumber("Gyro pitch", m_imu.getPitch().getValueAsDouble());
-    SmartDashboard.putNumber("Gyro roll", m_imu.getRoll().getValueAsDouble());
+    // SmartDashboard.putNumber("Gyro angle", m_imu.getYaw().getValueAsDouble());
+    // SmartDashboard.putNumber("Gyro pitch", m_imu.getPitch().getValueAsDouble());
+    // SmartDashboard.putNumber("Gyro roll", m_imu.getRoll().getValueAsDouble());
+
+    SmartDashboard.putNumber("Estimated Pose X", m_poseEstimator.getEstimatedPosition().getX());
 
     // SmartDashboard.putNumber("Yep", m_frontLeft.getVelocity());
 
@@ -310,6 +313,8 @@ public class DriveSubsystem extends SubsystemBase {
   
     getRobotVelocityX();
     getRobotVelocityY();
+
+    SmartDashboard.putNumber("Estimated rotation", m_poseEstimator.getEstimatedPosition().getRotation().getDegrees());
 }
 
   /**
@@ -365,21 +370,24 @@ public class DriveSubsystem extends SubsystemBase {
     ySpeed = ySpeed * m_DriverSpeedScale;
     rot = rot * m_DriverSpeedScale;
 
-    if (isAutoRotate == false && Math.abs(rot / ConstantsOffboard.MAX_ANGULAR_RADIANS_PER_SECOND) <= 0.1 && rotationTimer.hasElapsed(0.1)) {
-      if (roboNoSpino) {
-        goalAngle = m_poseEstimator.getEstimatedPosition().getRotation().getDegrees();
-        roboNoSpino = false;
-      }
-      m_turnCtrl.setSetpoint(goalAngle);
-      double m_output = MathUtil.clamp(m_turnCtrl.calculate(m_poseEstimator.getEstimatedPosition().getRotation().getDegrees()), -1.0, 1.0);
-      rot = m_output;
-    }
-    else {
-      goalAngle = m_poseEstimator.getEstimatedPosition().getRotation().getDegrees();
-      m_turnCtrl.reset();
-      roboNoSpino = true;
-      rotationTimer.restart();
-    }
+    // if (isAutoRotate == false && Math.abs(rot / ConstantsOffboard.MAX_ANGULAR_RADIANS_PER_SECOND) <= 0.1 
+    // && rotationTimer.hasElapsed(0.1)
+    // ) {
+    //   if (roboNoSpino) {
+    //     goalAngle = m_poseEstimator.getEstimatedPosition().getRotation().getDegrees();
+    //     roboNoSpino = false;
+    //   }
+    
+    //   m_turnCtrl.setSetpoint(goalAngle);
+    //   double m_output = MathUtil.clamp(m_turnCtrl.calculate(m_poseEstimator.getEstimatedPosition().getRotation().getDegrees()), -1.0, 1.0);
+    //   rot = m_output;
+    // }
+    // else {
+    //   goalAngle = m_poseEstimator.getEstimatedPosition().getRotation().getDegrees();
+    //   m_turnCtrl.reset();
+    //   roboNoSpino = true;
+    //   rotationTimer.restart();
+    // }
     //SmartDashboard.putNumber("Goal Angle", goalAngle);
 
     var swerveModuleStates =

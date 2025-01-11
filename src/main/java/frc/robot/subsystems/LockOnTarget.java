@@ -20,7 +20,7 @@ import frc.robot.Constants.ConstantsOffboard;
 public class LockOnTarget {
   private AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
   private Pose2d targetPose = aprilTagFieldLayout.getTagPose(7).get().toPose2d();
-  private PIDController m_turnCtrl = new PIDController(0.03, 0.0065, 0.0035);
+  private PIDController m_turnCtrl = new PIDController(0.014, 0.015, 0.0013);
   private double goalAngle;
   private double heading;
   private double m_output;
@@ -30,16 +30,16 @@ public class LockOnTarget {
   private double CompFactor = 3.0;
 
 public LockOnTarget() {
-    SmartDashboard.putNumber("P", 0.02);
-    SmartDashboard.putNumber("I", 0.0003);
-    SmartDashboard.putNumber("D", 0.0015);
+    // SmartDashboard.putNumber("P", 0.02);
+    // SmartDashboard.putNumber("I", 0.0003);
+    // SmartDashboard.putNumber("D", 0.0015);
 }
 
   // Called when the command is initially scheduled.
   public void initialize() {
-    m_turnCtrl.setP(SmartDashboard.getNumber("P", 0));
-    m_turnCtrl.setI(SmartDashboard.getNumber("I", 0));
-    m_turnCtrl.setD(SmartDashboard.getNumber("D", 0));
+    // m_turnCtrl.setP(SmartDashboard.getNumber("P", 0));
+    // m_turnCtrl.setI(SmartDashboard.getNumber("I", 0));
+    // m_turnCtrl.setD(SmartDashboard.getNumber("D", 0));
     m_turnCtrl.enableContinuousInput(-180, 180);
     m_turnCtrl.setTolerance(2.00);
     m_turnCtrl.reset();
@@ -47,6 +47,8 @@ public LockOnTarget() {
 
   // Called every time the scheduler runs while the command is scheduled.
   public double execute(Pose2d estimatedPose2d, Vector<Double> robotVector) {
+    // SmartDashboard.putNumber("Tolerance", m_turnCtrl.getErrorTolerance());
+    // m_turnCtrl.setTolerance(2.00);
     var alliance = DriverStation.getAlliance();
     if (alliance.get() == DriverStation.Alliance.Red) {
       targetPose = aprilTagFieldLayout.getTagPose(4).get().toPose2d();
@@ -72,6 +74,8 @@ public LockOnTarget() {
     else {
       goalAngle = (Math.toDegrees(Math.atan(distanceToTargetY / distanceToTargetX)) - 11 + (2 * estimatedPose2d.getX() / 3));
     }
+    if (goalAngle > 180) goalAngle -= 360;
+    if (goalAngle < -180) goalAngle += 360;
     SmartDashboard.putNumber("Goal Angle", goalAngle);
 
     // goalAngle += Math.toDegrees(Math.atan2(ShooterVector.get(0), ShooterVector.get(1)) - Math.atan2(robotVector.get(0), robotVector.get(1)));
@@ -113,14 +117,19 @@ public LockOnTarget() {
     else {
       m_turnCtrl.setSetpoint(goalAngle);
     }
-
+    SmartDashboard.putNumber("Tolerance", m_turnCtrl.getErrorTolerance());
+    SmartDashboard.putNumber("Error", m_turnCtrl.getError());
     m_output = MathUtil.clamp(m_turnCtrl.calculate(heading), -1.0, 1.0);
 
     // m_output = MathUtil.clamp(heading, -1.0, 1.0);
 
     // SmartDashboard.putNumber("m_output", m_output);
-
-    return m_output * ConstantsOffboard.MAX_ANGULAR_RADIANS_PER_SECOND;
+    if (Math.abs(m_turnCtrl.getError()) <= m_turnCtrl.getErrorTolerance()) {
+      return 0;
+    }
+    else {
+      return m_output * ConstantsOffboard.MAX_ANGULAR_RADIANS_PER_SECOND;
+    }
     // m_drive.drive(0.0, 0.0, m_output * ConstantsOffboard.MAX_ANGULAR_RADIANS_PER_SECOND, true);
   }
 }

@@ -33,7 +33,7 @@ public class PhotonVisionGS extends SubsystemBase {
   private double apriltagTime; 
   public double distanceToApriltag = 0;
 
-  private AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
+  private AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.kDefaultField.loadAprilTagLayoutField();
   private PhotonPipelineResult result;
   private PhotonTrackedTarget target;
 
@@ -65,27 +65,27 @@ public class PhotonVisionGS extends SubsystemBase {
       PhotonTrackedTarget localTarget = result.getBestTarget();
 
       // Start of check list
-      boolean foundSpeaker = false;
-      for (var thisTarget : result.targets) {  // Java 'for each' loop
-        int myID = thisTarget.getFiducialId();
-        if ((myID == 4) || (myID == 7)) {
-          foundSpeaker = true;
-        }
-        //they have -31 for height of camera
-        if (myID >= 11 && myID <= 16){
-          //this is chian thingy
-          //heightMatters = 1.35;
-        }
-        else if (myID == 5 || myID == 6){
-          //this is amp
-          //heightMatters = .61;
-        }
-        else if (myID == 8 || myID == 7 || myID == 3 || myID == 4){
-          //heightMatters = 2.025;
-          //this is speaker
-        }
+      boolean foundSpeaker = true;
+      // for (var thisTarget : result.targets) {  // Java 'for each' loop
+      //   int myID = thisTarget.getFiducialId();
+        // if ((myID == 4) || (myID == 7)) {
+        //   foundSpeaker = true;
+        // }
+        // //they have -31 for height of camera
+        // if (myID >= 11 && myID <= 16){
+        //   //this is chian thingy
+        //   //heightMatters = 1.35;
+        // }
+        // else if (myID == 5 || myID == 6){
+        //   //this is amp
+        //   //heightMatters = .61;
+        // }
+        // else if (myID == 8 || myID == 7 || myID == 3 || myID == 4){
+        //   //heightMatters = 2.025;
+        //   //this is speaker
+        // }
         //else {heightMatters = -1;}
-      }
+      // }
 
       Transform3d cameraToTarget = localTarget.getBestCameraToTarget();
 
@@ -99,6 +99,7 @@ public class PhotonVisionGS extends SubsystemBase {
 
       // if ((ID == 4) || (ID == 7)) { //blue-7 red-4
       target = localTarget;
+      SmartDashboard.putNumber("April tag local targer number", localTarget.getFiducialId());
 
       if (foundSpeaker) {
         speakerInView = true;
@@ -119,11 +120,15 @@ public class PhotonVisionGS extends SubsystemBase {
 
   double yaw = Units.radiansToDegrees(targetTd.getRotation().getZ());
   tx_out = m_lowpass.calculate(yaw);
+  SmartDashboard.putNumber("April tag target number", target.getFiducialId());
+  SmartDashboard.putNumber("April tag targetTd number", targetTd.getX());
 } else {
   ID = 0;
   targetTd = null;
   target = null;
 }
+  // SmartDashboard.putNumber("April tag target number", target.getFiducialId());
+  // SmartDashboard.putNumber("April tag targetTd number", targetTd.getX());
 }
   // port: http://photonvision.local:5800
 
