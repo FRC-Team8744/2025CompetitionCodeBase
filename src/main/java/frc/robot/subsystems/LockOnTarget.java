@@ -49,6 +49,7 @@ public LockOnTarget() {
   public double execute(Pose2d estimatedPose2d, Vector<Double> robotVector) {
     // SmartDashboard.putNumber("Tolerance", m_turnCtrl.getErrorTolerance());
     // m_turnCtrl.setTolerance(2.00);
+    if (3.0 > estimatedPose2d.getX() && estimatedPose2d.getX() > 5.0 && estimatedPose2d.getY() > 3 && estimatedPose2d.getY() < 5.0) {}
     var alliance = DriverStation.getAlliance();
     if (alliance.get() == DriverStation.Alliance.Red) {
       targetPose = aprilTagFieldLayout.getTagPose(4).get().toPose2d();

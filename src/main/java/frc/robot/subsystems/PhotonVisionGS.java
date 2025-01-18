@@ -33,7 +33,7 @@ public class PhotonVisionGS extends SubsystemBase {
   private double apriltagTime; 
   public double distanceToApriltag = 0;
 
-  private AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.kDefaultField.loadAprilTagLayoutField();
+  private AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField();
   private PhotonPipelineResult result;
   private PhotonTrackedTarget target;
 

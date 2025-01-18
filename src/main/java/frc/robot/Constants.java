@@ -5,10 +5,14 @@
 package frc.robot;
 
 
+import java.lang.reflect.Array;
+
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -24,6 +28,19 @@ public final class Constants {
 
   public static final TalonFXConfiguration cfg = new TalonFXConfiguration();
   public static final Slot0Configs cfg0 = new Slot0Configs();
+// 7.5 2 for second and first 7.5 6
+  public static final Pose2d[] redBorder6 = new Pose2d[]{new Pose2d(17.55 - 4.319, 3.67, new Rotation2d(0)), new Pose2d(17.55 - 4.319, -0.33, new Rotation2d(0)), new Pose2d(17.55 - -0.191, 0.67, new Rotation2d(0))};
+  public static final Pose2d[] redBorder7 = new Pose2d[]{new Pose2d(17.55 - 4.12, 4.0, new Rotation2d(0)), new Pose2d(17.55 - -0.38, 1.0, new Rotation2d(0)), new Pose2d(17.55 - -0.38, 7.0, new Rotation2d(0))};
+  public static final Pose2d[] redBorder8 = new Pose2d[]{new Pose2d(17.55 - 4.319, 4.33, new Rotation2d(0)), new Pose2d(17.55 - -0.191, 7.33, new Rotation2d(0)), new Pose2d(17.55 - 4.319, 8.33, new Rotation2d(0))};
+  public static final Pose2d[] redBorder9 = new Pose2d[]{new Pose2d(17.55 - 4.691, 4.33, new Rotation2d(0)), new Pose2d(17.55 - 4.691, 8.33, new Rotation2d(0)), new Pose2d(17.55 - 10.191, 7.33, new Rotation2d(0))};
+  public static final Pose2d[] redBorder10 = new Pose2d[]{new Pose2d(17.55 - 4.88, 4.0, new Rotation2d(0)), new Pose2d(17.55 - 10.38, 7.0, new Rotation2d(0)), new Pose2d(17.55 - 10.38, 1.0, new Rotation2d(0))};
+  public static final Pose2d[] redBorder11 = new Pose2d[]{new Pose2d(17.55 - 4.691, 3.67, new Rotation2d(0)), new Pose2d(17.55 - 10.191, 0.67, new Rotation2d(0)), new Pose2d(17.55 - 4.691, -0.33, new Rotation2d(0))};
+  public static final Pose2d[] blueBorder17 = new Pose2d[]{new Pose2d(4.319, 3.67, new Rotation2d(0)), new Pose2d(4.319, -0.33, new Rotation2d(0)), new Pose2d(-0.191, 0.67, new Rotation2d(0))};
+  public static final Pose2d[] blueBorder18 = new Pose2d[]{new Pose2d(4.12, 4.0, new Rotation2d(0)), new Pose2d(-0.38, 1.0, new Rotation2d(0)), new Pose2d(-0.38, 7.0, new Rotation2d(0))};
+  public static final Pose2d[] blueBorder19 = new Pose2d[]{new Pose2d(4.319, 4.33, new Rotation2d(0)), new Pose2d(-0.191, 7.33, new Rotation2d(0)), new Pose2d(4.319, 8.33, new Rotation2d(0))};
+  public static final Pose2d[] blueBorder20 = new Pose2d[]{new Pose2d(4.691, 4.33, new Rotation2d(0)), new Pose2d(4.691, 8.33, new Rotation2d(0)), new Pose2d(10.191, 7.33, new Rotation2d(0))};
+  public static final Pose2d[] blueBorder21 = new Pose2d[]{new Pose2d(4.88, 4.0, new Rotation2d(0)), new Pose2d(10.38, 7.0, new Rotation2d(0)), new Pose2d(10.38, 1.0, new Rotation2d(0))};
+  public static final Pose2d[] blueBorder22 = new Pose2d[]{new Pose2d(4.691, 3.67, new Rotation2d(0)), new Pose2d(10.191, 0.67, new Rotation2d(0)), new Pose2d(4.691, -0.33, new Rotation2d(0))};
 
   public Constants() {
     cfg.Voltage.PeakForwardVoltage = 12;
@@ -170,6 +187,7 @@ public final class Constants {
   public static final class OIConstants {
     public static final int kDriverControllerPort = 0;
     public static final double kDeadband = 0.3;
+    public static final double kRotationDeadband = 1.8;
   }
 
   public static final class AutoConstants {

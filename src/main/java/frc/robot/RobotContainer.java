@@ -48,7 +48,7 @@ public class RobotContainer {
                   m_robotDrive.drive(
                       -m_driver.getLeftY()  * SwerveConstants.kMaxSpeedTeleop,
                       -m_driver.getLeftX()  * SwerveConstants.kMaxSpeedTeleop,
-                      -m_driver.getRightX() * ConstantsOffboard.MAX_ANGULAR_RADIANS_PER_SECOND,
+                      m_driver.getRightX() * ConstantsOffboard.MAX_ANGULAR_RADIANS_PER_SECOND,
                       true),
               m_robotDrive));
     // m_autoChooser = AutoBuilder.buildAutoChooser();  // Default auto will be 'Commands.none()'

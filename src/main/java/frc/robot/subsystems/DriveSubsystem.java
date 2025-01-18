@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.Vector;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
@@ -79,7 +80,7 @@ public class DriveSubsystem extends SubsystemBase {
   Joystick m_Joystick = new Joystick(OIConstants.kDriverControllerPort);
 
   // The imu sensor
-  public final LockOnTarget m_lock = new LockOnTarget();
+  public final StrafeOnTarget m_lock = new StrafeOnTarget();
   public final Pigeon2 m_imu = new Pigeon2(Constants.SwerveConstants.kIMU_ID);
   private final PhotonVisionGS m_vision;
   private final PhotonVisionGS2 m_vision2;
@@ -299,7 +300,7 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     if (isAutoRotate) {
-      autoRotateSpeed = m_lock.execute(m_poseEstimator.getEstimatedPosition(), robotVector);
+      autoRotateSpeed = m_lock.execute(m_poseEstimator.getEstimatedPosition());
     }
 
     if (isAutoRotate && isAutoRotateToggle) {
@@ -362,7 +363,7 @@ public class DriveSubsystem extends SubsystemBase {
     // Apply joystick deadband
     xSpeed = MathUtil.applyDeadband(xSpeed, OIConstants.kDeadband, 1.0);
     ySpeed = MathUtil.applyDeadband(ySpeed, OIConstants.kDeadband, 1.0);
-    rot = isAutoRotate ? rot : MathUtil.applyDeadband(rot, OIConstants.kDeadband, 1.0);
+    rot = isAutoRotate ? rot : MathUtil.applyDeadband(rot, OIConstants.kRotationDeadband, 1.0);
 
     // Apply speed scaling
     xSpeed = xSpeed * m_DriverSpeedScale;
