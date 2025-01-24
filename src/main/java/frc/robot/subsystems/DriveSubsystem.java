@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems;
 
+import static edu.wpi.first.units.Units.Rotation;
+
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Vector;
@@ -41,6 +43,7 @@ import frc.robot.Constants;
 import frc.robot.Constants.ConstantsOffboard;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.SwerveConstants;
+import frc.robot.RotationEnum;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
@@ -84,8 +87,9 @@ public class DriveSubsystem extends SubsystemBase {
   public final Pigeon2 m_imu = new Pigeon2(Constants.SwerveConstants.kIMU_ID);
   private final PhotonVisionGS m_vision;
   private final PhotonVisionGS2 m_vision2;
+  public final AlignToClimb m_alignToClimb = new AlignToClimb();
 
-  public boolean isAutoRotate = false;
+  public RotationEnum isAutoRotate = RotationEnum.NONE;
   public boolean isAutoRotateToggle = true;
   
   public SwerveModulePosition[] getModulePositions() {
@@ -299,18 +303,28 @@ public class DriveSubsystem extends SubsystemBase {
       robotVector.add(0.0);
     }
 
-    if (isAutoRotate) {
+    if (isAutoRotate == RotationEnum.STRAFEONTARGET) {
       autoRotateSpeed = m_lock.execute(m_poseEstimator.getEstimatedPosition());
     }
 
-    if (isAutoRotate && isAutoRotateToggle) {
+    if (isAutoRotate == RotationEnum.STRAFEONTARGET && isAutoRotateToggle) {
       m_lock.initialize();
       isAutoRotateToggle = false;
     }
-    else if (!isAutoRotate) {
+
+    else if (isAutoRotate == RotationEnum.NONE) {
       isAutoRotateToggle = true;
     }
-  
+
+    if (isAutoRotate == RotationEnum.ALIGNTOCLIMB) {
+      autoRotateSpeed = m_alignToClimb.execute(getEstimatedPose());
+    }
+
+    if (isAutoRotate == RotationEnum.ALIGNTOCLIMB && isAutoRotateToggle) {
+      m_alignToClimb.initialize();
+      isAutoRotateToggle = false;
+    }
+    
     getRobotVelocityX();
     getRobotVelocityY();
 
@@ -358,37 +372,42 @@ public class DriveSubsystem extends SubsystemBase {
    * @param fieldRelative Whether the provided x and y speeds are relative to the field.
    */
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
-    rot = isAutoRotate ? autoRotateSpeed : rot;
+    rot = isAutoRotate != RotationEnum.NONE ? autoRotateSpeed : rot;
 
     // Apply joystick deadband
     xSpeed = MathUtil.applyDeadband(xSpeed, OIConstants.kDeadband, 1.0);
     ySpeed = MathUtil.applyDeadband(ySpeed, OIConstants.kDeadband, 1.0);
-    rot = isAutoRotate ? rot : MathUtil.applyDeadband(rot, OIConstants.kRotationDeadband, 1.0);
+    rot = isAutoRotate != RotationEnum.NONE ? rot : MathUtil.applyDeadband(rot, OIConstants.kRotationDeadband, 1.0);
 
     // Apply speed scaling
     xSpeed = xSpeed * m_DriverSpeedScale;
     ySpeed = ySpeed * m_DriverSpeedScale;
     rot = rot * m_DriverSpeedScale;
 
-    // if (isAutoRotate == false && Math.abs(rot / ConstantsOffboard.MAX_ANGULAR_RADIANS_PER_SECOND) <= 0.1 
-    // && rotationTimer.hasElapsed(0.1)
-    // ) {
-    //   if (roboNoSpino) {
-    //     goalAngle = m_poseEstimator.getEstimatedPosition().getRotation().getDegrees();
-    //     roboNoSpino = false;
-    //   }
+    // if (isAutoRotate == RotationEnum.STRAFEONTARGET) {
+    //   fieldRelative = false;
+    // }
+
+    /*if (isAutoRotate == false && Math.abs(rot / ConstantsOffboard.MAX_ANGULAR_RADIANS_PER_SECOND) <= 0.1 
+    && rotationTimer.hasElapsed(0.1)
+    ) {
+      if (roboNoSpino) {
+        goalAngle = m_poseEstimator.getEstimatedPosition().getRotation().getDegrees();
+        roboNoSpino = false;
+      }
     
-    //   m_turnCtrl.setSetpoint(goalAngle);
-    //   double m_output = MathUtil.clamp(m_turnCtrl.calculate(m_poseEstimator.getEstimatedPosition().getRotation().getDegrees()), -1.0, 1.0);
-    //   rot = m_output;
-    // }
-    // else {
-    //   goalAngle = m_poseEstimator.getEstimatedPosition().getRotation().getDegrees();
-    //   m_turnCtrl.reset();
-    //   roboNoSpino = true;
-    //   rotationTimer.restart();
-    // }
-    //SmartDashboard.putNumber("Goal Angle", goalAngle);
+      m_turnCtrl.setSetpoint(goalAngle);
+      double m_output = MathUtil.clamp(m_turnCtrl.calculate(m_poseEstimator.getEstimatedPosition().getRotation().getDegrees()), -1.0, 1.0);
+      rot = m_output;
+    }
+    else {
+      goalAngle = m_poseEstimator.getEstimatedPosition().getRotation().getDegrees();
+      m_turnCtrl.reset();
+      roboNoSpino = true;
+      rotationTimer.restart();
+    }
+    SmartDashboard.putNumber("Goal Angle", goalAngle);
+    */
 
     var swerveModuleStates =
         SwerveConstants.kDriveKinematics.toSwerveModuleStates(

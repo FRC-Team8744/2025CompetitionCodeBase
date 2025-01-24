@@ -130,12 +130,7 @@ public StrafeOnTarget() {}
         return 0;
       }
       else {
-      // if (isInArea(Constants.blueBorder21, estimatedPose2d)) {
         return m_output * ConstantsOffboard.MAX_ANGULAR_RADIANS_PER_SECOND;
-      //   }
-      // else {
-      //   return 0;
-      // }
       }
     }
     else {

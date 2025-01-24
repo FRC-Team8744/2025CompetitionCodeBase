@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.ConstantsOffboard;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.SwerveConstants;
+import frc.robot.subsystems.AlignToClimb;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.PhotonVisionGS;
 import frc.robot.subsystems.PhotonVisionGS2;
@@ -68,8 +69,10 @@ public class RobotContainer {
     m_driver.rightTrigger().whileTrue(Commands.runOnce(() -> m_shooter.shootRing()))
     .whileFalse(Commands.runOnce(() -> m_shooter.stopShooter()));
     m_driver.rightStick()
-    .toggleOnTrue(Commands.runOnce(() -> m_robotDrive.isAutoRotate = !m_robotDrive.isAutoRotate));
-  }
+    .toggleOnTrue(Commands.runOnce(() -> m_robotDrive.isAutoRotate = m_robotDrive.isAutoRotate == RotationEnum.STRAFEONTARGET ? RotationEnum.NONE : RotationEnum.STRAFEONTARGET));
+    m_driver.leftTrigger()
+    .toggleOnTrue(Commands.runOnce(() -> m_robotDrive.isAutoRotate = m_robotDrive.isAutoRotate == RotationEnum.ALIGNTOCLIMB ? RotationEnum.NONE : RotationEnum.ALIGNTOCLIMB));
+  } 
 
   public Command getAutonomousCommand() {
     Command autoCommand = m_autoManager.getAutoManagerSelected();
