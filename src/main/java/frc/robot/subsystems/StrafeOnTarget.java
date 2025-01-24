@@ -51,46 +51,79 @@ public StrafeOnTarget() {}
     if (goalAngle < -180) goalAngle += 360;
     SmartDashboard.putNumber("Goal Angle", goalAngle);
 
-    // goalAngle += Math.toDegrees(Math.atan2(ShooterVector.get(0), ShooterVector.get(1)) - Math.atan2(robotVector.get(0), robotVector.get(1)));
-
     m_turnCtrl.reset();
-    if (isInArea (Constants.blueBorder17, estimatedPose2d) || isInArea(Constants.redBorder11, estimatedPose2d)) {
-      m_turnCtrl.setSetpoint(240);
-      inZone = true;
-    }
-    else if (isInArea (Constants.blueBorder18, estimatedPose2d) || isInArea(Constants.redBorder10, estimatedPose2d)) {
-      m_turnCtrl.setSetpoint(180);
-      inZone = true;
-    }
-    else if (isInArea (Constants.blueBorder19, estimatedPose2d) || isInArea(Constants.redBorder9, estimatedPose2d)) {
-      m_turnCtrl.setSetpoint(120);
-      inZone = true;
-    }
-    else if (isInArea (Constants.blueBorder20, estimatedPose2d) || isInArea(Constants.redBorder8, estimatedPose2d)) {
-      m_turnCtrl.setSetpoint(60);
-      inZone = true;
-    }
-    else if (isInArea (Constants.blueBorder21, estimatedPose2d) || isInArea(Constants.redBorder7, estimatedPose2d)) {
-      m_turnCtrl.setSetpoint(0);
-      inZone = true;
-    }
-    else if (isInArea (Constants.blueBorder22, estimatedPose2d) || isInArea(Constants.redBorder6, estimatedPose2d)) {
-      m_turnCtrl.setSetpoint(300);
-      inZone = true;
-    }
-    
 
+    // Turns to target april tag if on the right allinace 
+    if (alliance.get() == DriverStation.Alliance.Blue) {
+      if (isInArea (Constants.blueBorder17, estimatedPose2d)) {
+        m_turnCtrl.setSetpoint(240);
+        inZone = true;
+      }
+      else if (isInArea (Constants.blueBorder18, estimatedPose2d)) {
+        m_turnCtrl.setSetpoint(180);
+        inZone = true;
+      }
+      else if (isInArea (Constants.blueBorder19, estimatedPose2d)) {
+        m_turnCtrl.setSetpoint(120);
+        inZone = true;
+      }
+      else if (isInArea (Constants.blueBorder20, estimatedPose2d)) {
+        m_turnCtrl.setSetpoint(60);
+        inZone = true;
+      }
+      else if (isInArea (Constants.blueBorder21, estimatedPose2d)) {
+        m_turnCtrl.setSetpoint(0);
+        inZone = true;
+      }
+      else if (isInArea (Constants.blueBorder22, estimatedPose2d)) {
+        m_turnCtrl.setSetpoint(300);
+        inZone = true;
+      }
+      else {
+        inZone = false;
+      }
+    }
+    else if  (alliance.get() == DriverStation.Alliance.Red) {
+      if (isInArea (Constants.redBorder11, estimatedPose2d)) {
+        m_turnCtrl.setSetpoint(240);
+        inZone = true;
+      }
+      else if (isInArea (Constants.redBorder10, estimatedPose2d)) {
+        m_turnCtrl.setSetpoint(180);
+        inZone = true;
+      }
+      else if (isInArea (Constants.redBorder9, estimatedPose2d)) {
+        m_turnCtrl.setSetpoint(120);
+        inZone = true;
+      }
+      else if (isInArea (Constants.redBorder8, estimatedPose2d)) {
+        m_turnCtrl.setSetpoint(60);
+        inZone = true;
+      }
+      else if (isInArea (Constants.redBorder7, estimatedPose2d)) {
+        m_turnCtrl.setSetpoint(0);
+        inZone = true;
+      }
+      else if (isInArea (Constants.redBorder6, estimatedPose2d)) {
+        m_turnCtrl.setSetpoint(300);
+        inZone = true;
+      }
+      else {
+        inZone = false;
+      }
+    }
     else {
       inZone = false;
     }
+
     m_output = MathUtil.clamp(m_turnCtrl.calculate(heading), -1.0, 1.0);
 
-    SmartDashboard.putBoolean("Is in area 17", isInArea(Constants.blueBorder17, estimatedPose2d));
-    SmartDashboard.putBoolean("Is in area 18", isInArea(Constants.blueBorder18, estimatedPose2d));
-    SmartDashboard.putBoolean("Is in area 19", isInArea(Constants.blueBorder19, estimatedPose2d));
-    SmartDashboard.putBoolean("Is in area 20", isInArea(Constants.blueBorder20, estimatedPose2d));
-    SmartDashboard.putBoolean("Is in area 21", isInArea(Constants.blueBorder21, estimatedPose2d));
-    SmartDashboard.putBoolean("Is in area 22", isInArea(Constants.blueBorder22, estimatedPose2d));
+    // SmartDashboard.putBoolean("Is in area 17", isInArea(Constants.blueBorder17, estimatedPose2d));
+    // SmartDashboard.putBoolean("Is in area 18", isInArea(Constants.blueBorder18, estimatedPose2d));
+    // SmartDashboard.putBoolean("Is in area 19", isInArea(Constants.blueBorder19, estimatedPose2d));
+    // SmartDashboard.putBoolean("Is in area 20", isInArea(Constants.blueBorder20, estimatedPose2d));
+    // SmartDashboard.putBoolean("Is in area 21", isInArea(Constants.blueBorder21, estimatedPose2d));
+    // SmartDashboard.putBoolean("Is in area 22", isInArea(Constants.blueBorder22, estimatedPose2d));
 
     if (inZone) {
       if (Math.abs(m_turnCtrl.getError()) <= m_turnCtrl.getErrorTolerance()) {
@@ -110,6 +143,12 @@ public StrafeOnTarget() {}
     }
   }
 
+  /**
+   * Calculates if you are within a certain amount of points
+   * @param border Array of points to calculate if you are inside of
+   * @param estimatedPose2d Current robot position
+   * @return Returns if you are in the given area
+   */
   public boolean isInArea(Pose2d[] border, Pose2d estimatedPose2d) {
     double degree = 0.0;
     for (int i = 0 ; i < border.length; i++) {
