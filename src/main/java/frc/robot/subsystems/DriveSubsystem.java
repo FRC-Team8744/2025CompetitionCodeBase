@@ -43,6 +43,10 @@ import frc.robot.Constants;
 import frc.robot.Constants.ConstantsOffboard;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.SwerveConstants;
+import frc.robot.subsystems.alignment.AlignToClimb;
+import frc.robot.subsystems.alignment.StrafeOnTarget;
+import frc.robot.subsystems.vision.PhotonVisionGS;
+import frc.robot.subsystems.vision.PhotonVisionGS2;
 import frc.robot.RotationEnum;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -384,9 +388,9 @@ public class DriveSubsystem extends SubsystemBase {
     ySpeed = ySpeed * m_DriverSpeedScale;
     rot = rot * m_DriverSpeedScale;
 
-    // if (isAutoRotate == RotationEnum.STRAFEONTARGET) {
-    //   fieldRelative = false;
-    // }
+    if (isAutoRotate == RotationEnum.STRAFEONTARGET) {
+      fieldRelative = false;
+    }
 
     /*if (isAutoRotate == false && Math.abs(rot / ConstantsOffboard.MAX_ANGULAR_RADIANS_PER_SECOND) <= 0.1 
     && rotationTimer.hasElapsed(0.1)

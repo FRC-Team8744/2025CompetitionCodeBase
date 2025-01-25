@@ -24,7 +24,7 @@
         "y": 4.0
       },
       "nextControl": {
-        "x": 5.129999999999999,
+        "x": 5.13,
         "y": 4.0
       },
       "isLocked": false,
@@ -61,7 +61,7 @@
     "rotation": 0.0
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Fake Autos",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 0.0

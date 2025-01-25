@@ -8,11 +8,10 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.Constants.ConstantsOffboard;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.SwerveConstants;
-import frc.robot.subsystems.AlignToClimb;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.PhotonVisionGS;
-import frc.robot.subsystems.PhotonVisionGS2;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.alignment.AlignToClimb;
+import frc.robot.subsystems.vision.PhotonVisionGS;
+import frc.robot.subsystems.vision.PhotonVisionGS2;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -30,7 +29,6 @@ public class RobotContainer {
   private PhotonVisionGS m_vision = new PhotonVisionGS();
   private PhotonVisionGS2 m_vision2 = new PhotonVisionGS2();
   private DriveSubsystem m_robotDrive = new DriveSubsystem(m_vision, m_vision2);
-  private Shooter m_shooter = new Shooter();
   // The driver's controller
   private CommandXboxController m_driver = new CommandXboxController(OIConstants.kDriverControllerPort);
   private AutoCommandManager m_autoManager = new AutoCommandManager(m_robotDrive);
@@ -66,8 +64,6 @@ public class RobotContainer {
   
   private void configureButtonBindings() {
     m_driver.back().onTrue(Commands.runOnce (() -> m_robotDrive.zeroGyro()));
-    m_driver.rightTrigger().whileTrue(Commands.runOnce(() -> m_shooter.shootRing()))
-    .whileFalse(Commands.runOnce(() -> m_shooter.stopShooter()));
     m_driver.rightStick()
     .toggleOnTrue(Commands.runOnce(() -> m_robotDrive.isAutoRotate = m_robotDrive.isAutoRotate == RotationEnum.STRAFEONTARGET ? RotationEnum.NONE : RotationEnum.STRAFEONTARGET));
     m_driver.leftTrigger()

@@ -2,20 +2,15 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.subsystems;
-
-import java.util.Vector;
+package frc.robot.subsystems.alignment;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.estimator.PoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.Constants.ConstantsOffboard;
 
@@ -85,27 +80,27 @@ public StrafeOnTarget() {}
     }
     else if  (alliance.get() == DriverStation.Alliance.Red) {
       if (isInArea (Constants.redBorder11, estimatedPose2d)) {
-        m_turnCtrl.setSetpoint(240);
-        inZone = true;
-      }
-      else if (isInArea (Constants.redBorder10, estimatedPose2d)) {
-        m_turnCtrl.setSetpoint(180);
-        inZone = true;
-      }
-      else if (isInArea (Constants.redBorder9, estimatedPose2d)) {
-        m_turnCtrl.setSetpoint(120);
-        inZone = true;
-      }
-      else if (isInArea (Constants.redBorder8, estimatedPose2d)) {
         m_turnCtrl.setSetpoint(60);
         inZone = true;
       }
-      else if (isInArea (Constants.redBorder7, estimatedPose2d)) {
+      else if (isInArea (Constants.redBorder10, estimatedPose2d)) {
         m_turnCtrl.setSetpoint(0);
         inZone = true;
       }
-      else if (isInArea (Constants.redBorder6, estimatedPose2d)) {
+      else if (isInArea (Constants.redBorder9, estimatedPose2d)) {
         m_turnCtrl.setSetpoint(300);
+        inZone = true;
+      }
+      else if (isInArea (Constants.redBorder8, estimatedPose2d)) {
+        m_turnCtrl.setSetpoint(240);
+        inZone = true;
+      }
+      else if (isInArea (Constants.redBorder7, estimatedPose2d)) {
+        m_turnCtrl.setSetpoint(180);
+        inZone = true;
+      }
+      else if (isInArea (Constants.redBorder6, estimatedPose2d)) {
+        m_turnCtrl.setSetpoint(120);
         inZone = true;
       }
       else {

@@ -63,11 +63,11 @@ public class AutoCommandManager {
 
         isSim = true;
 
-        PathPlannerAuto m_test = new PathPlannerAuto("Test");
+        PathPlannerAuto m_test = new PathPlannerAuto("Real Test");
 
         m_chooser.setDefaultOption("None", new InstantCommand());
 
-        m_chooser.addOption("Test", m_test);
+        m_chooser.addOption("Real Test", m_test);
 
         SmartDashboard.putData(m_chooser);
     }

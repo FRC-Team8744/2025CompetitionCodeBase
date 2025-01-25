@@ -3,7 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 
 
-package frc.robot.subsystems;
+package frc.robot.subsystems.vision;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.math.geometry.Transform3d;
@@ -25,15 +25,15 @@ import org.photonvision.targeting.MultiTargetPNPResult;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
-public class PhotonVisionGS extends SubsystemBase {
-  private PhotonCamera camera = new PhotonCamera("Camera_Module_v1");
-  private Rotation3d rd = new Rotation3d(0, Units.degreesToRadians(0), Units.degreesToRadians(180));
-  private Transform3d td = new Transform3d(-0.36, 0, 0.11, rd);
+public class PhotonVisionGS2 extends SubsystemBase {
+  private PhotonCamera camera = new PhotonCamera("Camera_Module_v2");
+  private Rotation3d rd = new Rotation3d(0, Units.degreesToRadians(0), Units.degreesToRadians(0));
+  private Transform3d td = new Transform3d(0, 0, 0, rd);
   private Pose3d targetTd;
   private double apriltagTime; 
   public double distanceToApriltag = 0;
 
-  private AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField();
+  private AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
   private PhotonPipelineResult result;
   private PhotonTrackedTarget target;
 
@@ -50,7 +50,7 @@ public class PhotonVisionGS extends SubsystemBase {
   // private double heightMatters = 2.02;
   public double m_goalAngle;
 
-  public PhotonVisionGS() {
+  public PhotonVisionGS2() {
     ID = 0;
   }
 
