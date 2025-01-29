@@ -51,27 +51,27 @@ public StrafeOnTarget() {}
     // Turns to target april tag if on the right allinace 
     if (alliance.get() == DriverStation.Alliance.Blue) {
       if (isInArea (Constants.blueBorder17, estimatedPose2d)) {
-        m_turnCtrl.setSetpoint(240);
-        inZone = true;
-      }
-      else if (isInArea (Constants.blueBorder18, estimatedPose2d)) {
-        m_turnCtrl.setSetpoint(180);
-        inZone = true;
-      }
-      else if (isInArea (Constants.blueBorder19, estimatedPose2d)) {
-        m_turnCtrl.setSetpoint(120);
-        inZone = true;
-      }
-      else if (isInArea (Constants.blueBorder20, estimatedPose2d)) {
         m_turnCtrl.setSetpoint(60);
         inZone = true;
       }
-      else if (isInArea (Constants.blueBorder21, estimatedPose2d)) {
+      else if (isInArea (Constants.blueBorder18, estimatedPose2d)) {
         m_turnCtrl.setSetpoint(0);
         inZone = true;
       }
-      else if (isInArea (Constants.blueBorder22, estimatedPose2d)) {
+      else if (isInArea (Constants.blueBorder19, estimatedPose2d)) {
         m_turnCtrl.setSetpoint(300);
+        inZone = true;
+      }
+      else if (isInArea (Constants.blueBorder20, estimatedPose2d)) {
+        m_turnCtrl.setSetpoint(240);
+        inZone = true;
+      }
+      else if (isInArea (Constants.blueBorder21, estimatedPose2d)) {
+        m_turnCtrl.setSetpoint(180);
+        inZone = true;
+      }
+      else if (isInArea (Constants.blueBorder22, estimatedPose2d)) {
+        m_turnCtrl.setSetpoint(120);
         inZone = true;
       }
       else {
@@ -155,9 +155,6 @@ public StrafeOnTarget() {}
       double A = Math.sqrt((y2 - y1) * (y2 - y1) + (x2 - x1) * (x2 - x1));
       double B = Math.sqrt((y1 - targetY) * (y1 - targetY) + (x1 - targetX) * (x1 - targetX));
       double C = Math.sqrt((y2 - targetY) * (y2 - targetY) + (x2 - targetX) * (x2 - targetX));
-      SmartDashboard.putNumber("A", A);
-      SmartDashboard.putNumber("B", B);
-      SmartDashboard.putNumber("C", C);
 
       // Calculate direction of vector
       double ta_x = x1 - targetX;
@@ -176,7 +173,6 @@ public StrafeOnTarget() {}
         degree = degree - Math.toDegrees(Math.acos((B * B + C * C - A * A) / (2.0 * B * C)));
       }
     }
-    SmartDashboard.putNumber("Degrees", Math.abs(Math.round(degree)));
     return Math.abs(Math.round(degree) - 360) <= 3;
   }
 }

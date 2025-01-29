@@ -54,7 +54,6 @@ public class PhotonVisionGS extends SubsystemBase {
     ID = 0;
   }
 
-
   @Override
   public void periodic() {
     result = camera.getLatestResult();
@@ -66,26 +65,6 @@ public class PhotonVisionGS extends SubsystemBase {
 
       // Start of check list
       boolean foundSpeaker = true;
-      // for (var thisTarget : result.targets) {  // Java 'for each' loop
-      //   int myID = thisTarget.getFiducialId();
-        // if ((myID == 4) || (myID == 7)) {
-        //   foundSpeaker = true;
-        // }
-        // //they have -31 for height of camera
-        // if (myID >= 11 && myID <= 16){
-        //   //this is chian thingy
-        //   //heightMatters = 1.35;
-        // }
-        // else if (myID == 5 || myID == 6){
-        //   //this is amp
-        //   //heightMatters = .61;
-        // }
-        // else if (myID == 8 || myID == 7 || myID == 3 || myID == 4){
-        //   //heightMatters = 2.025;
-        //   //this is speaker
-        // }
-        //else {heightMatters = -1;}
-      // }
 
       Transform3d cameraToTarget = localTarget.getBestCameraToTarget();
 
@@ -95,9 +74,6 @@ public class PhotonVisionGS extends SubsystemBase {
 
       ID = localTarget.getFiducialId();
 
-      // if(ID == 3){ID = 4;}
-
-      // if ((ID == 4) || (ID == 7)) { //blue-7 red-4
       target = localTarget;
       SmartDashboard.putNumber("April tag local targer number", localTarget.getFiducialId());
 
@@ -106,17 +82,12 @@ public class PhotonVisionGS extends SubsystemBase {
         double yaw = (PhotonUtils.getYawToPose(targetTd.toPose2d(), aprilTagPose3d.toPose2d()).getDegrees());
         yaw *= ID == 7 ? 1 : -1;
         distanceToApriltag = PhotonUtils.getDistanceToPose(targetTd.toPose2d(), aprilTagPose3d.toPose2d());
-        // SmartDashboard.putNumber("yaw", yaw);
-
         tx_out = yaw; //m_lowpass.calculate(yaw);
-
       } else {
         speakerInView = false;
         // m_lowpass.reset();
       }
       speakerInView_filtered = m_filterSpeakerInView.calculate(speakerInView);
-
-  // SmartDashboard.putNumber("Height",heightMatters);
 
   double yaw = Units.radiansToDegrees(targetTd.getRotation().getZ());
   tx_out = m_lowpass.calculate(yaw);
@@ -126,9 +97,7 @@ public class PhotonVisionGS extends SubsystemBase {
   ID = 0;
   targetTd = null;
   target = null;
-}
-  // SmartDashboard.putNumber("April tag target number", target.getFiducialId());
-  // SmartDashboard.putNumber("April tag targetTd number", targetTd.getX());
+  }
 }
   // port: http://photonvision.local:5800
 
