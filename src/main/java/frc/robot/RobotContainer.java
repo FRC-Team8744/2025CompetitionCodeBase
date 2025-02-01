@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.ConstantsOffboard;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.SwerveConstants;
-import frc.robot.commands.RunKraken;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.alignment.AlignToClimb;
@@ -72,8 +71,10 @@ public class RobotContainer {
     .toggleOnTrue(Commands.runOnce(() -> m_robotDrive.isAutoRotate = m_robotDrive.isAutoRotate == RotationEnum.STRAFEONTARGET ? RotationEnum.NONE : RotationEnum.STRAFEONTARGET));
     // m_driver.leftTrigger()
     // .toggleOnTrue(Commands.runOnce(() -> m_robotDrive.isAutoRotate = m_robotDrive.isAutoRotate == RotationEnum.ALIGNTOCLIMB ? RotationEnum.NONE : RotationEnum.ALIGNTOCLIMB));
+
     m_driver.rightTrigger()
-    .whileTrue(new RunKraken(m_elevator));
+    .whileTrue(Commands.runOnce (() -> m_elevator.rotate(5.0)))
+    .whileFalse(Commands.runOnce (() -> m_elevator.rotate(0.0)));
   } 
 
   public Command getAutonomousCommand() {
