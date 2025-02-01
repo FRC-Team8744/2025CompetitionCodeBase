@@ -54,9 +54,9 @@ public class Elevator extends SubsystemBase {
     m_driveMotor.setPosition(0);
   }
 
-  public void rotate(double feedForward) {
+  public void rotate() {
     position.Slot = 0;
-    m_driveMotor.setControl(position.withSlot(0).withPosition(targetPosition).withFeedForward(feedForward));
+    m_driveMotor.setControl(position.withEnableFOC(false).withSlot(0).withPosition(targetPosition));
     // m_driveMotor.setPosition(10);
   }
 
