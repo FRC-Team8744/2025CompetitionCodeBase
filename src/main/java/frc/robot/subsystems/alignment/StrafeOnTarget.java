@@ -31,6 +31,7 @@ public StrafeOnTarget() {}
     // m_turnCtrl.setI(SmartDashboard.getNumber("I", 0));
     // m_turnCtrl.setD(SmartDashboard.getNumber("D", 0));
     m_turnCtrl.enableContinuousInput(-180, 180);
+    m_turnCtrl.disableContinuousInput();
     m_turnCtrl.setTolerance(2.00);
     m_turnCtrl.reset();
   }

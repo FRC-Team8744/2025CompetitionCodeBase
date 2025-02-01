@@ -5,10 +5,13 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.ConstantsOffboard;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.SwerveConstants;
+import frc.robot.commands.RunKraken;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.alignment.AlignToClimb;
 import frc.robot.subsystems.vision.PhotonVisionGS;
 import frc.robot.subsystems.vision.PhotonVisionGS2;
@@ -29,6 +32,7 @@ public class RobotContainer {
   private PhotonVisionGS m_vision = new PhotonVisionGS();
   private PhotonVisionGS2 m_vision2 = new PhotonVisionGS2();
   private DriveSubsystem m_robotDrive = new DriveSubsystem(m_vision, m_vision2);
+  private Elevator m_elevator = new Elevator();
   // The driver's controller
   private CommandXboxController m_driver = new CommandXboxController(OIConstants.kDriverControllerPort);
   private AutoCommandManager m_autoManager = new AutoCommandManager(m_robotDrive);
@@ -66,8 +70,10 @@ public class RobotContainer {
     m_driver.back().onTrue(Commands.runOnce (() -> m_robotDrive.zeroGyro()));
     m_driver.rightStick()
     .toggleOnTrue(Commands.runOnce(() -> m_robotDrive.isAutoRotate = m_robotDrive.isAutoRotate == RotationEnum.STRAFEONTARGET ? RotationEnum.NONE : RotationEnum.STRAFEONTARGET));
-    m_driver.leftTrigger()
-    .toggleOnTrue(Commands.runOnce(() -> m_robotDrive.isAutoRotate = m_robotDrive.isAutoRotate == RotationEnum.ALIGNTOCLIMB ? RotationEnum.NONE : RotationEnum.ALIGNTOCLIMB));
+    // m_driver.leftTrigger()
+    // .toggleOnTrue(Commands.runOnce(() -> m_robotDrive.isAutoRotate = m_robotDrive.isAutoRotate == RotationEnum.ALIGNTOCLIMB ? RotationEnum.NONE : RotationEnum.ALIGNTOCLIMB));
+    m_driver.rightTrigger()
+    .whileTrue(new RunKraken(m_elevator));
   } 
 
   public Command getAutonomousCommand() {

@@ -17,6 +17,7 @@ import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.RelativeEncoder;
 
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
@@ -79,7 +80,7 @@ public class SwerveModuleOffboard {
     configureDevices();
     lastAngle = getState().angle.getRadians();
 
-    m_driveMotor.getConfigurator().apply(Constants.cfg);
+    m_driveMotor.getConfigurator().apply(Constants.driveConfig);
     m_driveMotor.getConfigurator().setPosition(0);
     m_driveMotor.setNeutralMode(NeutralModeValue.Brake);
   }
@@ -185,43 +186,6 @@ public class SwerveModuleOffboard {
     m_canCoder.getPosition().setUpdateFrequency(100);
     m_canCoder.getVelocity().setUpdateFrequency(100);
 
-    // Drive motor configuration.
-    // SparkBaseConfig m_driveMotorConfig = new SparkMaxConfig()
-    // .smartCurrentLimit(ConstantsOffboard.DRIVE_CURRENT_LIMIT);
- 
-    if (ConstantsOffboard.DRIVE_MOTOR_PROFILED_MODE) {
-      // m_driveMotorConfig.closedLoop.pidf(
-      // ConstantsOffboard.DRIVE_KP_PROFILED, 
-      // ConstantsOffboard.DRIVE_KI_PROFILED, 
-      // ConstantsOffboard.DRIVE_KD_PROFILED, 
-      // ConstantsOffboard.DRIVE_KF_PROFILED);
-      // m_drivePID.setP(ConstantsOffboard.DRIVE_KP_PROFILED);
-      // m_drivePID.setI(ConstantsOffboard.DRIVE_KI_PROFILED);
-      // m_drivePID.setD(ConstantsOffboard.DRIVE_KD_PROFILED);
-      // m_drivePID.setFF(ConstantsOffboard.DRIVE_KF_PROFILED);
-    } else {
-      // m_driveMotorConfig.closedLoop.pidf(
-        // ConstantsOffboard.DRIVE_KP, 
-        // ConstantsOffboard.DRIVE_KI, 
-        // ConstantsOffboard.DRIVE_KD, 
-        // ConstantsOffboard.DRIVE_KF);
-      // m_drivePID.setP(ConstantsOffboard.DRIVE_KP);
-      // m_drivePID.setI(ConstantsOffboard.DRIVE_KI);
-      // m_drivePID.setD(ConstantsOffboard.DRIVE_KD);
-      // m_drivePID.setFF(ConstantsOffboard.DRIVE_KF);
-    }
-
-    // m_driveMotorConfig.closedLoop.maxMotion
-    //   .maxVelocity(ConstantsOffboard.DRIVE_MAX_VEL_PROFILED)
-    //   .maxAcceleration(ConstantsOffboard.DRIVE_MAX_ACC_PROFILED)
-    //   .allowedClosedLoopError(ConstantsOffboard.DRIVE_MAX_ERR_PROFILED);
-    
-    // m_driveMotorConfig.encoder
-    //   .positionConversionFactor(ConstantsOffboard.DRIVE_ROTATIONS_TO_METERS)
-    //   .velocityConversionFactor(ConstantsOffboard.DRIVE_RPM_TO_METERS_PER_SECOND);
-
-    // m_driveEncoder.setPosition(0);
-
     SparkBaseConfig m_turningMotorConfig = new SparkMaxConfig()
       .inverted(ConstantsOffboard.ANGLE_MOTOR_INVERSION)
       .smartCurrentLimit(ConstantsOffboard.ANGLE_CURRENT_LIMIT);
@@ -232,20 +196,12 @@ public class SwerveModuleOffboard {
       ConstantsOffboard.ANGLE_KI_PROFILED, 
       ConstantsOffboard.ANGLE_KD_PROFILED, 
       ConstantsOffboard.ANGLE_KF_PROFILED);
-      // m_turningPID.setP(ConstantsOffboard.ANGLE_KP_PROFILED);
-      // m_turningPID.setI(ConstantsOffboard.ANGLE_KI_PROFILED);
-      // m_turningPID.setD(ConstantsOffboard.ANGLE_KD_PROFILED);
-      // m_turningPID.setFF(ConstantsOffboard.ANGLE_KF_PROFILED);
     } else {
       m_turningMotorConfig.closedLoop.pidf(
       ConstantsOffboard.ANGLE_KP, 
       ConstantsOffboard.ANGLE_KI, 
       ConstantsOffboard.ANGLE_KD, 
       ConstantsOffboard.ANGLE_KF);
-      // m_turningPID.setP(ConstantsOffboard.ANGLE_KP);
-      // m_turningPID.setI(ConstantsOffboard.ANGLE_KI);
-      // m_turningPID.setD(ConstantsOffboard.ANGLE_KD);
-      // m_turningPID.setFF(ConstantsOffboard.ANGLE_KF);
     }
 
     m_turningMotorConfig.closedLoop
@@ -257,7 +213,7 @@ public class SwerveModuleOffboard {
         .maxVelocity(ConstantsOffboard.ANGLE_MAX_VEL_PROFILED)
         .maxAcceleration(ConstantsOffboard.ANGLE_MAX_ACC_PROFILED)
         .allowedClosedLoopError(ConstantsOffboard.ANGLE_MAX_ERR_PROFILED);
-    
+
     m_turningMotorConfig.encoder
       .positionConversionFactor(ConstantsOffboard.ANGLE_ROTATIONS_TO_RADIANS)
       .velocityConversionFactor(ConstantsOffboard.ANGLE_RPM_TO_RADIANS_PER_SECOND);

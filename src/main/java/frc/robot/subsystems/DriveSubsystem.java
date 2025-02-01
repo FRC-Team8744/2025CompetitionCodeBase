@@ -171,13 +171,13 @@ public class DriveSubsystem extends SubsystemBase {
     // Configure the AutoBuilder last
       try {
       AutoBuilder.configure(
-        this::getPose, // Robot pose supplier
+        this::getEstimatedPose, // Robot pose supplier
         this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
         this::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
         this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
         new PPHolonomicDriveController( // HolonomicPathFollowerConfig, this should likely live in your Constants class
           new PIDConstants(7.0, 0.0, 0.0), // Translation PID constants
-          new PIDConstants(5.0, 0.0, 0.0)), // Rotation PID constants
+          new PIDConstants(3.5, 0.0, 0.0)), // Rotation PID constants
         RobotConfig.fromGUISettings(),
             ()->{
         // Boolean supplier that controls when the path will be mirrored for the red alliance
@@ -259,6 +259,9 @@ public class DriveSubsystem extends SubsystemBase {
     // SmartDashboard.putNumber("Gyro roll", m_imu.getRoll().getValueAsDouble());
 
     SmartDashboard.putNumber("Estimated Pose X", m_poseEstimator.getEstimatedPosition().getX());
+    SmartDashboard.putNumber("Estimated Pose Y", m_poseEstimator.getEstimatedPosition().getY());
+
+    SmartDashboard.putNumber("Pose Rotation", getPose().getRotation().getDegrees());
 
     // SmartDashboard.putNumber("Yep", m_frontLeft.getVelocity());
 
@@ -382,6 +385,10 @@ public class DriveSubsystem extends SubsystemBase {
     xSpeed = MathUtil.applyDeadband(xSpeed, OIConstants.kDeadband, 1.0);
     ySpeed = MathUtil.applyDeadband(ySpeed, OIConstants.kDeadband, 1.0);
     rot = isAutoRotate != RotationEnum.NONE ? rot : MathUtil.applyDeadband(rot, OIConstants.kRotationDeadband, 1.0);
+
+    // xSpeed *= Constants.SwerveConstants.kMaxSpeedTeleop;
+    // ySpeed *= Constants.SwerveConstants.kMaxSpeedTeleop;
+    // rot *= Constants.ConstantsOffboard.MAX_ANGULAR_RADIANS_PER_SECOND;
 
     // Apply speed scaling
     xSpeed = xSpeed * m_DriverSpeedScale;
