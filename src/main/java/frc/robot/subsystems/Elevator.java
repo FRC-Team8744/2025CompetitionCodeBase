@@ -24,24 +24,9 @@ public class Elevator extends SubsystemBase {
   public double targetPosition = 25;
   // private final Talon
   public Elevator() {
-    // elevatorConfig.Voltage.PeakForwardVoltage = 12;
-    // elevatorConfig.Voltage.PeakReverseVoltage = -12;
-    // elevatorConfig.TorqueCurrent.PeakForwardTorqueCurrent = 800;
-    // elevatorConfig.TorqueCurrent.PeakReverseTorqueCurrent = -800;
-    // elevatorConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
-    // elevatorConfig.CurrentLimits.StatorCurrentLimitEnable = true;
-    // elevatorConfig.CurrentLimits.StatorCurrentLimit = 40.0;
-    // elevatorConfigPID.kS = 1.0; // Add 0.25 V output to overcome static friction
-    // elevatorConfigPID.kV = 0.12; // A velocity target of 1 rps results in 0.12 V output
-    // elevatorConfigPID.kA = 0.01; // An acceleration of 1 rps/s requires 0.01 V output
-    // elevatorConfigPID.kP = 24.0; // A position error of 2.5 rotations results in 12 V output
-    // elevatorConfigPID.kI = 0.0; // no output for integrated error
-    // elevatorConfigPID.kD = 0.1; // A velocity error of 1 rps results in 0.1 V output
-    // elevatorConfig.withSlot0(elevatorConfigPID);
     m_driveMotor = new TalonFX(29);
 
     m_driveMotor.getConfigurator().apply(Constants.elevatorConfig);
-    // m_driveMotor.getConfigurator().apply(elevatorConfigPID);
     m_driveMotor.getConfigurator().setPosition(0);
     m_driveMotor.setNeutralMode(NeutralModeValue.Brake);
     m_driveMotor.setPosition(0);
@@ -50,7 +35,6 @@ public class Elevator extends SubsystemBase {
   public void rotate() {
     position.Slot = 0;
     m_driveMotor.setControl(position.withEnableFOC(false).withSlot(0).withPosition(targetPosition));
-    // m_driveMotor.setPosition(10);
   }
 
   public void stopRotate() {

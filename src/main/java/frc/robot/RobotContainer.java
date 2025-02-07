@@ -75,6 +75,12 @@ public class RobotContainer {
     m_driver.rightTrigger()
     .whileTrue(new RunKraken(m_elevator));
     
+    m_driver.rightBumper()
+    .whileTrue(Commands.runOnce(() -> m_robotDrive.rightPoint = true).andThen(Commands.runOnce(() -> m_robotDrive.isAutoYSpeedRotate = true)))
+    .whileFalse(Commands.runOnce(() -> m_robotDrive.isAutoYSpeedRotate = false));
+    m_driver.leftBumper()
+    .whileTrue(Commands.runOnce(() -> m_robotDrive.rightPoint = false).andThen(Commands.runOnce(() -> m_robotDrive.isAutoYSpeedRotate = true)))
+    .whileFalse(Commands.runOnce(() -> m_robotDrive.isAutoYSpeedRotate = false));
   } 
 
   public Command getAutonomousCommand() {

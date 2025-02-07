@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.Constants.ConstantsOffboard;
+import frc.robot.isInAreaEnum;
 
 public class StrafeOnTarget {
   private AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField();
@@ -49,62 +50,77 @@ public StrafeOnTarget() {}
       if (isInArea (Constants.blueBorder17, estimatedPose2d)) {
         m_turnCtrl.setSetpoint(60);
         inZone = true;
+        isInAreaEnum.areaEnum = isInAreaEnum.N17;
       }
       else if (isInArea (Constants.blueBorder18, estimatedPose2d)) {
         m_turnCtrl.setSetpoint(0);
         inZone = true;
+        isInAreaEnum.areaEnum = isInAreaEnum.N18;
       }
       else if (isInArea (Constants.blueBorder19, estimatedPose2d)) {
         m_turnCtrl.setSetpoint(300);
         inZone = true;
+        isInAreaEnum.areaEnum = isInAreaEnum.N19;
       }
       else if (isInArea (Constants.blueBorder20, estimatedPose2d)) {
         m_turnCtrl.setSetpoint(240);
         inZone = true;
+        isInAreaEnum.areaEnum = isInAreaEnum.N20;
       }
       else if (isInArea (Constants.blueBorder21, estimatedPose2d)) {
         m_turnCtrl.setSetpoint(0);
         inZone = true;
+        isInAreaEnum.areaEnum = isInAreaEnum.N21;
       }
       else if (isInArea (Constants.blueBorder22, estimatedPose2d)) {
         m_turnCtrl.setSetpoint(120);
         inZone = true;
+        isInAreaEnum.areaEnum = isInAreaEnum.N22;
       }
       else {
         inZone = false;
+        isInAreaEnum.areaEnum = isInAreaEnum.NONE;
       }
     }
     else if  (alliance.get() == DriverStation.Alliance.Red) {
       if (isInArea (Constants.redBorder11, estimatedPose2d)) {
         m_turnCtrl.setSetpoint(60);
         inZone = true;
+        isInAreaEnum.areaEnum = isInAreaEnum.N11;
       }
       else if (isInArea (Constants.redBorder10, estimatedPose2d)) {
         m_turnCtrl.setSetpoint(0);
         inZone = true;
+        isInAreaEnum.areaEnum = isInAreaEnum.N10;
       }
       else if (isInArea (Constants.redBorder9, estimatedPose2d)) {
         m_turnCtrl.setSetpoint(300);
         inZone = true;
+        isInAreaEnum.areaEnum = isInAreaEnum.N9;
       }
       else if (isInArea (Constants.redBorder8, estimatedPose2d)) {
         m_turnCtrl.setSetpoint(240);
         inZone = true;
+        isInAreaEnum.areaEnum = isInAreaEnum.N8;
       }
       else if (isInArea (Constants.redBorder7, estimatedPose2d)) {
         m_turnCtrl.setSetpoint(180);
         inZone = true;
+        isInAreaEnum.areaEnum = isInAreaEnum.N7;
       }
       else if (isInArea (Constants.redBorder6, estimatedPose2d)) {
         m_turnCtrl.setSetpoint(120);
         inZone = true;
+        isInAreaEnum.areaEnum = isInAreaEnum.N6;
       }
       else {
         inZone = false;
+        isInAreaEnum.areaEnum = isInAreaEnum.NONE;
       }
     }
     else {
       inZone = false;
+      isInAreaEnum.areaEnum = isInAreaEnum.NONE;
     }
 
     m_output = MathUtil.clamp(m_turnCtrl.calculate(heading), -1.0, 1.0);

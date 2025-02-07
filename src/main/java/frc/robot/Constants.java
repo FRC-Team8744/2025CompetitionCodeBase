@@ -16,10 +16,12 @@ import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
 import com.pathplanner.lib.config.PIDConstants;
 
+import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.numbers.N2;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 
@@ -51,10 +53,11 @@ public final class Constants {
   public static final Pose2d[] blueBorder20 = new Pose2d[]{new Pose2d(4.691, 4.33, new Rotation2d(0)), new Pose2d(4.691, 8.33, new Rotation2d(0)), new Pose2d(10.191, 7.33, new Rotation2d(0))};
   public static final Pose2d[] blueBorder21 = new Pose2d[]{new Pose2d(4.88, 4.0, new Rotation2d(0)), new Pose2d(10.38, 7.0, new Rotation2d(0)), new Pose2d(10.38, 1.0, new Rotation2d(0))};
   public static final Pose2d[] blueBorder22 = new Pose2d[]{new Pose2d(4.691, 3.67, new Rotation2d(0)), new Pose2d(10.191, 0.67, new Rotation2d(0)), new Pose2d(4.691, -0.33, new Rotation2d(0))};
-// public static final Pose2d[] 
 
-public static final Pose2d[] leftPoint = new Pose2d[]{new Pose2d()};
-public static final Pose2d[] rightPoint = new Pose2d[]{new Pose2d()};
+  public static final double[] rightPoint = {5.35, 4.2};
+  public static final double[] leftPoint = {5.35, 3.85};
+  public static final double[][] rotationMatrix = {{0.5, 0.866}, {-0.866, 0.5}};
+
   public Constants() {
     // Driving motors
     driveConfig.Voltage.PeakForwardVoltage = 12;
