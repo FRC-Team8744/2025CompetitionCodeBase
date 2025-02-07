@@ -3,48 +3,53 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 10.0,
-        "y": 7.0
+        "x": 3.6211900684931506,
+        "y": 5.09933647260274
       },
       "prevControl": null,
       "nextControl": {
-        "x": 9.526144366197183,
-        "y": 6.7886443661971825
+        "x": 3.148422885829848,
+        "y": 5.466214479052838
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "End P3-2"
     },
     {
       "anchor": {
-        "x": 4.5,
-        "y": 4.0
+        "x": 1.7129280821975674,
+        "y": 7.052675513699988
       },
       "prevControl": {
-        "x": 4.254222296382301,
-        "y": 4.045752818540621
+        "x": 1.5297777168919242,
+        "y": 7.222839974409061
       },
       "nextControl": {
-        "x": 4.745777703617698,
-        "y": 3.954247181459379
+        "x": 2.5644921910631875,
+        "y": 6.261489828088607
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "End P3"
     },
     {
       "anchor": {
-        "x": 10.0,
-        "y": 1.0
+        "x": 3.1403681506849312,
+        "y": 4.182769691780822
       },
       "prevControl": {
-        "x": 9.767077464788734,
-        "y": 1.1054577464788713
+        "x": 2.803051796399332,
+        "y": 4.6541205791259355
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "End P4"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.5974025974025972,
+      "rotationDegrees": 128.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
@@ -58,13 +63,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 180.0
   },
   "reversed": false,
-  "folder": "Fake Autos",
+  "folder": "5 piece top source",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 119.99999999999999
   },
   "useDefaultConstraints": true
 }

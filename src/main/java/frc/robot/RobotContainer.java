@@ -74,6 +74,7 @@ public class RobotContainer {
     // .toggleOnTrue(Commands.runOnce(() -> m_robotDrive.isAutoRotate = m_robotDrive.isAutoRotate == RotationEnum.ALIGNTOCLIMB ? RotationEnum.NONE : RotationEnum.ALIGNTOCLIMB));
     m_driver.rightTrigger()
     .whileTrue(new RunKraken(m_elevator));
+    
   } 
 
   public Command getAutonomousCommand() {

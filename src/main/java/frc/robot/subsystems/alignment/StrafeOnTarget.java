@@ -27,18 +27,13 @@ public StrafeOnTarget() {}
 
   // Called when the command is initially scheduled.
   public void initialize() {
-    // m_turnCtrl.setP(SmartDashboard.getNumber("P", 0));
-    // m_turnCtrl.setI(SmartDashboard.getNumber("I", 0));
-    // m_turnCtrl.setD(SmartDashboard.getNumber("D", 0));
     m_turnCtrl.enableContinuousInput(-180, 180);
-    m_turnCtrl.disableContinuousInput();
     m_turnCtrl.setTolerance(2.00);
     m_turnCtrl.reset();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   public double execute(Pose2d estimatedPose2d) {
-    // if (3.0 > estimatedPose2d.getX() && estimatedPose2d.getX() > 5.0 && estimatedPose2d.getY() > 3 && estimatedPose2d.getY() < 5.0) {}
     var alliance = DriverStation.getAlliance();
 
     heading = estimatedPose2d.getRotation().getDegrees();
@@ -68,7 +63,7 @@ public StrafeOnTarget() {}
         inZone = true;
       }
       else if (isInArea (Constants.blueBorder21, estimatedPose2d)) {
-        m_turnCtrl.setSetpoint(180);
+        m_turnCtrl.setSetpoint(0);
         inZone = true;
       }
       else if (isInArea (Constants.blueBorder22, estimatedPose2d)) {
@@ -113,13 +108,6 @@ public StrafeOnTarget() {}
     }
 
     m_output = MathUtil.clamp(m_turnCtrl.calculate(heading), -1.0, 1.0);
-
-    // SmartDashboard.putBoolean("Is in area 17", isInArea(Constants.blueBorder17, estimatedPose2d));
-    // SmartDashboard.putBoolean("Is in area 18", isInArea(Constants.blueBorder18, estimatedPose2d));
-    // SmartDashboard.putBoolean("Is in area 19", isInArea(Constants.blueBorder19, estimatedPose2d));
-    // SmartDashboard.putBoolean("Is in area 20", isInArea(Constants.blueBorder20, estimatedPose2d));
-    // SmartDashboard.putBoolean("Is in area 21", isInArea(Constants.blueBorder21, estimatedPose2d));
-    // SmartDashboard.putBoolean("Is in area 22", isInArea(Constants.blueBorder22, estimatedPose2d));
 
     if (inZone) {
       if (Math.abs(m_turnCtrl.getError()) <= m_turnCtrl.getErrorTolerance()) {

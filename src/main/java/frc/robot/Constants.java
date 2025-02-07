@@ -27,7 +27,7 @@ public final class Constants {
   public static final int kDebugLevel = 0; // 0 = None, 1 = Errors, 2 = Info, 3 = Debug and USB data log
   
   public static final int kMaxSpeedPercentAuto = 100;
-  public static final int kMaxSpeedPercentTeleop = 20;
+  public static final int kMaxSpeedPercentTeleop = 30;
   public static final int kMaxAccelerationPercent = 100;
   public static final double kDriverSpeedLimit = 1; // sets how much the max speed is modified by when you press down on the left stick basicly make go slower the default is 1 btw 
 
@@ -51,9 +51,10 @@ public final class Constants {
   public static final Pose2d[] blueBorder20 = new Pose2d[]{new Pose2d(4.691, 4.33, new Rotation2d(0)), new Pose2d(4.691, 8.33, new Rotation2d(0)), new Pose2d(10.191, 7.33, new Rotation2d(0))};
   public static final Pose2d[] blueBorder21 = new Pose2d[]{new Pose2d(4.88, 4.0, new Rotation2d(0)), new Pose2d(10.38, 7.0, new Rotation2d(0)), new Pose2d(10.38, 1.0, new Rotation2d(0))};
   public static final Pose2d[] blueBorder22 = new Pose2d[]{new Pose2d(4.691, 3.67, new Rotation2d(0)), new Pose2d(10.191, 0.67, new Rotation2d(0)), new Pose2d(4.691, -0.33, new Rotation2d(0))};
-
 // public static final Pose2d[] 
 
+public static final Pose2d[] leftPoint = new Pose2d[]{new Pose2d()};
+public static final Pose2d[] rightPoint = new Pose2d[]{new Pose2d()};
   public Constants() {
     // Driving motors
     driveConfig.Voltage.PeakForwardVoltage = 12;
@@ -77,10 +78,6 @@ public final class Constants {
     elevatorConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
     elevatorConfig.CurrentLimits.StatorCurrentLimitEnable = true;
     elevatorConfig.CurrentLimits.StatorCurrentLimit = 40.0;
-    // elevatorConfigPID.kV = 0.0;
-    // elevatorConfigPID.kP = 1.0;
-    // elevatorConfigPID.kI = 0.0;
-    // elevatorConfigPID.kD = 0.0;
     elevatorConfigPID.kS = 1.0; // Add 0.25 V output to overcome static friction
     elevatorConfigPID.kV = 0.12; // A velocity target of 1 rps results in 0.12 V output
     elevatorConfigPID.kA = 0.01; // An acceleration of 1 rps/s requires 0.01 V output
@@ -88,9 +85,6 @@ public final class Constants {
     elevatorConfigPID.kI = 0.0; // no output for integrated error
     elevatorConfigPID.kD = 0.1; // A velocity error of 1 rps results in 0.1 V output
     elevatorConfig.withSlot0(elevatorConfigPID);
-    // elevatorMotionMagicConfig.MotionMagicCruiseVelocity = 80; // Target cruise velocity of 80 rps
-    // elevatorMotionMagicConfig.MotionMagicAcceleration = 160; // Target acceleration of 160 rps/s (0.5 seconds)
-    // elevatorMotionMagicConfig.MotionMagicJerk = 1600; // Target jerk of 1600 rps/s/s (0.1 seconds)
   }
 
   public static final class MechanismConstants {}
