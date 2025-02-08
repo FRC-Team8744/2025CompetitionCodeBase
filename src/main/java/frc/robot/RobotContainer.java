@@ -11,8 +11,9 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.SwerveConstants;
 import frc.robot.commands.RunKraken;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.alignment.AlignToClimb;
+import frc.robot.subsystems.mechanisms.Elevator;
+import frc.robot.subsystems.mechanisms.Intake;
 import frc.robot.subsystems.vision.PhotonVisionGS;
 import frc.robot.subsystems.vision.PhotonVisionGS2;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -33,6 +34,7 @@ public class RobotContainer {
   private PhotonVisionGS2 m_vision2 = new PhotonVisionGS2();
   private DriveSubsystem m_robotDrive = new DriveSubsystem(m_vision, m_vision2);
   private Elevator m_elevator = new Elevator();
+  private Intake m_intake = new Intake();
   // The driver's controller
   private CommandXboxController m_driver = new CommandXboxController(OIConstants.kDriverControllerPort);
   private AutoCommandManager m_autoManager = new AutoCommandManager(m_robotDrive);
@@ -78,9 +80,14 @@ public class RobotContainer {
     m_driver.rightBumper()
     .whileTrue(Commands.runOnce(() -> m_robotDrive.rightPoint = true).andThen(Commands.runOnce(() -> m_robotDrive.isAutoYSpeedRotate = true)))
     .whileFalse(Commands.runOnce(() -> m_robotDrive.isAutoYSpeedRotate = false));
+    
     m_driver.leftBumper()
     .whileTrue(Commands.runOnce(() -> m_robotDrive.rightPoint = false).andThen(Commands.runOnce(() -> m_robotDrive.isAutoYSpeedRotate = true)))
     .whileFalse(Commands.runOnce(() -> m_robotDrive.isAutoYSpeedRotate = false));
+
+    m_driver.a()
+    .whileTrue(Commands.runOnce(() -> m_intake.runIndexer(0.4)))
+    .whileFalse(Commands.runOnce(() -> m_intake.stopIndexer()));
   } 
 
   public Command getAutonomousCommand() {

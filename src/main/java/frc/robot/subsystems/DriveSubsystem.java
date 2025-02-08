@@ -400,7 +400,11 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
     rot = isAutoRotate != RotationEnum.NONE ? autoRotateSpeed : rot;
-    ySpeed = isAutoYSpeedRotate ? autoYSpeed : ySpeed;
+    // ySpeed = isAutoYSpeedRotate ? autoYSpeed : ySpeed;
+
+    if (isAutoYSpeedRotate && isAutoRotate == RotationEnum.STRAFEONTARGET) {
+      ySpeed = autoYSpeed;
+    }
 
     // Apply joystick deadband
     xSpeed = MathUtil.applyDeadband(xSpeed, OIConstants.kDeadband, 1.0);

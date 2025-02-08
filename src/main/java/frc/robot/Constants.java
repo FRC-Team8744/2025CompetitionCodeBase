@@ -13,6 +13,7 @@ import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.Slot1Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
+import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
 import com.pathplanner.lib.config.PIDConstants;
 
@@ -35,9 +36,14 @@ public final class Constants {
 
   public static final TalonFXConfiguration driveConfig = new TalonFXConfiguration();
   public static final TalonFXConfiguration elevatorConfig = new TalonFXConfiguration();
-  public static final Slot0Configs driveConfigPID = new Slot0Configs();
+  public static final TalonFXConfiguration indexerConfig = new TalonFXConfiguration();
+  public static final TalonFXConfiguration intakePivotConfig = new TalonFXConfiguration();
+  public static final TalonFXConfiguration scoringMechPivotConfig = new TalonFXConfiguration();
+  public static final Slot0Configs driveConfigPID = driveConfig.Slot0;
   public static final Slot0Configs elevatorConfigPID = elevatorConfig.Slot0;
-  public static final MotionMagicConfigs elevatorMotionMagicConfig = elevatorConfig.MotionMagic;
+  public static final Slot0Configs indexerConfigPID = indexerConfig.Slot0;
+  public static final Slot0Configs intakePivotConfigPID = intakePivotConfig.Slot0;
+  public static final Slot0Configs scoringMechPivotConfigPID = scoringMechPivotConfig.Slot0;
 
   // 17.55 is the distance of the field in meters
   // This gets the points of the triangles to calc if it can strafe 
@@ -59,35 +65,7 @@ public final class Constants {
   public static final double[][] rotationMatrix = {{0.5, 0.866}, {-0.866, 0.5}};
 
   public Constants() {
-    // Driving motors
-    driveConfig.Voltage.PeakForwardVoltage = 12;
-    driveConfig.Voltage.PeakReverseVoltage = -12;
-    driveConfig.TorqueCurrent.PeakForwardTorqueCurrent = 800;
-    driveConfig.TorqueCurrent.PeakReverseTorqueCurrent = -800;
-    driveConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
-    driveConfig.CurrentLimits.StatorCurrentLimitEnable = true;
-    driveConfig.CurrentLimits.StatorCurrentLimit = 40.0;
-    driveConfigPID.kV = Constants.ConstantsOffboard.KRAKEN_V;
-    driveConfigPID.kP = Constants.ConstantsOffboard.KRAKEN_P;
-    driveConfigPID.kI = Constants.ConstantsOffboard.KRAKEN_I;
-    driveConfigPID.kD = Constants.ConstantsOffboard.KRAKEN_D;
-    driveConfig.withSlot0(driveConfigPID);
-
-    // Elevator Configs
-    elevatorConfig.Voltage.PeakForwardVoltage = 12;
-    elevatorConfig.Voltage.PeakReverseVoltage = -12;
-    elevatorConfig.TorqueCurrent.PeakForwardTorqueCurrent = 800;
-    elevatorConfig.TorqueCurrent.PeakReverseTorqueCurrent = -800;
-    elevatorConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
-    elevatorConfig.CurrentLimits.StatorCurrentLimitEnable = true;
-    elevatorConfig.CurrentLimits.StatorCurrentLimit = 40.0;
-    elevatorConfigPID.kS = 1.0; // Add 0.25 V output to overcome static friction
-    elevatorConfigPID.kV = 0.12; // A velocity target of 1 rps results in 0.12 V output
-    elevatorConfigPID.kA = 0.01; // An acceleration of 1 rps/s requires 0.01 V output
-    elevatorConfigPID.kP = 24.0; // A position error of 2.5 rotations results in 12 V output
-    elevatorConfigPID.kI = 0.0; // no output for integrated error
-    elevatorConfigPID.kD = 0.1; // A velocity error of 1 rps results in 0.1 V output
-    elevatorConfig.withSlot0(elevatorConfigPID);
+    configureKrakens();
   }
 
   public static final class MechanismConstants {}
@@ -241,6 +219,98 @@ public final class Constants {
   }
 
   public void configureKrakens() {
+    // Driving Configs
+    driveConfig.Voltage.PeakForwardVoltage = 12;
+    driveConfig.Voltage.PeakReverseVoltage = -12;
+    driveConfig.TorqueCurrent.PeakForwardTorqueCurrent = 800;
+    driveConfig.TorqueCurrent.PeakReverseTorqueCurrent = -800;
+    driveConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
+    driveConfig.CurrentLimits.StatorCurrentLimitEnable = true;
+    driveConfig.CurrentLimits.StatorCurrentLimit = 40.0;
+    driveConfigPID.kV = Constants.ConstantsOffboard.KRAKEN_V;
+    driveConfigPID.kP = Constants.ConstantsOffboard.KRAKEN_P;
+    driveConfigPID.kI = Constants.ConstantsOffboard.KRAKEN_I;
+    driveConfigPID.kD = Constants.ConstantsOffboard.KRAKEN_D;
+    driveConfig.withSlot0(driveConfigPID);
 
+    // Elevator Configs
+    elevatorConfig.Voltage.PeakForwardVoltage = 12;
+    elevatorConfig.Voltage.PeakReverseVoltage = -12;
+    elevatorConfig.TorqueCurrent.PeakForwardTorqueCurrent = 800;
+    elevatorConfig.TorqueCurrent.PeakReverseTorqueCurrent = -800;
+    elevatorConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
+    elevatorConfig.CurrentLimits.StatorCurrentLimitEnable = true;
+    elevatorConfig.CurrentLimits.StatorCurrentLimit = 40.0;
+    elevatorConfigPID.kS = 1.0; // Add 0.25 V output to overcome static friction
+    elevatorConfigPID.kV = 0.12; // A velocity target of 1 rps results in 0.12 V output
+    elevatorConfigPID.kA = 0.01; // An acceleration of 1 rps/s requires 0.01 V output
+    elevatorConfigPID.kP = 24.0; // A position error of 2.5 rotations results in 12 V output
+    elevatorConfigPID.kI = 0.0; // no output for integrated error
+    elevatorConfigPID.kD = 0.1; // A velocity error of 1 rps results in 0.1 V output
+    elevatorConfig.withSlot0(elevatorConfigPID);
+
+    // Indexer Configs
+    indexerConfig.Voltage.PeakForwardVoltage = 12;
+    indexerConfig.Voltage.PeakReverseVoltage = -12;
+    indexerConfig.TorqueCurrent.PeakForwardTorqueCurrent = 800;
+    indexerConfig.TorqueCurrent.PeakReverseTorqueCurrent = -800;
+    indexerConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
+    indexerConfig.CurrentLimits.StatorCurrentLimitEnable = true;
+    indexerConfig.CurrentLimits.StatorCurrentLimit = 40.0;
+    indexerConfigPID.kS = 1.0; // Add 0.25 V output to overcome static friction
+    indexerConfigPID.kV = 0.12; // A velocity target of 1 rps results in 0.12 V output
+    indexerConfigPID.kA = 0.01; // An acceleration of 1 rps/s requires 0.01 V output
+    indexerConfigPID.kP = 24.0; // A position error of 2.5 rotations results in 12 V output
+    indexerConfigPID.kI = 0.0; // no output for integrated error
+    indexerConfigPID.kD = 0.1; // A velocity error of 1 rps results in 0.1 V output
+    indexerConfig.withSlot0(indexerConfigPID);
+
+    // Intake Pivot Configs
+    intakePivotConfig.Voltage.PeakForwardVoltage = 12;
+    intakePivotConfig.Voltage.PeakReverseVoltage = -12;
+    intakePivotConfig.TorqueCurrent.PeakForwardTorqueCurrent = 800;
+    intakePivotConfig.TorqueCurrent.PeakReverseTorqueCurrent = -800;
+    intakePivotConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
+    intakePivotConfig.CurrentLimits.StatorCurrentLimitEnable = true;
+    intakePivotConfig.CurrentLimits.StatorCurrentLimit = 40.0;
+    intakePivotConfigPID.kS = 1.0; // Add 0.25 V output to overcome static friction
+    intakePivotConfigPID.kV = 0.12; // A velocity target of 1 rps results in 0.12 V output
+    intakePivotConfigPID.kA = 0.01; // An acceleration of 1 rps/s requires 0.01 V output
+    intakePivotConfigPID.kP = 24.0; // A position error of 2.5 rotations results in 12 V output
+    intakePivotConfigPID.kI = 0.0; // no output for integrated error
+    intakePivotConfigPID.kD = 0.1; // A velocity error of 1 rps results in 0.1 V output
+    intakePivotConfig.withSlot0(intakePivotConfigPID);
+
+        // Intake Pivot Configs
+    intakePivotConfig.Voltage.PeakForwardVoltage = 12;
+    intakePivotConfig.Voltage.PeakReverseVoltage = -12;
+    intakePivotConfig.TorqueCurrent.PeakForwardTorqueCurrent = 800;
+    intakePivotConfig.TorqueCurrent.PeakReverseTorqueCurrent = -800;
+    intakePivotConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
+    intakePivotConfig.CurrentLimits.StatorCurrentLimitEnable = true;
+    intakePivotConfig.CurrentLimits.StatorCurrentLimit = 40.0;
+    intakePivotConfigPID.kS = 1.0; // Add 0.25 V output to overcome static friction
+    intakePivotConfigPID.kV = 0.12; // A velocity target of 1 rps results in 0.12 V output
+    intakePivotConfigPID.kA = 0.01; // An acceleration of 1 rps/s requires 0.01 V output
+    intakePivotConfigPID.kP = 24.0; // A position error of 2.5 rotations results in 12 V output
+    intakePivotConfigPID.kI = 0.0; // no output for integrated error
+    intakePivotConfigPID.kD = 0.1; // A velocity error of 1 rps results in 0.1 V output
+    intakePivotConfig.withSlot0(intakePivotConfigPID);
+
+    // Scoring Mechanism Pivot Configs
+    scoringMechPivotConfig.Voltage.PeakForwardVoltage = 12;
+    scoringMechPivotConfig.Voltage.PeakReverseVoltage = -12;
+    scoringMechPivotConfig.TorqueCurrent.PeakForwardTorqueCurrent = 800;
+    scoringMechPivotConfig.TorqueCurrent.PeakReverseTorqueCurrent = -800;
+    scoringMechPivotConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
+    scoringMechPivotConfig.CurrentLimits.StatorCurrentLimitEnable = true;
+    scoringMechPivotConfig.CurrentLimits.StatorCurrentLimit = 40.0;
+    scoringMechPivotConfigPID.kS = 1.0; // Add 0.25 V output to overcome static friction
+    scoringMechPivotConfigPID.kV = 0.12; // A velocity target of 1 rps results in 0.12 V output
+    scoringMechPivotConfigPID.kA = 0.01; // An acceleration of 1 rps/s requires 0.01 V output
+    scoringMechPivotConfigPID.kP = 24.0; // A position error of 2.5 rotations results in 12 V output
+    scoringMechPivotConfigPID.kI = 0.0; // no output for integrated error
+    scoringMechPivotConfigPID.kD = 0.1; // A velocity error of 1 rps results in 0.1 V output
+    scoringMechPivotConfig.withSlot0(scoringMechPivotConfigPID);
   }
 }

@@ -6,7 +6,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.mechanisms.Elevator;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class RunKraken extends Command {
@@ -30,9 +30,9 @@ public class RunKraken extends Command {
     motorPosition = m_elevator.motorPosition();
 
     SmartDashboard.putBoolean("Command run", true);
+    SmartDashboard.putNumber("Elevator Motor Position", motorPosition);
 
-    m_elevator.rotate();
-
+    m_elevator.rotate(25);
   }
 
   // Called once the command ends or is interrupted.
