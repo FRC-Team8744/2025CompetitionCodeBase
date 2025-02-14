@@ -11,9 +11,9 @@ import frc.robot.subsystems.mechanisms.Climber;
 public class Climb extends Command {
   private final Climber m_climber;
   /** Creates a new Climb. */
-  public Climb(Climber climb) {
+  public Climb(Climber cb) {
 
-    m_climber = climb;
+    m_climber = cb;
     addRequirements(m_climber);
     // Use addRequirements() here to declare subsystem dependencies.
   }

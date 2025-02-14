@@ -150,7 +150,7 @@ public class AutoCommandManager {
         AlignToClimb m_alignToClimb) { 
             
         NamedCommands.registerCommand("Run Elevator", new RunElevator(m_elevator, m_scoringMechanismPivot));
-        NamedCommands.registerCommand("Run Intake", new RunIntake(m_intake, m_intakePivot));
+        NamedCommands.registerCommand("Run Intake", new RunIntake(m_intake, m_intakePivot, m_coralScoring, null));
         NamedCommands.registerCommand("Drop Coral", new DropCoral(m_intake, m_intakePivot, m_coralScoring, null));
         
         
