@@ -11,13 +11,13 @@ import frc.robot.subsystems.mechanisms.Intake;
 import frc.robot.subsystems.mechanisms.IntakePivot;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class Teleopouttake extends Command{
+public class DropCoral extends Command{
   /** Creates a new TeleopIntake. */
   private final Intake m_intake;
   private final IntakePivot m_intakePivot;
   private final CoralScoring m_coral;
   private final ScoringMechSensor m_sensor;
-  public Teleopouttake(Intake in, IntakePivot inp, CoralScoring co, ScoringMechSensor se) {
+  public DropCoral(Intake in, IntakePivot inp, CoralScoring co, ScoringMechSensor se) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_intake = in;
     addRequirements(m_intake);
