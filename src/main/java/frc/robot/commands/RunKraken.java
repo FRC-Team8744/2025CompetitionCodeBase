@@ -32,14 +32,12 @@ public class RunKraken extends Command {
     SmartDashboard.putBoolean("Command run", true);
     SmartDashboard.putNumber("Elevator Motor Position", motorPosition);
 
-    m_elevator.rotate(25);
+    m_elevator.rotate(327 * .5); // 327
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    m_elevator.stopRotate();
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override

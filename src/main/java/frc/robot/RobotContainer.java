@@ -10,10 +10,18 @@ import frc.robot.Constants.ConstantsOffboard;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.SwerveConstants;
 import frc.robot.commands.RunKraken;
+import frc.robot.commands.TeleopIntake;
+import frc.robot.commands.Teleopouttake;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.ScoringMechSensor;
 import frc.robot.subsystems.alignment.AlignToClimb;
+import frc.robot.subsystems.mechanisms.AlgaeMechanism;
+import frc.robot.subsystems.mechanisms.Climber;
+import frc.robot.subsystems.mechanisms.CoralScoring;
 import frc.robot.subsystems.mechanisms.Elevator;
 import frc.robot.subsystems.mechanisms.Intake;
+import frc.robot.subsystems.mechanisms.IntakePivot;
+import frc.robot.subsystems.mechanisms.ScoringMechanismPivot;
 import frc.robot.subsystems.vision.PhotonVisionGS;
 import frc.robot.subsystems.vision.PhotonVisionGS2;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -35,6 +43,12 @@ public class RobotContainer {
   private DriveSubsystem m_robotDrive = new DriveSubsystem(m_vision, m_vision2);
   private Elevator m_elevator = new Elevator();
   private Intake m_intake = new Intake();
+  private IntakePivot m_intakePivot = new IntakePivot();
+  private ScoringMechanismPivot m_scoringMechPivot = new ScoringMechanismPivot();
+  private CoralScoring m_coral = new CoralScoring();
+  private Climber m_climber = new Climber();
+  private AlgaeMechanism m_algae = new AlgaeMechanism();
+  private ScoringMechSensor m_scoringMechSensor = new ScoringMechSensor();
   // The driver's controller
   private CommandXboxController m_driver = new CommandXboxController(OIConstants.kDriverControllerPort);
   private AutoCommandManager m_autoManager = new AutoCommandManager(m_robotDrive);
@@ -75,7 +89,16 @@ public class RobotContainer {
     // m_driver.leftTrigger()
     // .toggleOnTrue(Commands.runOnce(() -> m_robotDrive.isAutoRotate = m_robotDrive.isAutoRotate == RotationEnum.ALIGNTOCLIMB ? RotationEnum.NONE : RotationEnum.ALIGNTOCLIMB));
     m_driver.rightTrigger()
-    .whileTrue(new RunKraken(m_elevator));
+    // .whileTrue(Commands.runOnce(() -> m_elevator.rotate(28.0)))
+    // .whileFalse(Commands.runOnce(() -> m_elevator.stopRotate()));
+    .whileTrue(new RunKraken(m_elevator).alongWith(Commands.runOnce(() -> m_elevator.elevatorConfig.CurrentLimits.StatorCurrentLimit = 40)))
+    .whileFalse(Commands.runOnce(() -> m_elevator.rotate(0)).alongWith(Commands.runOnce(() -> m_elevator.elevatorConfig.CurrentLimits.StatorCurrentLimit = 20)));
+
+    m_driver.leftTrigger()
+    .whileTrue(new TeleopIntake(m_intake, m_intakePivot, m_coral, m_scoringMechSensor));
+
+    m_driver.y()
+    .whileTrue(new Teleopouttake(m_intake, m_intakePivot, m_coral, m_scoringMechSensor));
     
     m_driver.rightBumper()
     .whileTrue(Commands.runOnce(() -> m_robotDrive.rightPoint = true).andThen(Commands.runOnce(() -> m_robotDrive.isAutoYSpeedRotate = true)))
@@ -88,6 +111,10 @@ public class RobotContainer {
     m_driver.a()
     .whileTrue(Commands.runOnce(() -> m_intake.runIndexer(0.4)))
     .whileFalse(Commands.runOnce(() -> m_intake.stopIndexer()));
+
+    m_driver.b()
+    .whileTrue(Commands.runOnce(() -> m_intake.runIntake(0.4)))
+    .whileFalse(Commands.runOnce(() -> m_intake.stopIntake()));
   } 
 
   public Command getAutonomousCommand() {

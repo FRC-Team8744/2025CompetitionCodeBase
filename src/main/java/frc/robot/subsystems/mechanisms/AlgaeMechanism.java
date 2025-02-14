@@ -12,13 +12,14 @@ import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class AlgaeMechanism extends SubsystemBase {
   private final SparkMax m_algaeMotor;
   private final SparkBaseConfig algaeConfig = new SparkMaxConfig().smartCurrentLimit(20);
   /** Creates a new AlgaeMechanism. */
   public AlgaeMechanism() {
-    m_algaeMotor = new SparkMax(35, MotorType.kBrushless);
+    m_algaeMotor = new SparkMax(Constants.SwerveConstants.kAlgaeScoringMotorPort, MotorType.kBrushless);
 
     m_algaeMotor.configure(algaeConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
   }

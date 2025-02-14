@@ -12,13 +12,14 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class CoralScoring extends SubsystemBase {
   /** Creates a new CoralScoring. */
   private final SparkMax m_coralMotor;
-  private final SparkBaseConfig coralConfig = new SparkMaxConfig().smartCurrentLimit(20);
+  private final SparkBaseConfig coralConfig = new SparkMaxConfig().smartCurrentLimit(40);
   public CoralScoring() {
-    m_coralMotor = new SparkMax(27, MotorType.kBrushless);
+    m_coralMotor = new SparkMax(Constants.SwerveConstants.kCoralScoringMotorPort, MotorType.kBrushless);
 
     m_coralMotor.configure(coralConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
   }

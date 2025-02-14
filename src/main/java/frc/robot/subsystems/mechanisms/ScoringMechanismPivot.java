@@ -19,7 +19,7 @@ public class ScoringMechanismPivot extends SubsystemBase {
   private double maximumAngle = 110;
   private final PositionVoltage goalPosition = new PositionVoltage(startingPositionRotations);
   public ScoringMechanismPivot() {
-    m_scoringMechPivot = new TalonFX(36);
+    m_scoringMechPivot = new TalonFX(Constants.SwerveConstants.kScoringMechanismPivotMotorPort);
 
     m_scoringMechPivot.getConfigurator().apply(Constants.scoringMechPivotConfig);
     m_scoringMechPivot.setNeutralMode(NeutralModeValue.Brake);

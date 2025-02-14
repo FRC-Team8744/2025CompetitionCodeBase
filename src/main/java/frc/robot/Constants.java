@@ -4,25 +4,15 @@
 
 package frc.robot;
 
-
-import java.lang.reflect.Array;
-
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
-import com.ctre.phoenix6.configs.Slot1Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
-import com.ctre.phoenix6.signals.InvertedValue;
-import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
 import com.pathplanner.lib.config.PIDConstants;
 
-import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.numbers.N2;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 
@@ -78,20 +68,29 @@ public final class Constants {
     // The positive X axis points ahead, the positive Y axis points left, and the positive Z axis points up.
     // We use NWU here because the rest of the library, and math in general, use NWU axes convention.
     // https://docs.wpilib.org/en/stable/docs/software/hardware-apis/motors/wpi-drive-classes.html#axis-conventions
-    public static final int kFrontLeftDriveMotorPort = 24;
-    public static final int kFrontRightDriveMotorPort = 23;
-    public static final int kRearLeftDriveMotorPort = 22;
-    public static final int kRearRightDriveMotorPort = 21;
+    public static final int kFrontLeftDriveMotorPort = 8;
+    public static final int kFrontRightDriveMotorPort = 3;
+    public static final int kRearLeftDriveMotorPort = 17;
+    public static final int kRearRightDriveMotorPort = 20;
 
-    public static final int kFrontLeftTurningMotorPort = 3;
-    public static final int kFrontRightTurningMotorPort = 1;
-    public static final int kRearLeftTurningMotorPort = 7;
-    public static final int kRearRightTurningMotorPort = 5;
+    public static final int kFrontLeftTurningMotorPort = 10;
+    public static final int kFrontRightTurningMotorPort = 5;
+    public static final int kRearLeftTurningMotorPort = 19;
+    public static final int kRearRightTurningMotorPort = 22;
 
-    public static final int kFrontLeftMagEncoderPort = 10;
-    public static final int kFrontRightMagEncoderPort = 9;
-    public static final int kRearLeftMagEncoderPort = 11;
-    public static final int kRearRightMagEncoderPort = 12;
+    public static final int kFrontLeftMagEncoderPort = 9;
+    public static final int kFrontRightMagEncoderPort = 4;
+    public static final int kRearLeftMagEncoderPort = 18;
+    public static final int kRearRightMagEncoderPort = 21;
+
+    public static final int kRightElevatorMotorPort = 2;
+    public static final int kIndexerMotorPort = 6;
+    public static final int kIntakeRollerMotorPort = 11;
+    public static final int kIntakePivotMotorPort = 12;
+    public static final int kLeftElevatorMotorPort = 13;
+    public static final int kScoringMechanismPivotMotorPort = 14;
+    public static final int kCoralScoringMotorPort = 15;
+    public static final int kAlgaeScoringMotorPort = 16;
 
     // Only disable the steering angle optimizer when measuring the CANcoder offsets!
     public static final boolean DISABLE_ANGLE_OPTIMIZER = false;
@@ -121,7 +120,7 @@ public final class Constants {
             new Translation2d(-kWheelBase / 2, kTrackWidth / 2),  // Rear Left Quadrant
             new Translation2d(-kWheelBase / 2, -kTrackWidth / 2));  // Rear Right Quadrant
 
-    public static final int kIMU_ID = 13;
+    public static final int kIMU_ID = 7;
 
     public static int kSwerveFL_enum = 0;
     public static int kSwerveFR_enum = 1;
@@ -240,13 +239,13 @@ public final class Constants {
     elevatorConfig.TorqueCurrent.PeakReverseTorqueCurrent = -800;
     elevatorConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
     elevatorConfig.CurrentLimits.StatorCurrentLimitEnable = true;
-    elevatorConfig.CurrentLimits.StatorCurrentLimit = 40.0;
-    elevatorConfigPID.kS = 1.0; // Add 0.25 V output to overcome static friction
-    elevatorConfigPID.kV = 0.12; // A velocity target of 1 rps results in 0.12 V output
-    elevatorConfigPID.kA = 0.01; // An acceleration of 1 rps/s requires 0.01 V output
-    elevatorConfigPID.kP = 24.0; // A position error of 2.5 rotations results in 12 V output
+    elevatorConfig.CurrentLimits.StatorCurrentLimit = 20.0;
+    elevatorConfigPID.kS = 0.0; // Add 0.25 V output to overcome static friction
+    elevatorConfigPID.kV = 0.0; // A velocity target of 1 rps results in 0.12 V output
+    elevatorConfigPID.kA = 0.0; // An acceleration of 1 rps/s requires 0.01 V output
+    elevatorConfigPID.kP = 0.1; // A position error of 2.5 rotations results in 12 V output
     elevatorConfigPID.kI = 0.0; // no output for integrated error
-    elevatorConfigPID.kD = 0.1; // A velocity error of 1 rps results in 0.1 V output
+    elevatorConfigPID.kD = 0.0; // A velocity error of 1 rps results in 0.1 V output
     elevatorConfig.withSlot0(elevatorConfigPID);
 
     // Indexer Configs
@@ -266,22 +265,6 @@ public final class Constants {
     indexerConfig.withSlot0(indexerConfigPID);
 
     // Intake Pivot Configs
-    intakePivotConfig.Voltage.PeakForwardVoltage = 12;
-    intakePivotConfig.Voltage.PeakReverseVoltage = -12;
-    intakePivotConfig.TorqueCurrent.PeakForwardTorqueCurrent = 800;
-    intakePivotConfig.TorqueCurrent.PeakReverseTorqueCurrent = -800;
-    intakePivotConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
-    intakePivotConfig.CurrentLimits.StatorCurrentLimitEnable = true;
-    intakePivotConfig.CurrentLimits.StatorCurrentLimit = 40.0;
-    intakePivotConfigPID.kS = 1.0; // Add 0.25 V output to overcome static friction
-    intakePivotConfigPID.kV = 0.12; // A velocity target of 1 rps results in 0.12 V output
-    intakePivotConfigPID.kA = 0.01; // An acceleration of 1 rps/s requires 0.01 V output
-    intakePivotConfigPID.kP = 24.0; // A position error of 2.5 rotations results in 12 V output
-    intakePivotConfigPID.kI = 0.0; // no output for integrated error
-    intakePivotConfigPID.kD = 0.1; // A velocity error of 1 rps results in 0.1 V output
-    intakePivotConfig.withSlot0(intakePivotConfigPID);
-
-        // Intake Pivot Configs
     intakePivotConfig.Voltage.PeakForwardVoltage = 12;
     intakePivotConfig.Voltage.PeakReverseVoltage = -12;
     intakePivotConfig.TorqueCurrent.PeakForwardTorqueCurrent = 800;
