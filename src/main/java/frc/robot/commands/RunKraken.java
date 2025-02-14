@@ -27,12 +27,12 @@ public class RunKraken extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    motorPosition = m_elevator.motorPosition();
+    motorPosition = m_elevator.getMotorPosition();
 
     SmartDashboard.putBoolean("Command run", true);
     SmartDashboard.putNumber("Elevator Motor Position", motorPosition);
 
-    m_elevator.rotate(327 * .5); // 327
+    m_elevator.rotate(327 * .9); // 327
   }
 
   // Called once the command ends or is interrupted.

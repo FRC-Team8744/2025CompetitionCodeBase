@@ -21,9 +21,8 @@ public class IntakePivot extends SubsystemBase {
   private final TalonFXConfiguration intakePivotConfig = new TalonFXConfiguration();
   private final Slot0Configs intakePivotConfigPID = intakePivotConfig.Slot0;
   private final double startingPositionRotations = 0;
-  private final double minimumAngle = 0;
-  private final double maximumAngle = 110;
-  public double goalAngle;
+  private final double minimumAngle = -4000;
+  private final double maximumAngle = 0;
   private final PositionVoltage goalPosition = new PositionVoltage(startingPositionRotations);
   public IntakePivot() {
     intakePivotConfig.Voltage.PeakForwardVoltage = 12;
@@ -36,14 +35,14 @@ public class IntakePivot extends SubsystemBase {
     intakePivotConfigPID.kS = 0.0; // Add 0.25 V output to overcome static friction
     intakePivotConfigPID.kV = 0.0; // A velocity target of 1 rps results in 0.12 V output
     intakePivotConfigPID.kA = 0.0; // An acceleration of 1 rps/s requires 0.01 V output
-    intakePivotConfigPID.kP = 0.02; // A position error of 2.5 rotations results in 12 V output
+    intakePivotConfigPID.kP = 1.0; // A position error of 2.5 rotations results in 12 V output
     intakePivotConfigPID.kI = 0.0; // no output for integrated error
     intakePivotConfigPID.kD = 0.0; // A velocity error of 1 rps results in 0.1 V output
     intakePivotConfig.withSlot0(intakePivotConfigPID);
 
     m_intakePivot = new TalonFX(Constants.SwerveConstants.kIntakePivotMotorPort);
 
-    m_intakePivot.getConfigurator().apply(Constants.intakePivotConfig);
+    m_intakePivot.getConfigurator().apply(intakePivotConfig);
     m_intakePivot.setNeutralMode(NeutralModeValue.Brake);
     m_intakePivot.setPosition(startingPositionRotations);
   }

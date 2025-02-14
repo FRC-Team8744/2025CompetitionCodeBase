@@ -263,37 +263,5 @@ public final class Constants {
     indexerConfigPID.kI = 0.0; // no output for integrated error
     indexerConfigPID.kD = 0.1; // A velocity error of 1 rps results in 0.1 V output
     indexerConfig.withSlot0(indexerConfigPID);
-
-    // Intake Pivot Configs
-    intakePivotConfig.Voltage.PeakForwardVoltage = 12;
-    intakePivotConfig.Voltage.PeakReverseVoltage = -12;
-    intakePivotConfig.TorqueCurrent.PeakForwardTorqueCurrent = 800;
-    intakePivotConfig.TorqueCurrent.PeakReverseTorqueCurrent = -800;
-    intakePivotConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
-    intakePivotConfig.CurrentLimits.StatorCurrentLimitEnable = true;
-    intakePivotConfig.CurrentLimits.StatorCurrentLimit = 40.0;
-    intakePivotConfigPID.kS = 1.0; // Add 0.25 V output to overcome static friction
-    intakePivotConfigPID.kV = 0.12; // A velocity target of 1 rps results in 0.12 V output
-    intakePivotConfigPID.kA = 0.01; // An acceleration of 1 rps/s requires 0.01 V output
-    intakePivotConfigPID.kP = 24.0; // A position error of 2.5 rotations results in 12 V output
-    intakePivotConfigPID.kI = 0.0; // no output for integrated error
-    intakePivotConfigPID.kD = 0.1; // A velocity error of 1 rps results in 0.1 V output
-    intakePivotConfig.withSlot0(intakePivotConfigPID);
-
-    // Scoring Mechanism Pivot Configs
-    scoringMechPivotConfig.Voltage.PeakForwardVoltage = 12;
-    scoringMechPivotConfig.Voltage.PeakReverseVoltage = -12;
-    scoringMechPivotConfig.TorqueCurrent.PeakForwardTorqueCurrent = 800;
-    scoringMechPivotConfig.TorqueCurrent.PeakReverseTorqueCurrent = -800;
-    scoringMechPivotConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
-    scoringMechPivotConfig.CurrentLimits.StatorCurrentLimitEnable = true;
-    scoringMechPivotConfig.CurrentLimits.StatorCurrentLimit = 40.0;
-    scoringMechPivotConfigPID.kS = 1.0; // Add 0.25 V output to overcome static friction
-    scoringMechPivotConfigPID.kV = 0.12; // A velocity target of 1 rps results in 0.12 V output
-    scoringMechPivotConfigPID.kA = 0.01; // An acceleration of 1 rps/s requires 0.01 V output
-    scoringMechPivotConfigPID.kP = 24.0; // A position error of 2.5 rotations results in 12 V output
-    scoringMechPivotConfigPID.kI = 0.0; // no output for integrated error
-    scoringMechPivotConfigPID.kD = 0.1; // A velocity error of 1 rps results in 0.1 V output
-    scoringMechPivotConfig.withSlot0(scoringMechPivotConfigPID);
   }
 }

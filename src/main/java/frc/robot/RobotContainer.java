@@ -88,13 +88,18 @@ public class RobotContainer {
     .toggleOnTrue(Commands.runOnce(() -> m_robotDrive.isAutoRotate = m_robotDrive.isAutoRotate == RotationEnum.STRAFEONTARGET ? RotationEnum.NONE : RotationEnum.STRAFEONTARGET));
     // m_driver.leftTrigger()
     // .toggleOnTrue(Commands.runOnce(() -> m_robotDrive.isAutoRotate = m_robotDrive.isAutoRotate == RotationEnum.ALIGNTOCLIMB ? RotationEnum.NONE : RotationEnum.ALIGNTOCLIMB));
-    m_driver.rightTrigger()
-    // .whileTrue(Commands.runOnce(() -> m_elevator.rotate(28.0)))
-    // .whileFalse(Commands.runOnce(() -> m_elevator.stopRotate()));
-    .whileTrue(new RunKraken(m_elevator).alongWith(Commands.runOnce(() -> m_elevator.elevatorConfig.CurrentLimits.StatorCurrentLimit = 40)))
-    .whileFalse(Commands.runOnce(() -> m_elevator.rotate(0)).alongWith(Commands.runOnce(() -> m_elevator.elevatorConfig.CurrentLimits.StatorCurrentLimit = 20)));
-
     m_driver.leftTrigger()
+    // .whileTrue(Commands.runOnce(() -> m_elevator.elevatorConfig.CurrentLimits.StatorCurrentLimit = 40)
+    // .alongWith(Commands.runOnce(() -> m_elevator.position.withSlot(0)))
+    // .alongWith(Commands.runOnce(() -> m_elevator.elevatorSlot0 = true))
+    .whileTrue(new RunKraken(m_elevator).alongWith(Commands.runOnce(() -> m_scoringMechPivot.rotatePivot(-200)).onlyWhile((() -> m_elevator.getMotorPosition() >= (327 * .5)))))
+    
+    // .whileFalse(Commands.runOnce(() -> m_elevator.elevatorConfig.CurrentLimits.StatorCurrentLimit = 5)
+    // .alongWith(Commands.runOnce(() -> m_elevator.position.withSlot(1)))
+    // .alongWith(Commands.runOnce(() -> m_elevator.elevatorSlot0 = false))
+    .whileFalse(Commands.runOnce(() -> m_scoringMechPivot.rotatePivot(0)).alongWith(Commands.runOnce(() -> m_elevator.rotate(0)).onlyWhile((() -> m_scoringMechPivot.getPositionAngle() >= -20))));
+
+    m_driver.rightTrigger()
     .whileTrue(new TeleopIntake(m_intake, m_intakePivot, m_coral, m_scoringMechSensor));
 
     m_driver.y()
@@ -113,8 +118,12 @@ public class RobotContainer {
     .whileFalse(Commands.runOnce(() -> m_intake.stopIndexer()));
 
     m_driver.b()
-    .whileTrue(Commands.runOnce(() -> m_intake.runIntake(0.4)))
-    .whileFalse(Commands.runOnce(() -> m_intake.stopIntake()));
+    .whileTrue(Commands.runOnce(() -> m_scoringMechPivot.rotatePivot(-200)))
+    .whileFalse(Commands.runOnce(() -> m_scoringMechPivot.rotatePivot(0)));
+
+    m_driver.x()
+    .whileTrue(Commands.runOnce(() -> m_intakePivot.intakeDown(-4000)))
+    .whileFalse(Commands.runOnce((() -> m_intakePivot.intakeDown(0))));
   } 
 
   public Command getAutonomousCommand() {
