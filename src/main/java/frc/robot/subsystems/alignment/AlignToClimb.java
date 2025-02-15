@@ -53,10 +53,10 @@ public AlignToClimb() {}
 
     // Turns to target april tag if on the right allinace 
     if (alliance.get() == DriverStation.Alliance.Blue) {
-      m_turnCtrl.setSetpoint(0);
+      m_turnCtrl.setSetpoint(180); // 0
     }
     else {
-      m_turnCtrl.setSetpoint(180);
+      m_turnCtrl.setSetpoint(0); // 180
     }
 
     m_output = MathUtil.clamp(m_turnCtrl.calculate(heading), -1.0, 1.0);

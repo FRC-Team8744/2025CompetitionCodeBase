@@ -29,7 +29,7 @@ public class Intake extends SubsystemBase {
   }
 
   public void runIndexer(double speed) {
-    m_indexMotor.set(speed);
+    m_indexMotor.set(-speed);
   }
 
   public void runIntake(double speed) {

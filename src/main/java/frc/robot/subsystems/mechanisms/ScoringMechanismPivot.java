@@ -24,6 +24,7 @@ public class ScoringMechanismPivot extends SubsystemBase {
   private final double minimumAngle = -260;
   private final double maximumAngle = 0;
   private final PositionVoltage goalPosition = new PositionVoltage(startingPositionRotations);
+  public double scoringMechGoalAngle = -200;
   public ScoringMechanismPivot() {
     // Scoring Mechanism Pivot Configs
     scoringMechPivotConfig.Voltage.PeakForwardVoltage = 12;

@@ -48,32 +48,32 @@ public StrafeOnTarget() {}
     // Turns to target april tag if on the right allinace 
     if (alliance.get() == DriverStation.Alliance.Blue) {
       if (isInArea (Constants.blueBorder17, estimatedPose2d)) {
-        m_turnCtrl.setSetpoint(60);
+        m_turnCtrl.setSetpoint(240);
         inZone = true;
         isInAreaEnum.areaEnum = isInAreaEnum.N17;
       }
       else if (isInArea (Constants.blueBorder18, estimatedPose2d)) {
-        m_turnCtrl.setSetpoint(0);
+        m_turnCtrl.setSetpoint(180);
         inZone = true;
         isInAreaEnum.areaEnum = isInAreaEnum.N18;
       }
       else if (isInArea (Constants.blueBorder19, estimatedPose2d)) {
-        m_turnCtrl.setSetpoint(300);
+        m_turnCtrl.setSetpoint(120);
         inZone = true;
         isInAreaEnum.areaEnum = isInAreaEnum.N19;
       }
       else if (isInArea (Constants.blueBorder20, estimatedPose2d)) {
-        m_turnCtrl.setSetpoint(240);
+        m_turnCtrl.setSetpoint(60);
         inZone = true;
         isInAreaEnum.areaEnum = isInAreaEnum.N20;
       }
       else if (isInArea (Constants.blueBorder21, estimatedPose2d)) {
-        m_turnCtrl.setSetpoint(0);
+        m_turnCtrl.setSetpoint(180);
         inZone = true;
         isInAreaEnum.areaEnum = isInAreaEnum.N21;
       }
       else if (isInArea (Constants.blueBorder22, estimatedPose2d)) {
-        m_turnCtrl.setSetpoint(120);
+        m_turnCtrl.setSetpoint(300);
         inZone = true;
         isInAreaEnum.areaEnum = isInAreaEnum.N22;
       }

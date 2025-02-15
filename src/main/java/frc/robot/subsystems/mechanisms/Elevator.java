@@ -30,6 +30,7 @@ public class Elevator extends SubsystemBase {
   public Slot0Configs elevatorConfigPIDUp = elevatorConfig.Slot0;
   public Slot1Configs elevatorConfigPIDDown = elevatorConfig.Slot1;
   public boolean elevatorSlot0 = true;
+  public double percentOfElevator = 0.9;
   public Elevator() {
     elevatorConfig.Voltage.PeakForwardVoltage = 12;
     elevatorConfig.Voltage.PeakReverseVoltage = -12;
@@ -94,14 +95,21 @@ public class Elevator extends SubsystemBase {
   public boolean isAtSetpoint() {
     return Math.abs(m_leftElevator.getClosedLoopError().getValueAsDouble()) <= 1.0;
   }
+  /**
+   * @param presetNumber Preset of elevator to go to (0 - 1)
+   */
+  public void setElevatorPreset(double presetNumber) {
+    percentOfElevator = presetNumber;
+  }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Kraken Position", m_leftElevator.getPosition().getValueAsDouble());
-    SmartDashboard.putNumber("Kraken Acceleration", m_leftElevator.getAcceleration().getValueAsDouble());
-    SmartDashboard.putNumber("Kraken Error", m_leftElevator.getClosedLoopError().getValueAsDouble());
-    SmartDashboard.putBoolean("Is at setpoint", isAtSetpoint());
-    SmartDashboard.putBoolean("Is Slot0?", elevatorSlot0);
+    SmartDashboard.putNumber("ELevator Position", m_leftElevator.getPosition().getValueAsDouble());
+    // SmartDashboard.putNumber("Kraken Acceleration", m_leftElevator.getAcceleration().getValueAsDouble());
+    // SmartDashboard.putNumber("Kraken Error", m_leftElevator.getClosedLoopError().getValueAsDouble());
+    // SmartDashboard.putBoolean("Is at setpoint", isAtSetpoint());
+    // SmartDashboard.putBoolean("Is Slot0?", elevatorSlot0);
+    SmartDashboard.putNumber("Elevator Goal Percent", percentOfElevator);
   }
 }

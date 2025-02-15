@@ -9,13 +9,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.ConstantsOffboard;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.SwerveConstants;
-import frc.robot.commands.RunKraken;
+import frc.robot.commands.RunElevator;
 import frc.robot.commands.TeleopIntake;
-import frc.robot.commands.Teleopouttake;
+import frc.robot.commands.TeleopOuttake;
+import frc.robot.commands.TeleopScore;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ScoringMechSensor;
 import frc.robot.subsystems.alignment.AlignToClimb;
-import frc.robot.subsystems.mechanisms.AlgaeMechanism;
+// import frc.robot.subsystems.mechanisms.AlgaeMechanism;
 import frc.robot.subsystems.mechanisms.Climber;
 import frc.robot.subsystems.mechanisms.CoralScoring;
 import frc.robot.subsystems.mechanisms.Elevator;
@@ -47,7 +48,7 @@ public class RobotContainer {
   private ScoringMechanismPivot m_scoringMechPivot = new ScoringMechanismPivot();
   private CoralScoring m_coral = new CoralScoring();
   private Climber m_climber = new Climber();
-  private AlgaeMechanism m_algae = new AlgaeMechanism();
+  // private AlgaeMechanism m_algae = new AlgaeMechanism();
   private ScoringMechSensor m_scoringMechSensor = new ScoringMechSensor();
   // The driver's controller
   private CommandXboxController m_driver = new CommandXboxController(OIConstants.kDriverControllerPort);
@@ -92,7 +93,7 @@ public class RobotContainer {
     // .whileTrue(Commands.runOnce(() -> m_elevator.elevatorConfig.CurrentLimits.StatorCurrentLimit = 40)
     // .alongWith(Commands.runOnce(() -> m_elevator.position.withSlot(0)))
     // .alongWith(Commands.runOnce(() -> m_elevator.elevatorSlot0 = true))
-    .whileTrue(new RunKraken(m_elevator).alongWith(Commands.runOnce(() -> m_scoringMechPivot.rotatePivot(-200)).onlyWhile((() -> m_elevator.getMotorPosition() >= (327 * .5)))))
+    .whileTrue(new RunElevator(m_elevator).alongWith(Commands.runOnce(() -> m_scoringMechPivot.rotatePivot(m_scoringMechPivot.scoringMechGoalAngle)).onlyWhile((() -> m_elevator.getMotorPosition() >= ((327 * m_elevator.percentOfElevator) * .75)))))
     
     // .whileFalse(Commands.runOnce(() -> m_elevator.elevatorConfig.CurrentLimits.StatorCurrentLimit = 5)
     // .alongWith(Commands.runOnce(() -> m_elevator.position.withSlot(1)))
@@ -103,7 +104,7 @@ public class RobotContainer {
     .whileTrue(new TeleopIntake(m_intake, m_intakePivot, m_coral, m_scoringMechSensor));
 
     m_driver.y()
-    .whileTrue(new Teleopouttake(m_intake, m_intakePivot, m_coral, m_scoringMechSensor));
+    .whileTrue(new TeleopScore(m_coral));
     
     m_driver.rightBumper()
     .whileTrue(Commands.runOnce(() -> m_robotDrive.rightPoint = true).andThen(Commands.runOnce(() -> m_robotDrive.isAutoYSpeedRotate = true)))
@@ -114,16 +115,19 @@ public class RobotContainer {
     .whileFalse(Commands.runOnce(() -> m_robotDrive.isAutoYSpeedRotate = false));
 
     m_driver.a()
-    .whileTrue(Commands.runOnce(() -> m_intake.runIndexer(0.4)))
-    .whileFalse(Commands.runOnce(() -> m_intake.stopIndexer()));
-
-    m_driver.b()
-    .whileTrue(Commands.runOnce(() -> m_scoringMechPivot.rotatePivot(-200)))
-    .whileFalse(Commands.runOnce(() -> m_scoringMechPivot.rotatePivot(0)));
+    .whileTrue(new TeleopOuttake(m_intake, m_intakePivot, m_coral));
 
     m_driver.x()
-    .whileTrue(Commands.runOnce(() -> m_intakePivot.intakeDown(-4000)))
-    .whileFalse(Commands.runOnce((() -> m_intakePivot.intakeDown(0))));
+    .whileTrue(Commands.runOnce(() -> m_intake.runIndexer(.3)));
+
+    m_driver.pov(0)
+    .whileTrue(Commands.runOnce(() -> m_elevator.setElevatorPreset(.9)).alongWith(Commands.runOnce(() -> m_scoringMechPivot.scoringMechGoalAngle = -200)));
+    m_driver.pov(90)
+    .whileTrue(Commands.runOnce(() -> m_elevator.setElevatorPreset(.53)).alongWith(Commands.runOnce(() -> m_scoringMechPivot.scoringMechGoalAngle = -60)));
+    m_driver.pov(180)
+    .whileTrue(Commands.runOnce(() -> m_elevator.setElevatorPreset(.25)).alongWith(Commands.runOnce(() -> m_scoringMechPivot.scoringMechGoalAngle = -60)));
+    m_driver.pov(270)
+    .whileTrue(Commands.runOnce(() -> m_elevator.setElevatorPreset(.33)).alongWith(Commands.runOnce(() -> m_scoringMechPivot.scoringMechGoalAngle = -60)));
   } 
 
   public Command getAutonomousCommand() {

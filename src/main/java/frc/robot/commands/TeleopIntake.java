@@ -7,7 +7,6 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ScoringMechSensor;
 import frc.robot.subsystems.mechanisms.CoralScoring;
-import frc.robot.subsystems.mechanisms.Elevator;
 import frc.robot.subsystems.mechanisms.Intake;
 import frc.robot.subsystems.mechanisms.IntakePivot;
 
@@ -32,8 +31,9 @@ public class TeleopIntake extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_intake.runIntakeAndIndexer(.4);
-    m_coral.runCoralMotor(-.4);
+    m_intake.runIntake(.5);
+    m_intake.runIndexer(.7);
+    m_coral.runCoralMotor(-.1);
     m_intakePivot.intakeDown(-4000);
   }
 

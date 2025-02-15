@@ -68,20 +68,20 @@ public final class Constants {
     // The positive X axis points ahead, the positive Y axis points left, and the positive Z axis points up.
     // We use NWU here because the rest of the library, and math in general, use NWU axes convention.
     // https://docs.wpilib.org/en/stable/docs/software/hardware-apis/motors/wpi-drive-classes.html#axis-conventions
-    public static final int kFrontLeftDriveMotorPort = 8;
-    public static final int kFrontRightDriveMotorPort = 3;
-    public static final int kRearLeftDriveMotorPort = 17;
-    public static final int kRearRightDriveMotorPort = 20;
+    public static final int kFrontLeftDriveMotorPort = 8; // 8
+    public static final int kFrontRightDriveMotorPort = 3; // 3
+    public static final int kRearLeftDriveMotorPort = 17; // 17
+    public static final int kRearRightDriveMotorPort = 20; // 20
 
-    public static final int kFrontLeftTurningMotorPort = 10;
-    public static final int kFrontRightTurningMotorPort = 5;
-    public static final int kRearLeftTurningMotorPort = 19;
-    public static final int kRearRightTurningMotorPort = 22;
+    public static final int kFrontLeftTurningMotorPort = 10; // 10
+    public static final int kFrontRightTurningMotorPort = 5; // 5
+    public static final int kRearLeftTurningMotorPort = 19; // 19
+    public static final int kRearRightTurningMotorPort = 22; // 22
 
-    public static final int kFrontLeftMagEncoderPort = 9;
-    public static final int kFrontRightMagEncoderPort = 4;
-    public static final int kRearLeftMagEncoderPort = 18;
-    public static final int kRearRightMagEncoderPort = 21;
+    public static final int kFrontLeftMagEncoderPort = 9; // 9
+    public static final int kFrontRightMagEncoderPort = 4; // 4
+    public static final int kRearLeftMagEncoderPort = 18; // 18
+    public static final int kRearRightMagEncoderPort = 21; // 21
 
     public static final int kRightElevatorMotorPort = 2;
     public static final int kIndexerMotorPort = 6;
