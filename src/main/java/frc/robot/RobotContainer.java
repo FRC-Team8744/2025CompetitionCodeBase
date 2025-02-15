@@ -10,8 +10,6 @@ import frc.robot.Constants.ConstantsOffboard;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.SwerveConstants;
 import frc.robot.commands.RunElevator;
-import frc.robot.commands.TeleopIntake;
-import frc.robot.commands.TeleopOuttake;
 import frc.robot.commands.TeleopScore;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ScoringMechSensor;
@@ -30,6 +28,8 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.RunIntake;
+import frc.robot.commands.TeleopOuttake;
 
 /*
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -52,7 +52,7 @@ public class RobotContainer {
   private ScoringMechSensor m_scoringMechSensor = new ScoringMechSensor();
   // The driver's controller
   private CommandXboxController m_driver = new CommandXboxController(OIConstants.kDriverControllerPort);
-  private AutoCommandManager m_autoManager = new AutoCommandManager(m_robotDrive);
+  private AutoCommandManager m_autoManager = new AutoCommandManager(m_elevator, m_intake, m_climber, m_coral, m_intakePivot, m_scoringMechPivot, m_vision, m_vision2, null, null, m_robotDrive, null,m_scoringMechSensor);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -101,7 +101,7 @@ public class RobotContainer {
     .whileFalse(Commands.runOnce(() -> m_scoringMechPivot.rotatePivot(0)).alongWith(Commands.runOnce(() -> m_elevator.rotate(0)).onlyWhile((() -> m_scoringMechPivot.getPositionAngle() >= -20))));
 
     m_driver.rightTrigger()
-    .whileTrue(new TeleopIntake(m_intake, m_intakePivot, m_coral, m_scoringMechSensor));
+    .whileTrue(new RunIntake(m_intake, m_intakePivot, m_coral, m_scoringMechSensor));
 
     m_driver.y()
     .whileTrue(new TeleopScore(m_coral));

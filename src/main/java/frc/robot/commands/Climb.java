@@ -5,33 +5,22 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.mechanisms.CoralScoring;
-import frc.robot.subsystems.mechanisms.Intake;
-import frc.robot.subsystems.mechanisms.IntakePivot;
+import frc.robot.subsystems.mechanisms.Climber;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class TeleopOuttake extends Command {
-  /** Creates a new TeleopIntake. */
-  private final Intake m_intake;
-  private final IntakePivot m_intakePivot;
-  private final CoralScoring m_coral;
-  public TeleopOuttake(Intake in, IntakePivot inp, CoralScoring co) {
+public class Climb extends Command {
+  private final Climber m_climber;
+  /** Creates a new Climb. */
+  public Climb(Climber cb) {
+
+    m_climber = cb;
+    addRequirements(m_climber);
     // Use addRequirements() here to declare subsystem dependencies.
-    m_intake = in;
-    addRequirements(m_intake);
-    m_intakePivot = inp;
-    addRequirements(m_intakePivot);
-    m_coral = co;
-    addRequirements(m_coral);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    m_intake.runIntakeAndIndexer(-.4);
-    m_coral.runCoralMotor(.4);
-    m_intakePivot.intakeDown(-4000);
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -39,11 +28,7 @@ public class TeleopOuttake extends Command {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    m_intake.stopBoth();
-    m_coral.stopMotor();
-    m_intakePivot.intakeDown(0);
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override

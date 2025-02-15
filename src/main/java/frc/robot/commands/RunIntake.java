@@ -9,15 +9,16 @@ import frc.robot.subsystems.ScoringMechSensor;
 import frc.robot.subsystems.mechanisms.CoralScoring;
 import frc.robot.subsystems.mechanisms.Intake;
 import frc.robot.subsystems.mechanisms.IntakePivot;
+import frc.robot.subsystems.mechanisms.ScoringMechanismPivot;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class TeleopIntake extends Command {
+public class RunIntake extends Command {
   /** Creates a new TeleopIntake. */
   private final Intake m_intake;
   private final IntakePivot m_intakePivot;
   private final CoralScoring m_coral;
   private final ScoringMechSensor m_sensor;
-  public TeleopIntake(Intake in, IntakePivot inp, CoralScoring co, ScoringMechSensor se) {
+  public RunIntake(Intake in, IntakePivot inp, CoralScoring co, ScoringMechSensor scp) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_intake = in;
     addRequirements(m_intake);
@@ -25,14 +26,14 @@ public class TeleopIntake extends Command {
     addRequirements(m_intakePivot);
     m_coral = co;
     addRequirements(m_coral);
-    m_sensor = se;
+    m_sensor = scp;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_intake.runIntake(.5);
     m_intake.runIndexer(.7);
+    m_intake.runIntake(.5);
     m_coral.runCoralMotor(-.1);
     m_intakePivot.intakeDown(-4000);
   }

@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.math.controller.HolonomicDriveController;
@@ -20,6 +21,24 @@ import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.SwerveConstants;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.ScoringMechSensor;
+import frc.robot.subsystems.alignment.AlignToClimb;
+import frc.robot.subsystems.alignment.AlignToPole;
+import frc.robot.subsystems.alignment.LockOnTarget;
+// import frc.robot.subsystems.mechanisms.AlgaeMechanism;
+import frc.robot.subsystems.mechanisms.Climber;
+import frc.robot.subsystems.mechanisms.CoralScoring;
+import frc.robot.subsystems.mechanisms.Elevator;
+import frc.robot.subsystems.mechanisms.Intake;
+import frc.robot.subsystems.mechanisms.IntakePivot;
+import frc.robot.subsystems.mechanisms.ScoringMechanismPivot;
+import frc.robot.subsystems.vision.PhotonVisionGS;
+import frc.robot.subsystems.vision.PhotonVisionGS2;
+import frc.robot.commands.RunElevator;
+import frc.robot.commands.Climb;
+// import frc.robot.commands.DropCoral;
+import frc.robot.commands.RunIntake;
+import frc.robot.commands.TeleopScore;
 
 /** Add your docs here. */
 public class AutoCommandManager {
@@ -33,10 +52,38 @@ public class AutoCommandManager {
     public TrajectoryConfig reverseConfig;
 
     public AutoCommandManager(
-        DriveSubsystem m_robotDrive) {
+        Elevator m_elevator,
+        Intake m_intake,
+        // AlgaeMechanism m_algaMechanism,
+        Climber m_climber,
+        CoralScoring m_coralScoring,
+        IntakePivot m_intakePivot,
+        ScoringMechanismPivot m_scoringMechanismPivot,
+        PhotonVisionGS m_visionGS,
+        PhotonVisionGS2 m_visionGS2,
+        AlignToPole m_alignToPole,
+        LockOnTarget m_lockOnTarget,
+        DriveSubsystem m_robotDrive,
+        AlignToClimb m_alignToClimb,
+        ScoringMechSensor m_scoringMechSensor)
+         {
 
         configureNamedCommands(
-            m_robotDrive);
+            m_elevator,
+            m_intake,
+            // m_algaMechanism,
+            m_climber,
+            m_coralScoring,
+            m_intakePivot,
+            m_scoringMechanismPivot,
+            m_visionGS,
+            m_visionGS2,
+            m_alignToPole,
+            m_lockOnTarget,
+            m_robotDrive,
+            m_alignToClimb,
+            m_scoringMechSensor
+      );
 
         var thetaController = new ProfiledPIDController(
             AutoConstants.kPThetaController, 0, 0,
@@ -91,6 +138,26 @@ public class AutoCommandManager {
     }
 
     public void configureNamedCommands(
-        DriveSubsystem m_robotDrive) { 
+
+        Elevator m_elevator,
+        Intake m_intake,
+        // AlgaeMechanism m_algaMechanism,
+        Climber m_climber,
+        CoralScoring m_coralScoring,
+        IntakePivot m_intakePivot,
+        ScoringMechanismPivot m_scoringMechanismPivot,
+        PhotonVisionGS m_visionGS,
+        PhotonVisionGS2 m_visionGS2,
+        AlignToPole m_alignToPole,
+        LockOnTarget m_lockOnTarget,
+        DriveSubsystem m_robotDrive,
+        AlignToClimb m_alignToClimb,
+        ScoringMechSensor m_scoringMechSensor) { 
+            
+        NamedCommands.registerCommand("Run Elevator", new RunElevator(m_elevator));
+        NamedCommands.registerCommand("Run Intake", new RunIntake(m_intake, m_intakePivot, m_coralScoring, m_scoringMechSensor));
+        NamedCommands.registerCommand("Drop Coral", new TeleopScore(m_coralScoring));
+        
+        
     }
 }
