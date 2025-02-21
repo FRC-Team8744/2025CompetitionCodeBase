@@ -7,7 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "One Piece Auto"
+            "pathName": "Copy of One Piece Auto"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Real Drop L2"
           }
         }
       ]

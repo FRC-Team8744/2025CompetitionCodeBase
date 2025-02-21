@@ -68,7 +68,7 @@ public StrafeOnTarget() {}
         isInAreaEnum.areaEnum = isInAreaEnum.N20;
       }
       else if (isInArea (Constants.blueBorder21, estimatedPose2d)) {
-        m_turnCtrl.setSetpoint(180);
+        m_turnCtrl.setSetpoint(0);
         inZone = true;
         isInAreaEnum.areaEnum = isInAreaEnum.N21;
       }
@@ -84,32 +84,32 @@ public StrafeOnTarget() {}
     }
     else if  (alliance.get() == DriverStation.Alliance.Red) {
       if (isInArea (Constants.redBorder11, estimatedPose2d)) {
-        m_turnCtrl.setSetpoint(60);
+        m_turnCtrl.setSetpoint(120);
         inZone = true;
         isInAreaEnum.areaEnum = isInAreaEnum.N11;
       }
       else if (isInArea (Constants.redBorder10, estimatedPose2d)) {
-        m_turnCtrl.setSetpoint(0);
+        m_turnCtrl.setSetpoint(180);
         inZone = true;
         isInAreaEnum.areaEnum = isInAreaEnum.N10;
       }
       else if (isInArea (Constants.redBorder9, estimatedPose2d)) {
-        m_turnCtrl.setSetpoint(300);
+        m_turnCtrl.setSetpoint(240);
         inZone = true;
         isInAreaEnum.areaEnum = isInAreaEnum.N9;
       }
       else if (isInArea (Constants.redBorder8, estimatedPose2d)) {
-        m_turnCtrl.setSetpoint(240);
+        m_turnCtrl.setSetpoint(300);
         inZone = true;
         isInAreaEnum.areaEnum = isInAreaEnum.N8;
       }
       else if (isInArea (Constants.redBorder7, estimatedPose2d)) {
-        m_turnCtrl.setSetpoint(180);
+        m_turnCtrl.setSetpoint(0);
         inZone = true;
         isInAreaEnum.areaEnum = isInAreaEnum.N7;
       }
       else if (isInArea (Constants.redBorder6, estimatedPose2d)) {
-        m_turnCtrl.setSetpoint(120);
+        m_turnCtrl.setSetpoint(60);
         inZone = true;
         isInAreaEnum.areaEnum = isInAreaEnum.N6;
       }

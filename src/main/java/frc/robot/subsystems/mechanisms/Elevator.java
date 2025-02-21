@@ -42,7 +42,7 @@ public class Elevator extends SubsystemBase {
     elevatorConfigPIDUp.kS = 0.0; // Add 0.25 V output to overcome static friction
     elevatorConfigPIDUp.kV = 0.0; // A velocity target of 1 rps results in 0.12 V output
     elevatorConfigPIDUp.kA = 0.0; // An acceleration of 1 rps/s requires 0.01 V output
-    elevatorConfigPIDUp.kP = 2.0; // A position error of 2.5 rotations results in 12 V output
+    elevatorConfigPIDUp.kP = 1.0; // A position error of 2.5 rotations results in 12 V output
     elevatorConfigPIDUp.kI = 0.05; // no output for integrated error
     elevatorConfigPIDDown.kD = 0.0; // A velocity error of 1 rps results in 0.1 V output
     elevatorConfigPIDDown.kP = 0.1; // A position error of 2.5 rotations results in 12 V output

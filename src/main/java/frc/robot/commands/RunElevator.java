@@ -32,7 +32,7 @@ public class RunElevator extends Command {
     SmartDashboard.putBoolean("Command run", true);
     SmartDashboard.putNumber("Elevator Motor Position", motorPosition);
 
-    m_elevator.rotate(327 * m_elevator.percentOfElevator); // 327
+    m_elevator.rotate(49.05 * m_elevator.percentOfElevator); // 327
   }
 
   // Called once the command ends or is interrupted.

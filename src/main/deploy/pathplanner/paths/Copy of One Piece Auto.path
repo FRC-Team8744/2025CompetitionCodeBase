@@ -3,45 +3,45 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.981806506849745,
-        "y": 5.294670376706367
+        "x": 7.572945205479453,
+        "y": 4.212821061643836
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.9792472669152996,
-        "y": 5.978776461743587
+        "x": 6.5729452054794475,
+        "y": 4.212821061643836
       },
       "isLocked": false,
-      "linkedName": "End P2"
+      "linkedName": null
     },
     {
       "anchor": {
-        "x": 1.7129280821975674,
-        "y": 7.052675513699988
+        "x": 6.130479452054795,
+        "y": 4.212821061643836
       },
       "prevControl": {
-        "x": 2.058518835622225,
-        "y": 7.698779965754783
+        "x": 6.673338198531641,
+        "y": 4.212821061643836
       },
       "nextControl": {
-        "x": 1.3349232738292287,
-        "y": 6.345970871967876
+        "x": 5.587620705577948,
+        "y": 4.212821061643836
       },
       "isLocked": false,
-      "linkedName": "End P3"
+      "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.6211900684931506,
-        "y": 5.09933647260274
+        "x": 6.956892123287671,
+        "y": 4.212821061643836
       },
       "prevControl": {
-        "x": 2.132197354735193,
-        "y": 6.080915489547761
+        "x": 6.685462750049247,
+        "y": 4.182769691780822
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "End P3-2"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
@@ -49,13 +49,7 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "",
-      "waypointRelativePos": 0,
-      "endWaypointRelativePos": null,
-      "command": null
-    },
-    {
-      "name": "",
+      "name": "Real Drop L2",
       "waypointRelativePos": 1.0,
       "endWaypointRelativePos": null,
       "command": null
@@ -71,13 +65,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 119.99999999999999
+    "rotation": 0.0
   },
   "reversed": false,
-  "folder": "5 piece top source",
+  "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 119.99999999999999
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }

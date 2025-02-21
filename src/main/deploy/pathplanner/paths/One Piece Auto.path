@@ -16,11 +16,11 @@
     },
     {
       "anchor": {
-        "x": 5.844991438356164,
+        "x": 6.1004280821917805,
         "y": 4.212821061643836
       },
       "prevControl": {
-        "x": 6.3878501848330105,
+        "x": 6.643286828668627,
         "y": 4.212821061643836
       },
       "nextControl": null,
@@ -31,7 +31,14 @@
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "L2 Drop",
+      "waypointRelativePos": 0.9509803921568629,
+      "endWaypointRelativePos": null,
+      "command": null
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 5.944,
     "maxAcceleration": 6.0,

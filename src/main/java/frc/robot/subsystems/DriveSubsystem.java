@@ -414,7 +414,7 @@ public class DriveSubsystem extends SubsystemBase {
     xSpeed = xSpeed * m_DriverSpeedScale;
     ySpeed = ySpeed * m_DriverSpeedScale;
     rot = rot * m_DriverSpeedScale;
-
+    
     if (isAutoRotate == RotationEnum.STRAFEONTARGET) {
       fieldRelative = false;
     }

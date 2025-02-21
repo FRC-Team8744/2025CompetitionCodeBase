@@ -16,6 +16,7 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants.AutoConstants;
@@ -58,7 +59,7 @@ public class AutoCommandManager {
         Climber m_climber,
         CoralScoring m_coralScoring,
         IntakePivot m_intakePivot,
-        ScoringMechanismPivot m_scoringMechanismPivot,
+        ScoringMechanismPivot  m_scoringMechPivot,
         PhotonVisionGS m_visionGS,
         PhotonVisionGS2 m_visionGS2,
         AlignToPole m_alignToPole,
@@ -75,7 +76,7 @@ public class AutoCommandManager {
             m_climber,
             m_coralScoring,
             m_intakePivot,
-            m_scoringMechanismPivot,
+            m_scoringMechPivot,
             m_visionGS,
             m_visionGS2,
             m_alignToPole,
@@ -145,18 +146,23 @@ public class AutoCommandManager {
         Climber m_climber,
         CoralScoring m_coralScoring,
         IntakePivot m_intakePivot,
-        ScoringMechanismPivot m_scoringMechanismPivot,
+        ScoringMechanismPivot  m_scoringMechPivot,
         PhotonVisionGS m_visionGS,
         PhotonVisionGS2 m_visionGS2,
         AlignToPole m_alignToPole,
         LockOnTarget m_lockOnTarget,
         DriveSubsystem m_robotDrive,
         AlignToClimb m_alignToClimb,
-        ScoringMechSensor m_scoringMechSensor) { 
+        ScoringMechSensor m_scoringMechSensor
+        
+        ) { 
             
         NamedCommands.registerCommand("Run Elevator", new RunElevator(m_elevator));
+        NamedCommands.registerCommand("L1 Drop", Commands.runOnce(() -> m_elevator.setElevatorPreset(.33)));
+        NamedCommands.registerCommand("L2 Drop", Commands.runOnce(() -> m_elevator.setElevatorPreset(.33)));
         NamedCommands.registerCommand("Run Intake", new RunIntake(m_intake, m_intakePivot, m_coralScoring, m_scoringMechSensor));
         NamedCommands.registerCommand("Drop Coral", new TeleopScore(m_coralScoring));
+        NamedCommands.registerCommand("Real Drop L2",Commands.runOnce(() -> m_elevator.setElevatorPreset(.33)).alongWith(Commands.runOnce(() -> m_scoringMechPivot.scoringMechGoalAngle = -60)));
         
         
     }
