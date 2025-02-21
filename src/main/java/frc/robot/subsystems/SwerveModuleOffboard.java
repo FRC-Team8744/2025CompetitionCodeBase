@@ -115,7 +115,6 @@ public class SwerveModuleOffboard {
     driveVelocity.Velocity = (state.speedMetersPerSecond * 60) / Constants.ConstantsOffboard.WHEEL_CIRCUMFERENCE;
     driveVelocity.FeedForward = driveFeedForward.calculate(desiredState.speedMetersPerSecond);
     m_driveMotor.setControl(driveVelocity);
-    // m_driveMotor.set
     m_turningPID.setReference(state.angle.getRadians(), (ConstantsOffboard.ANGLE_MOTOR_PROFILED_MODE) ? SparkMax.ControlType.kMAXMotionPositionControl : SparkMax.ControlType.kPosition);
   }
 

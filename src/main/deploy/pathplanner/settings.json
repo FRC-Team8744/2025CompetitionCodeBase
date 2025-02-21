@@ -1,18 +1,19 @@
 {
-  "robotWidth": 0.66,
-  "robotLength": 0.66,
+  "robotWidth": 0.787,
+  "robotLength": 0.787,
   "holonomicMode": true,
   "pathFolders": [
-    "Fake Autos"
+    "Fake Autos",
+    "5 piece top source"
   ],
   "autoFolders": [],
-  "defaultMaxVel": 3.0,
-  "defaultMaxAccel": 3.0,
+  "defaultMaxVel": 5.944,
+  "defaultMaxAccel": 6.0,
   "defaultMaxAngVel": 540.0,
   "defaultMaxAngAccel": 720.0,
   "defaultNominalVoltage": 12.0,
-  "robotMass": 22.6796,
-  "robotMOI": 9.879408,
+  "robotMass": 63.502,
+  "robotMOI": 39.331,
   "robotTrackwidth": 0.52,
   "driveWheelRadius": 0.051,
   "driveGearing": 5.36,

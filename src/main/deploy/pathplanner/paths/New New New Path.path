@@ -3,48 +3,37 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 10.0,
-        "y": 7.0
+        "x": 6.4776,
+        "y": 4.56
       },
       "prevControl": null,
       "nextControl": {
-        "x": 9.526144366197183,
-        "y": 6.7886443661971825
+        "x": 6.6982335616438355,
+        "y": 4.7603638698630135
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 4.5,
-        "y": 4.0
+        "x": 5.0,
+        "y": 6.0
       },
       "prevControl": {
-        "x": 4.254222296382301,
-        "y": 4.045752818540621
-      },
-      "nextControl": {
-        "x": 4.745777703617698,
-        "y": 3.954247181459379
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 10.0,
-        "y": 1.0
-      },
-      "prevControl": {
-        "x": 9.767077464788734,
-        "y": 1.1054577464788713
+        "x": 4.791917946226987,
+        "y": 6.138570772162116
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.0,
+      "rotationDegrees": 90.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
@@ -61,7 +50,7 @@
     "rotation": 0.0
   },
   "reversed": false,
-  "folder": "Fake Autos",
+  "folder": null,
   "idealStartingState": {
     "velocity": 0,
     "rotation": 0.0

@@ -4,10 +4,6 @@
 
 package frc.robot.subsystems;
 
-import static edu.wpi.first.units.Units.Rotation;
-
-import java.lang.reflect.Field;
-import java.util.Arrays;
 import java.util.Vector;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
@@ -40,10 +36,10 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.AutoCommandManager;
 import frc.robot.Constants;
-import frc.robot.Constants.ConstantsOffboard;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.SwerveConstants;
 import frc.robot.subsystems.alignment.AlignToClimb;
+import frc.robot.subsystems.alignment.AlignToPole;
 import frc.robot.subsystems.alignment.StrafeOnTarget;
 import frc.robot.subsystems.vision.PhotonVisionGS;
 import frc.robot.subsystems.vision.PhotonVisionGS2;
@@ -69,6 +65,9 @@ public class DriveSubsystem extends SubsystemBase {
   private final SwerveModuleOffboard m_rearRight;
 
   private double autoRotateSpeed = 0;
+  private double autoYSpeed = 0;
+
+  public boolean rightPoint = true;
 
   private double goalAngle = 0;
   private PIDController m_turnCtrl = new PIDController(0.03, 0.0065, 0.0035);
@@ -92,9 +91,12 @@ public class DriveSubsystem extends SubsystemBase {
   private final PhotonVisionGS m_vision;
   private final PhotonVisionGS2 m_vision2;
   public final AlignToClimb m_alignToClimb = new AlignToClimb();
+  private final AlignToPole m_alignToPole = new AlignToPole();
 
   public RotationEnum isAutoRotate = RotationEnum.NONE;
+  public boolean isAutoYSpeedRotate = false;
   public boolean isAutoRotateToggle = true;
+  public boolean isAutoYSpeedRotateToggle = true;
   
   public SwerveModulePosition[] getModulePositions() {
     return new SwerveModulePosition[] {
@@ -177,7 +179,7 @@ public class DriveSubsystem extends SubsystemBase {
         this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
         new PPHolonomicDriveController( // HolonomicPathFollowerConfig, this should likely live in your Constants class
           new PIDConstants(7.0, 0.0, 0.0), // Translation PID constants
-          new PIDConstants(3.5, 0.0, 0.0)), // Rotation PID constants
+          new PIDConstants(Math.PI + Math.E - 2, 0.0, 0.0)), // Rotation PID constants
         RobotConfig.fromGUISettings(),
             ()->{
         // Boolean supplier that controls when the path will be mirrored for the red alliance
@@ -314,6 +316,10 @@ public class DriveSubsystem extends SubsystemBase {
       autoRotateSpeed = m_lock.execute(m_poseEstimator.getEstimatedPosition());
     }
 
+    if (isAutoYSpeedRotate) {
+      autoYSpeed = m_alignToPole.execute(isAutoRotateToggle, m_poseEstimator.getEstimatedPosition());
+    }
+
     if (isAutoRotate == RotationEnum.STRAFEONTARGET && isAutoRotateToggle) {
       m_lock.initialize();
       isAutoRotateToggle = false;
@@ -321,6 +327,15 @@ public class DriveSubsystem extends SubsystemBase {
 
     else if (isAutoRotate == RotationEnum.NONE) {
       isAutoRotateToggle = true;
+    }
+
+    if (isAutoYSpeedRotate = true && isAutoYSpeedRotateToggle) {
+      m_alignToPole.initialize();
+      isAutoYSpeedRotateToggle = false;
+    }
+
+    if (isAutoYSpeedRotate = false) {
+      isAutoYSpeedRotateToggle = true;
     }
 
     if (isAutoRotate == RotationEnum.ALIGNTOCLIMB) {
@@ -380,10 +395,15 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
     rot = isAutoRotate != RotationEnum.NONE ? autoRotateSpeed : rot;
+    // ySpeed = isAutoYSpeedRotate ? autoYSpeed : ySpeed;
+
+    if (isAutoYSpeedRotate && isAutoRotate == RotationEnum.STRAFEONTARGET) {
+      ySpeed = autoYSpeed;
+    }
 
     // Apply joystick deadband
     xSpeed = MathUtil.applyDeadband(xSpeed, OIConstants.kDeadband, 1.0);
-    ySpeed = MathUtil.applyDeadband(ySpeed, OIConstants.kDeadband, 1.0);
+    ySpeed = isAutoYSpeedRotate ? ySpeed : MathUtil.applyDeadband(ySpeed, OIConstants.kDeadband, 1.0);
     rot = isAutoRotate != RotationEnum.NONE ? rot : MathUtil.applyDeadband(rot, OIConstants.kRotationDeadband, 1.0);
 
     // xSpeed *= Constants.SwerveConstants.kMaxSpeedTeleop;
@@ -394,7 +414,7 @@ public class DriveSubsystem extends SubsystemBase {
     xSpeed = xSpeed * m_DriverSpeedScale;
     ySpeed = ySpeed * m_DriverSpeedScale;
     rot = rot * m_DriverSpeedScale;
-
+    
     if (isAutoRotate == RotationEnum.STRAFEONTARGET) {
       fieldRelative = false;
     }

@@ -21,14 +21,13 @@ import java.util.Optional;
 
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonUtils;
-import org.photonvision.targeting.MultiTargetPNPResult;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 public class PhotonVisionGS extends SubsystemBase {
   private PhotonCamera camera = new PhotonCamera("Camera_Module_v1");
-  private Rotation3d rd = new Rotation3d(0, Units.degreesToRadians(0), Units.degreesToRadians(180));
-  private Transform3d td = new Transform3d(-0.36, 0, 0.11, rd);
+  private Rotation3d rd = new Rotation3d(0, Units.degreesToRadians(15), Units.degreesToRadians(180));
+  private Transform3d td = new Transform3d(-0.345, .335, 0.36, rd);
   private Pose3d targetTd;
   private double apriltagTime; 
   public double distanceToApriltag = 0;
@@ -42,7 +41,6 @@ public class PhotonVisionGS extends SubsystemBase {
   private boolean speakerInView;
   private boolean speakerInView_filtered;
 
-  private Debouncer m_debouncer = new Debouncer (0.1, Debouncer.DebounceType.kBoth);
   private LinearFilter m_lowpass = LinearFilter.movingAverage(100);
   private double tx_out;
   //**heightMatters is the height of the object based on the april tags and the camera used for cacluations in shooting**//
@@ -67,8 +65,8 @@ public class PhotonVisionGS extends SubsystemBase {
       boolean foundSpeaker = true;
 
       Transform3d cameraToTarget = localTarget.getBestCameraToTarget();
-
-      Pose3d aprilTagPose3d = aprilTagFieldLayout.getTagPose(localTarget.getFiducialId()).get();
+      var id = localTarget == null ? null : localTarget.getFiducialId();
+      Pose3d aprilTagPose3d = aprilTagFieldLayout.getTagPose(id).get();
 
       targetTd = PhotonUtils.estimateFieldToRobotAprilTag(cameraToTarget, aprilTagPose3d, td);
 

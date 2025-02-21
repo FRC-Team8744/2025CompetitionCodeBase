@@ -3,41 +3,41 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 10.0,
-        "y": 7.0
+        "x": 7.572945205479453,
+        "y": 4.212821061643836
       },
       "prevControl": null,
       "nextControl": {
-        "x": 9.526144366197183,
-        "y": 6.7886443661971825
+        "x": 6.5729452054794475,
+        "y": 4.212821061643836
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 4.5,
-        "y": 4.0
+        "x": 6.130479452054795,
+        "y": 4.212821061643836
       },
       "prevControl": {
-        "x": 4.254222296382301,
-        "y": 4.045752818540621
+        "x": 6.673338198531641,
+        "y": 4.212821061643836
       },
       "nextControl": {
-        "x": 4.745777703617698,
-        "y": 3.954247181459379
+        "x": 5.587620705577948,
+        "y": 4.212821061643836
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 10.0,
-        "y": 1.0
+        "x": 6.956892123287671,
+        "y": 4.212821061643836
       },
       "prevControl": {
-        "x": 9.767077464788734,
-        "y": 1.1054577464788713
+        "x": 6.685462750049247,
+        "y": 4.182769691780822
       },
       "nextControl": null,
       "isLocked": false,
@@ -47,7 +47,14 @@
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "Real Drop L2",
+      "waypointRelativePos": 1.0,
+      "endWaypointRelativePos": null,
+      "command": null
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 5.944,
     "maxAcceleration": 6.0,
@@ -61,7 +68,7 @@
     "rotation": 0.0
   },
   "reversed": false,
-  "folder": "Fake Autos",
+  "folder": null,
   "idealStartingState": {
     "velocity": 0,
     "rotation": 0.0

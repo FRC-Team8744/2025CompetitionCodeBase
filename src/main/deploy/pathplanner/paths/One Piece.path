@@ -3,41 +3,41 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 10.0,
-        "y": 7.0
+        "x": 7.882,
+        "y": 4.010827464788732
       },
       "prevControl": null,
       "nextControl": {
-        "x": 9.526144366197183,
-        "y": 6.7886443661971825
+        "x": 6.559458110334799,
+        "y": 3.9866247820714196
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 4.5,
-        "y": 4.0
+        "x": 5.954665492957746,
+        "y": 4.010827464788732
       },
       "prevControl": {
-        "x": 4.254222296382301,
-        "y": 4.045752818540621
+        "x": 6.204482278151659,
+        "y": 4.020396886682381
       },
       "nextControl": {
-        "x": 4.745777703617698,
-        "y": 3.954247181459379
+        "x": 5.7048487077638335,
+        "y": 4.001258042895083
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 10.0,
-        "y": 1.0
+        "x": 7.882,
+        "y": 4.010827464788732
       },
       "prevControl": {
-        "x": 9.767077464788734,
-        "y": 1.1054577464788713
+        "x": 7.634995395325145,
+        "y": 4.049411467554377
       },
       "nextControl": null,
       "isLocked": false,
@@ -47,7 +47,20 @@
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "Place",
+      "waypointRelativePos": 1.0,
+      "endWaypointRelativePos": null,
+      "command": null
+    },
+    {
+      "name": "Place Alge",
+      "waypointRelativePos": 2.0,
+      "endWaypointRelativePos": null,
+      "command": null
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 5.944,
     "maxAcceleration": 6.0,
@@ -61,7 +74,7 @@
     "rotation": 0.0
   },
   "reversed": false,
-  "folder": "Fake Autos",
+  "folder": null,
   "idealStartingState": {
     "velocity": 0,
     "rotation": 0.0

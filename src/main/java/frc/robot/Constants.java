@@ -4,16 +4,9 @@
 
 package frc.robot;
 
-
-import java.lang.reflect.Array;
-
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
-import com.ctre.phoenix6.configs.Slot1Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
-import com.ctre.phoenix6.signals.StaticFeedforwardSignValue;
 import com.pathplanner.lib.config.PIDConstants;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -26,16 +19,21 @@ import edu.wpi.first.math.util.Units;
 public final class Constants {
   public static final int kDebugLevel = 0; // 0 = None, 1 = Errors, 2 = Info, 3 = Debug and USB data log
   
-  public static final int kMaxSpeedPercentAuto = 100;
-  public static final int kMaxSpeedPercentTeleop = 20;
+  public static final int kMaxSpeedPercentAuto = 100; //This effects Drive speed in telop DONT ASK ME WHY
+  public static final int kMaxSpeedPercentTeleop = 65;
   public static final int kMaxAccelerationPercent = 100;
   public static final double kDriverSpeedLimit = 1; // sets how much the max speed is modified by when you press down on the left stick basicly make go slower the default is 1 btw 
 
   public static final TalonFXConfiguration driveConfig = new TalonFXConfiguration();
   public static final TalonFXConfiguration elevatorConfig = new TalonFXConfiguration();
-  public static final Slot0Configs driveConfigPID = new Slot0Configs();
+  public static final TalonFXConfiguration indexerConfig = new TalonFXConfiguration();
+  public static final TalonFXConfiguration intakePivotConfig = new TalonFXConfiguration();
+  public static final TalonFXConfiguration scoringMechPivotConfig = new TalonFXConfiguration();
+  public static final Slot0Configs driveConfigPID = driveConfig.Slot0;
   public static final Slot0Configs elevatorConfigPID = elevatorConfig.Slot0;
-  public static final MotionMagicConfigs elevatorMotionMagicConfig = elevatorConfig.MotionMagic;
+  public static final Slot0Configs indexerConfigPID = indexerConfig.Slot0;
+  public static final Slot0Configs intakePivotConfigPID = intakePivotConfig.Slot0;
+  public static final Slot0Configs scoringMechPivotConfigPID = scoringMechPivotConfig.Slot0;
 
   // 17.55 is the distance of the field in meters
   // This gets the points of the triangles to calc if it can strafe 
@@ -52,45 +50,12 @@ public final class Constants {
   public static final Pose2d[] blueBorder21 = new Pose2d[]{new Pose2d(4.88, 4.0, new Rotation2d(0)), new Pose2d(10.38, 7.0, new Rotation2d(0)), new Pose2d(10.38, 1.0, new Rotation2d(0))};
   public static final Pose2d[] blueBorder22 = new Pose2d[]{new Pose2d(4.691, 3.67, new Rotation2d(0)), new Pose2d(10.191, 0.67, new Rotation2d(0)), new Pose2d(4.691, -0.33, new Rotation2d(0))};
 
-// public static final Pose2d[] 
+  public static final double[] rightPoint = {5.35, 4.2};
+  public static final double[] leftPoint = {5.35, 3.85};
+  public static final double[][] rotationMatrix = {{0.5, 0.866}, {-0.866, 0.5}};
 
   public Constants() {
-    // Driving motors
-    driveConfig.Voltage.PeakForwardVoltage = 12;
-    driveConfig.Voltage.PeakReverseVoltage = -12;
-    driveConfig.TorqueCurrent.PeakForwardTorqueCurrent = 800;
-    driveConfig.TorqueCurrent.PeakReverseTorqueCurrent = -800;
-    driveConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
-    driveConfig.CurrentLimits.StatorCurrentLimitEnable = true;
-    driveConfig.CurrentLimits.StatorCurrentLimit = 40.0;
-    driveConfigPID.kV = Constants.ConstantsOffboard.KRAKEN_V;
-    driveConfigPID.kP = Constants.ConstantsOffboard.KRAKEN_P;
-    driveConfigPID.kI = Constants.ConstantsOffboard.KRAKEN_I;
-    driveConfigPID.kD = Constants.ConstantsOffboard.KRAKEN_D;
-    driveConfig.withSlot0(driveConfigPID);
-
-    // Elevator Configs
-    elevatorConfig.Voltage.PeakForwardVoltage = 12;
-    elevatorConfig.Voltage.PeakReverseVoltage = -12;
-    elevatorConfig.TorqueCurrent.PeakForwardTorqueCurrent = 800;
-    elevatorConfig.TorqueCurrent.PeakReverseTorqueCurrent = -800;
-    elevatorConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
-    elevatorConfig.CurrentLimits.StatorCurrentLimitEnable = true;
-    elevatorConfig.CurrentLimits.StatorCurrentLimit = 40.0;
-    // elevatorConfigPID.kV = 0.0;
-    // elevatorConfigPID.kP = 1.0;
-    // elevatorConfigPID.kI = 0.0;
-    // elevatorConfigPID.kD = 0.0;
-    elevatorConfigPID.kS = 1.0; // Add 0.25 V output to overcome static friction
-    elevatorConfigPID.kV = 0.12; // A velocity target of 1 rps results in 0.12 V output
-    elevatorConfigPID.kA = 0.01; // An acceleration of 1 rps/s requires 0.01 V output
-    elevatorConfigPID.kP = 24.0; // A position error of 2.5 rotations results in 12 V output
-    elevatorConfigPID.kI = 0.0; // no output for integrated error
-    elevatorConfigPID.kD = 0.1; // A velocity error of 1 rps results in 0.1 V output
-    elevatorConfig.withSlot0(elevatorConfigPID);
-    // elevatorMotionMagicConfig.MotionMagicCruiseVelocity = 80; // Target cruise velocity of 80 rps
-    // elevatorMotionMagicConfig.MotionMagicAcceleration = 160; // Target acceleration of 160 rps/s (0.5 seconds)
-    // elevatorMotionMagicConfig.MotionMagicJerk = 1600; // Target jerk of 1600 rps/s/s (0.1 seconds)
+    configureKrakens();
   }
 
   public static final class MechanismConstants {}
@@ -103,20 +68,29 @@ public final class Constants {
     // The positive X axis points ahead, the positive Y axis points left, and the positive Z axis points up.
     // We use NWU here because the rest of the library, and math in general, use NWU axes convention.
     // https://docs.wpilib.org/en/stable/docs/software/hardware-apis/motors/wpi-drive-classes.html#axis-conventions
-    public static final int kFrontLeftDriveMotorPort = 24;
-    public static final int kFrontRightDriveMotorPort = 23;
-    public static final int kRearLeftDriveMotorPort = 22;
-    public static final int kRearRightDriveMotorPort = 21;
+    public static final int kFrontLeftDriveMotorPort = 8; // 8
+    public static final int kFrontRightDriveMotorPort = 3; // 3
+    public static final int kRearLeftDriveMotorPort = 17; // 17
+    public static final int kRearRightDriveMotorPort = 20; // 20
 
-    public static final int kFrontLeftTurningMotorPort = 3;
-    public static final int kFrontRightTurningMotorPort = 1;
-    public static final int kRearLeftTurningMotorPort = 7;
-    public static final int kRearRightTurningMotorPort = 5;
+    public static final int kFrontLeftTurningMotorPort = 10; // 10
+    public static final int kFrontRightTurningMotorPort = 5; // 5
+    public static final int kRearLeftTurningMotorPort = 19; // 19
+    public static final int kRearRightTurningMotorPort = 22; // 22
 
-    public static final int kFrontLeftMagEncoderPort = 10;
-    public static final int kFrontRightMagEncoderPort = 9;
-    public static final int kRearLeftMagEncoderPort = 11;
-    public static final int kRearRightMagEncoderPort = 12;
+    public static final int kFrontLeftMagEncoderPort = 9; // 9
+    public static final int kFrontRightMagEncoderPort = 4; // 4
+    public static final int kRearLeftMagEncoderPort = 18; // 18
+    public static final int kRearRightMagEncoderPort = 21; // 21
+
+    public static final int kRightElevatorMotorPort = 2;
+    public static final int kIndexerMotorPort = 6;
+    public static final int kIntakeRollerMotorPort = 11;
+    public static final int kIntakePivotMotorPort = 12;
+    public static final int kLeftElevatorMotorPort = 13;
+    public static final int kScoringMechanismPivotMotorPort = 14;
+    public static final int kCoralScoringMotorPort = 15;
+    public static final int kAlgaeScoringMotorPort = 16;
 
     // Only disable the steering angle optimizer when measuring the CANcoder offsets!
     public static final boolean DISABLE_ANGLE_OPTIMIZER = false;
@@ -146,7 +120,7 @@ public final class Constants {
             new Translation2d(-kWheelBase / 2, kTrackWidth / 2),  // Rear Left Quadrant
             new Translation2d(-kWheelBase / 2, -kTrackWidth / 2));  // Rear Right Quadrant
 
-    public static final int kIMU_ID = 13;
+    public static final int kIMU_ID = 7;
 
     public static int kSwerveFL_enum = 0;
     public static int kSwerveFR_enum = 1;
@@ -244,6 +218,50 @@ public final class Constants {
   }
 
   public void configureKrakens() {
+    // Driving Configs
+    driveConfig.Voltage.PeakForwardVoltage = 12;
+    driveConfig.Voltage.PeakReverseVoltage = -12;
+    driveConfig.TorqueCurrent.PeakForwardTorqueCurrent = 800;
+    driveConfig.TorqueCurrent.PeakReverseTorqueCurrent = -800;
+    driveConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
+    driveConfig.CurrentLimits.StatorCurrentLimitEnable = true;
+    driveConfig.CurrentLimits.StatorCurrentLimit = 40.0;
+    driveConfigPID.kV = Constants.ConstantsOffboard.KRAKEN_V;
+    driveConfigPID.kP = Constants.ConstantsOffboard.KRAKEN_P;
+    driveConfigPID.kI = Constants.ConstantsOffboard.KRAKEN_I;
+    driveConfigPID.kD = Constants.ConstantsOffboard.KRAKEN_D;
+    driveConfig.withSlot0(driveConfigPID);
 
+    // Elevator Configs
+    elevatorConfig.Voltage.PeakForwardVoltage = 12;
+    elevatorConfig.Voltage.PeakReverseVoltage = -12;
+    elevatorConfig.TorqueCurrent.PeakForwardTorqueCurrent = 800;
+    elevatorConfig.TorqueCurrent.PeakReverseTorqueCurrent = -800;
+    elevatorConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
+    elevatorConfig.CurrentLimits.StatorCurrentLimitEnable = true;
+    elevatorConfig.CurrentLimits.StatorCurrentLimit = 20.0;
+    elevatorConfigPID.kS = 0.0; // Add 0.25 V output to overcome static friction
+    elevatorConfigPID.kV = 0.0; // A velocity target of 1 rps results in 0.12 V output
+    elevatorConfigPID.kA = 0.0; // An acceleration of 1 rps/s requires 0.01 V output
+    elevatorConfigPID.kP = 0.1; // A position error of 2.5 rotations results in 12 V output
+    elevatorConfigPID.kI = 0.0; // no output for integrated error
+    elevatorConfigPID.kD = 0.0; // A velocity error of 1 rps results in 0.1 V output
+    elevatorConfig.withSlot0(elevatorConfigPID);
+
+    // Indexer Configs
+    indexerConfig.Voltage.PeakForwardVoltage = 12;
+    indexerConfig.Voltage.PeakReverseVoltage = -12;
+    indexerConfig.TorqueCurrent.PeakForwardTorqueCurrent = 800;
+    indexerConfig.TorqueCurrent.PeakReverseTorqueCurrent = -800;
+    indexerConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
+    indexerConfig.CurrentLimits.StatorCurrentLimitEnable = true;
+    indexerConfig.CurrentLimits.StatorCurrentLimit = 40.0;
+    indexerConfigPID.kS = 1.0; // Add 0.25 V output to overcome static friction
+    indexerConfigPID.kV = 0.12; // A velocity target of 1 rps results in 0.12 V output
+    indexerConfigPID.kA = 0.01; // An acceleration of 1 rps/s requires 0.01 V output
+    indexerConfigPID.kP = 24.0; // A position error of 2.5 rotations results in 12 V output
+    indexerConfigPID.kI = 0.0; // no output for integrated error
+    indexerConfigPID.kD = 0.1; // A velocity error of 1 rps results in 0.1 V output
+    indexerConfig.withSlot0(indexerConfigPID);
   }
 }
