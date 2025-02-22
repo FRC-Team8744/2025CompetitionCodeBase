@@ -8,27 +8,24 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.numbers.N2;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.Constants.SwerveConstants;
 import frc.robot.isInAreaEnum;
 
 public class AlignToPole {
   /** Creates a new AlignToPole. */
-  private isInAreaEnum m_isInAreaEnum = isInAreaEnum.NONE;
-  private PIDController m_driveCtrl = new PIDController(0.014, 0.015, 0.0013);
-  private double[] goalPosition;
-  private Matrix<N2,N2> test = new Matrix<>(N2.instance, N2.instance);
+  private PIDController m_driveCtrl = new PIDController(0.2, 0, 0);
   // private double heading;
   private double m_output;
   public AlignToPole() {}
 
   public void initialize() {
-    m_driveCtrl.enableContinuousInput(-180, 180);
-    m_driveCtrl.setTolerance(2.00);
+    // m_driveCtrl.enableContinuousInput(-180, 180);
+    m_driveCtrl.setTolerance(0.02);
     m_driveCtrl.reset();
   }
 
@@ -38,7 +35,12 @@ public class AlignToPole {
     double robotY = translatedRobotPosition[1];
     double goalY = rightPoint ? Constants.rightPoint[1] : Constants.leftPoint[1];
 
+    SmartDashboard.putNumber("Goal Y", goalY);
+    SmartDashboard.putNumber("Robot Y", robotY);
+
     double yOffset = goalY - robotY;
+
+    SmartDashboard.putNumber("Y Offset", yOffset);
 
     m_driveCtrl.setSetpoint(yOffset);
 
@@ -56,14 +58,16 @@ public class AlignToPole {
     var alliance = DriverStation.getAlliance();
     double[] translationAmount;
     if (alliance.get() == DriverStation.Alliance.Blue) {
-      translationAmount = new double[]{4.5, 4.0};
+      translationAmount = new double[]{4.48945, 4.0};
     }
     else {
-      translationAmount = new double[]{13.0, 4.0};
+      translationAmount = new double[]{12.8945, 4.0};
     }
 
-    double X = ((positionToRotate[0] - translationAmount[0]) * Math.cos(Math.toRadians(angle))) + ((positionToRotate[1] - translationAmount[1]) * -Math.sin(Math.toRadians(angle)));
-    double Y = ((positionToRotate[0] - translationAmount[0]) * Math.sin(Math.toRadians(angle))) + ((positionToRotate[1] - translationAmount[1]) * Math.cos(Math.toRadians(angle)));
+    double X = ((positionToRotate[0] - translationAmount[0]) * Math.cos(Math.toRadians(angle))) 
+    + ((positionToRotate[1] - translationAmount[1]) * -Math.sin(Math.toRadians(angle)));
+    double Y = ((positionToRotate[0] - translationAmount[0]) * Math.sin(Math.toRadians(angle))) 
+    + ((positionToRotate[1] - translationAmount[1]) * Math.cos(Math.toRadians(angle)));
 
     X += translationAmount[0];
     Y += translationAmount[1];

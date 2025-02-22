@@ -58,6 +58,7 @@ public class PhotonVisionGS2 extends SubsystemBase {
     result = camera.getLatestResult();
     apriltagTime = result.getTimestampSeconds();
     result.getTargets();
+    camera.setPipelineIndex(2);
 
     if (result.hasTargets()) {
       PhotonTrackedTarget localTarget = result.getBestTarget();

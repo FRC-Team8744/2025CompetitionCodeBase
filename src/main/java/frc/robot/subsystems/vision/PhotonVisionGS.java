@@ -26,13 +26,13 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 
 public class PhotonVisionGS extends SubsystemBase {
   private PhotonCamera camera = new PhotonCamera("Camera_Module_v1");
-  private Rotation3d rd = new Rotation3d(0, Units.degreesToRadians(15), Units.degreesToRadians(180));
-  private Transform3d td = new Transform3d(-0.345, .335, 0.36, rd);
+  private Rotation3d rd = new Rotation3d(0, Units.degreesToRadians(4.6), Units.degreesToRadians(178));
+  private Transform3d td = new Transform3d(-0.335, .27, 0.30, rd);
   private Pose3d targetTd;
   private double apriltagTime; 
   public double distanceToApriltag = 0;
 
-  private AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField();
+  private AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2025ReefscapeWelded.loadAprilTagLayoutField();
   private PhotonPipelineResult result;
   private PhotonTrackedTarget target;
 
@@ -57,6 +57,7 @@ public class PhotonVisionGS extends SubsystemBase {
     result = camera.getLatestResult();
     apriltagTime = result.getTimestampSeconds();
     result.getTargets();
+    // camera.setPipelineIndex(1);
 
     if (result.hasTargets()) {
       PhotonTrackedTarget localTarget = result.getBestTarget();
