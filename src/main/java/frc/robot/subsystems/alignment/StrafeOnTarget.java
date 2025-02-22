@@ -16,7 +16,7 @@ import frc.robot.Constants.ConstantsOffboard;
 import frc.robot.isInAreaEnum;
 
 public class StrafeOnTarget {
-  private AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField();
+  private AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2025ReefscapeWelded.loadAprilTagLayoutField();
   private Pose2d targetPose = aprilTagFieldLayout.getTagPose(7).get().toPose2d();
   private PIDController m_turnCtrl = new PIDController(0.014, 0.015, 0.0013);
   private double goalAngle;

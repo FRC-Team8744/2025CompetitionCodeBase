@@ -20,6 +20,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.RelativeEncoder;
 
+import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -30,6 +31,7 @@ import frc.robot.Constants;
 import frc.robot.Constants.ConstantsOffboard;
 import frc.robot.Constants.SwerveConstants;
 
+@Logged
 public class SwerveModuleOffboard {
   // Drive motor
   private final TalonFX m_driveMotor;

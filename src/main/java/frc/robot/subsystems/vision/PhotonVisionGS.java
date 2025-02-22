@@ -10,6 +10,7 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -24,6 +25,7 @@ import org.photonvision.PhotonUtils;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
+@Logged
 public class PhotonVisionGS extends SubsystemBase {
   private PhotonCamera camera = new PhotonCamera("Camera_Module_v1");
   private Rotation3d rd = new Rotation3d(0, Units.degreesToRadians(15), Units.degreesToRadians(180));
@@ -32,7 +34,7 @@ public class PhotonVisionGS extends SubsystemBase {
   private double apriltagTime; 
   public double distanceToApriltag = 0;
 
-  private AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField();
+  private AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2025ReefscapeWelded.loadAprilTagLayoutField();
   private PhotonPipelineResult result;
   private PhotonTrackedTarget target;
 

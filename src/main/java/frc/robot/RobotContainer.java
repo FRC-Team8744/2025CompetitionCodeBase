@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.epilogue.Logged;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.ConstantsOffboard;
@@ -37,6 +38,7 @@ import frc.robot.commands.TeleopOuttake;
  * periodic methods (other than the scheduler calls).  Instead, the structure of the robot
  * (including subsystems, commands, and button mappings) should be declared here.
  */
+@Logged
 public class RobotContainer {
   // The robot's subsystems
   private PhotonVisionGS m_vision = new PhotonVisionGS();
