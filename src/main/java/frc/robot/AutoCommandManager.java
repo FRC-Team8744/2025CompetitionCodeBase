@@ -36,7 +36,6 @@ import frc.robot.subsystems.mechanisms.ScoringMechanismPivot;
 import frc.robot.subsystems.vision.PhotonVisionGS;
 import frc.robot.subsystems.vision.PhotonVisionGS2;
 import frc.robot.commands.RunElevator;
-import frc.robot.commands.Climb;
 // import frc.robot.commands.DropCoral;
 import frc.robot.commands.RunIntake;
 import frc.robot.commands.TeleopScore;

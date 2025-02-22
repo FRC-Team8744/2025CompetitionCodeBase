@@ -4,29 +4,16 @@
 
 package frc.robot.subsystems.alignment;
 
-import java.util.Vector;
-
-import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.estimator.PoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants;
 import frc.robot.Constants.ConstantsOffboard;
 
 public class AlignToClimb {
-  private AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2025ReefscapeWelded.loadAprilTagLayoutField();
-  private Pose2d targetPose = aprilTagFieldLayout.getTagPose(7).get().toPose2d();
   private PIDController m_turnCtrl = new PIDController(0.014, 0.015, 0.0013);
-  private double goalAngle;
   private double heading;
   private double m_output;
-  private boolean inZone = false;
 
 public AlignToClimb() {}
 
@@ -46,8 +33,6 @@ public AlignToClimb() {}
     var alliance = DriverStation.getAlliance();
 
     heading = estimatedPose2d.getRotation().getDegrees();
-
-    SmartDashboard.putNumber("Goal Angle", goalAngle);
 
     m_turnCtrl.reset();
 

@@ -106,21 +106,22 @@ public class RobotContainer {
     .whileTrue(new RunIntake(m_intake, m_intakePivot, m_coral, m_scoringMechSensor));
 
     m_driver.y()
-    .whileTrue(new TeleopScore(m_coral));
+    .whileTrue(new TeleopScore(m_coral).finallyDo((() -> m_robotDrive.isAutoYSpeed = false)));
     
     m_driver.rightBumper()
-    .whileTrue(Commands.runOnce(() -> m_robotDrive.rightPoint = true).andThen(Commands.runOnce(() -> m_robotDrive.isAutoYSpeedRotate = true)))
-    .whileFalse(Commands.runOnce(() -> m_robotDrive.isAutoYSpeedRotate = false));
+    .toggleOnTrue(Commands.runOnce(() -> m_robotDrive.rightPoint = false).andThen(Commands.runOnce(() -> m_robotDrive.isAutoYSpeed = true)));
     
     m_driver.leftBumper()
-    .whileTrue(Commands.runOnce(() -> m_robotDrive.rightPoint = false).andThen(Commands.runOnce(() -> m_robotDrive.isAutoYSpeedRotate = true)))
-    .whileFalse(Commands.runOnce(() -> m_robotDrive.isAutoYSpeedRotate = false));
+    .toggleOnTrue(Commands.runOnce(() -> m_robotDrive.rightPoint = true).andThen(Commands.runOnce(() -> m_robotDrive.isAutoYSpeed = true)));
 
     m_driver.a()
     .whileTrue(new TeleopOuttake(m_intake, m_intakePivot, m_coral));
 
     m_driver.x()
     .whileTrue(Commands.runOnce(() -> m_intake.runIndexer(.3)));
+
+    m_driver.b()
+    .whileTrue(Commands.runOnce(() -> m_robotDrive.isAutoYSpeed = false));
 
     m_driver.pov(0)
     .whileTrue(Commands.runOnce(() -> m_elevator.setElevatorPreset(.9)).alongWith(Commands.runOnce(() -> m_scoringMechPivot.scoringMechGoalAngle = -200)));

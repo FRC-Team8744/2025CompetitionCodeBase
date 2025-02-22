@@ -95,9 +95,9 @@ public class DriveSubsystem extends SubsystemBase {
   private final AlignToPole m_alignToPole = new AlignToPole();
 
   public RotationEnum isAutoRotate = RotationEnum.NONE;
-  public boolean isAutoYSpeedRotate = false;
+  public boolean isAutoYSpeed = false;
   public boolean isAutoRotateToggle = true;
-  public boolean isAutoYSpeedRotateToggle = true;
+  public boolean isAutoYSpeedToggle = true;
   
   public SwerveModulePosition[] getModulePositions() {
     return new SwerveModulePosition[] {
@@ -317,8 +317,8 @@ public class DriveSubsystem extends SubsystemBase {
       autoRotateSpeed = m_lock.execute(m_poseEstimator.getEstimatedPosition());
     }
 
-    if (isAutoYSpeedRotate) {
-      autoYSpeed = m_alignToPole.execute(isAutoRotateToggle, m_poseEstimator.getEstimatedPosition());
+    if (isAutoYSpeed) {
+      autoYSpeed = m_alignToPole.execute(rightPoint, m_poseEstimator.getEstimatedPosition());
     }
 
     if (isAutoRotate == RotationEnum.STRAFEONTARGET && isAutoRotateToggle) {
@@ -330,13 +330,13 @@ public class DriveSubsystem extends SubsystemBase {
       isAutoRotateToggle = true;
     }
 
-    if (isAutoYSpeedRotate = true && isAutoYSpeedRotateToggle) {
+    if (isAutoYSpeed && isAutoYSpeedToggle) {
       m_alignToPole.initialize();
-      isAutoYSpeedRotateToggle = false;
+      isAutoYSpeedToggle = false;
     }
 
-    if (isAutoYSpeedRotate = false) {
-      isAutoYSpeedRotateToggle = true;
+    if (!isAutoYSpeed) {
+      isAutoYSpeedToggle = true;
     }
 
     if (isAutoRotate == RotationEnum.ALIGNTOCLIMB) {
@@ -347,6 +347,9 @@ public class DriveSubsystem extends SubsystemBase {
       m_alignToClimb.initialize();
       isAutoRotateToggle = false;
     }
+
+    SmartDashboard.putBoolean("Is Right", rightPoint);
+    SmartDashboard.putBoolean("Y Speed", isAutoYSpeed);
     
     getRobotVelocityX();
     getRobotVelocityY();
@@ -398,13 +401,13 @@ public class DriveSubsystem extends SubsystemBase {
     rot = isAutoRotate != RotationEnum.NONE ? autoRotateSpeed : rot;
     // ySpeed = isAutoYSpeedRotate ? autoYSpeed : ySpeed;
 
-    if (isAutoYSpeedRotate && isAutoRotate == RotationEnum.STRAFEONTARGET) {
+    if (isAutoYSpeed && isAutoRotate == RotationEnum.STRAFEONTARGET) {
       ySpeed = autoYSpeed;
     }
 
     // Apply joystick deadband
     xSpeed = MathUtil.applyDeadband(xSpeed, OIConstants.kDeadband, 1.0);
-    ySpeed = isAutoYSpeedRotate ? ySpeed : MathUtil.applyDeadband(ySpeed, OIConstants.kDeadband, 1.0);
+    ySpeed = isAutoYSpeed ? ySpeed : MathUtil.applyDeadband(ySpeed, OIConstants.kDeadband, 1.0);
     rot = isAutoRotate != RotationEnum.NONE ? rot : MathUtil.applyDeadband(rot, OIConstants.kRotationDeadband, 1.0);
 
     // xSpeed *= Constants.SwerveConstants.kMaxSpeedTeleop;
@@ -418,6 +421,8 @@ public class DriveSubsystem extends SubsystemBase {
     
     if (isAutoRotate == RotationEnum.STRAFEONTARGET) {
       fieldRelative = false;
+      ySpeed = -ySpeed;
+      xSpeed = -xSpeed;
     }
 
     /*if (isAutoRotate == false && Math.abs(rot / ConstantsOffboard.MAX_ANGULAR_RADIANS_PER_SECOND) <= 0.1 

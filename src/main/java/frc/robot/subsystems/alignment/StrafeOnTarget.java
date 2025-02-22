@@ -4,8 +4,6 @@
 
 package frc.robot.subsystems.alignment;
 
-import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -16,8 +14,6 @@ import frc.robot.Constants.ConstantsOffboard;
 import frc.robot.isInAreaEnum;
 
 public class StrafeOnTarget {
-  private AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2025ReefscapeWelded.loadAprilTagLayoutField();
-  private Pose2d targetPose = aprilTagFieldLayout.getTagPose(7).get().toPose2d();
   private PIDController m_turnCtrl = new PIDController(0.014, 0.015, 0.0013);
   private double goalAngle;
   private double heading;
@@ -29,7 +25,7 @@ public StrafeOnTarget() {}
   // Called when the command is initially scheduled.
   public void initialize() {
     m_turnCtrl.enableContinuousInput(-180, 180);
-    m_turnCtrl.setTolerance(2.00);
+    m_turnCtrl.setTolerance(1.00);
     m_turnCtrl.reset();
   }
 
