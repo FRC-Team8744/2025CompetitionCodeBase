@@ -58,10 +58,10 @@ public class AlignToPole {
     var alliance = DriverStation.getAlliance();
     double[] translationAmount;
     if (alliance.get() == DriverStation.Alliance.Blue) {
-      translationAmount = new double[]{4.48945, 4.0};
+      translationAmount = new double[]{4.489337, 4.05128984}; // 4.026
     }
     else {
-      translationAmount = new double[]{12.8945, 4.0};
+      translationAmount = new double[]{12.8945, 4.02588984}; // 4.026
     }
 
     double X = ((positionToRotate[0] - translationAmount[0]) * Math.cos(Math.toRadians(angle))) 

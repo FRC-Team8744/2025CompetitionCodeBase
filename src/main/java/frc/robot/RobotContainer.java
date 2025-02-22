@@ -104,7 +104,7 @@ public class RobotContainer {
     .whileTrue(new RunIntake(m_intake, m_intakePivot, m_coral, m_scoringMechSensor));
 
     m_driver.y()
-    .whileTrue(new TeleopScore(m_coral).finallyDo((() -> m_robotDrive.isAutoYSpeed = false)));
+    .whileTrue(new TeleopScore(m_coral).finallyDo((() -> m_robotDrive.isAutoYSpeed = false)).finallyDo((() -> m_robotDrive.isAutoYSpeed = false)));
     
     m_driver.rightBumper()
     .toggleOnTrue(Commands.runOnce(() -> m_robotDrive.rightPoint = false).andThen(Commands.runOnce(() -> m_robotDrive.isAutoYSpeed = true)));

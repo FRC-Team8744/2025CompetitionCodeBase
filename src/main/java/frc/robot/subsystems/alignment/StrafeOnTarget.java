@@ -25,7 +25,7 @@ public StrafeOnTarget() {}
   // Called when the command is initially scheduled.
   public void initialize() {
     m_turnCtrl.enableContinuousInput(-180, 180);
-    m_turnCtrl.setTolerance(1.00);
+    m_turnCtrl.setTolerance(2.00);
     m_turnCtrl.reset();
   }
 
