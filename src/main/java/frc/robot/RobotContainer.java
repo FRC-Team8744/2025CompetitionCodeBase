@@ -52,6 +52,7 @@ public class RobotContainer {
   private ScoringMechSensor m_scoringMechSensor = new ScoringMechSensor();
   // The driver's controller
   private CommandXboxController m_driver = new CommandXboxController(OIConstants.kDriverControllerPort);
+  private CommandXboxController m_coDriver = new CommandXboxController(1);
   private AutoCommandManager m_autoManager = new AutoCommandManager(m_elevator, m_intake, m_climber, m_coral, m_intakePivot, m_scoringMechPivot, m_vision, m_vision2, null, null, m_robotDrive, null,m_scoringMechSensor);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -89,46 +90,43 @@ public class RobotContainer {
     .toggleOnTrue(Commands.runOnce(() -> m_robotDrive.isAutoRotate = m_robotDrive.isAutoRotate == RotationEnum.STRAFEONTARGET ? RotationEnum.NONE : RotationEnum.STRAFEONTARGET));
     // m_driver.leftTrigger()
     // .toggleOnTrue(Commands.runOnce(() -> m_robotDrive.isAutoRotate = m_robotDrive.isAutoRotate == RotationEnum.ALIGNTOCLIMB ? RotationEnum.NONE : RotationEnum.ALIGNTOCLIMB));
-    m_driver.leftTrigger()
+    m_driver.rightTrigger()
     // .whileTrue(Commands.runOnce(() -> m_elevator.elevatorConfig.CurrentLimits.StatorCurrentLimit = 40)
     // .alongWith(Commands.runOnce(() -> m_elevator.position.withSlot(0)))
     // .alongWith(Commands.runOnce(() -> m_elevator.elevatorSlot0 = true))
-    .whileTrue(new RunElevator(m_elevator).alongWith(Commands.runOnce(() -> m_scoringMechPivot.rotatePivot(m_scoringMechPivot.scoringMechGoalAngle)).onlyWhile((() -> m_elevator.getMotorPosition() >= ((327 * m_elevator.percentOfElevator) * .75)))))
+    .whileTrue(new RunElevator(m_elevator).alongWith(Commands.runOnce(() -> m_robotDrive.isAutoYSpeed = true)).alongWith(Commands.runOnce(() -> m_scoringMechPivot.rotatePivot(m_scoringMechPivot.scoringMechGoalAngle)).onlyWhile((() -> m_elevator.getMotorPosition() >= ((327 * m_elevator.percentOfElevator) * .75)))))
     
     // .whileFalse(Commands.runOnce(() -> m_elevator.elevatorConfig.CurrentLimits.StatorCurrentLimit = 5)
     // .alongWith(Commands.runOnce(() -> m_elevator.position.withSlot(1)))
     // .alongWith(Commands.runOnce(() -> m_elevator.elevatorSlot0 = false))
     .whileFalse(Commands.runOnce(() -> m_scoringMechPivot.rotatePivot(0)).alongWith(Commands.runOnce(() -> m_elevator.rotate(0)).onlyWhile((() -> m_scoringMechPivot.getPositionAngle() >= -20))));
 
-    m_driver.rightTrigger()
-    .whileTrue(new RunIntake(m_intake, m_intakePivot, m_coral, m_scoringMechSensor));
+    m_driver.leftTrigger()
+    .whileTrue(new RunIntake(m_intake, m_intakePivot, m_coral, m_scoringMechSensor).finallyDo((() -> m_robotDrive.isAutoRotate = RotationEnum.STRAFEONTARGET)));
 
     m_driver.y()
-    .whileTrue(new TeleopScore(m_coral).finallyDo((() -> m_robotDrive.isAutoYSpeed = false)).finallyDo((() -> m_robotDrive.isAutoYSpeed = false)));
+    .whileTrue(new TeleopScore(m_coral).finallyDo((() -> m_robotDrive.isAutoYSpeed = false)).finallyDo((() -> {m_robotDrive.isAutoYSpeed = false; m_robotDrive.isAutoRotate = RotationEnum.NONE;})));
     
-    m_driver.rightBumper()
-    .toggleOnTrue(Commands.runOnce(() -> m_robotDrive.rightPoint = false).andThen(Commands.runOnce(() -> m_robotDrive.isAutoYSpeed = true)));
+    m_coDriver.rightBumper()
+    .toggleOnTrue(Commands.runOnce(() -> m_robotDrive.rightPoint = false));
     
-    m_driver.leftBumper()
-    .toggleOnTrue(Commands.runOnce(() -> m_robotDrive.rightPoint = true).andThen(Commands.runOnce(() -> m_robotDrive.isAutoYSpeed = true)));
+    m_coDriver.leftBumper()
+    .toggleOnTrue(Commands.runOnce(() -> m_robotDrive.rightPoint = true));
 
-    m_driver.a()
-    .whileTrue(new TeleopOuttake(m_intake, m_intakePivot, m_coral));
-
-    m_driver.x()
-    .whileTrue(Commands.runOnce(() -> m_intake.runIndexer(.3)));
+    // m_driver.x()
+    // .whileTrue(Commands.runOnce(() -> m_intake.runIndexer(.3)));
 
     m_driver.b()
     .whileTrue(Commands.runOnce(() -> m_robotDrive.isAutoYSpeed = false));
 
-    m_driver.pov(0)
-    .whileTrue(Commands.runOnce(() -> m_elevator.setElevatorPreset(.9)).alongWith(Commands.runOnce(() -> m_scoringMechPivot.scoringMechGoalAngle = -200)));
-    m_driver.pov(90)
-    .whileTrue(Commands.runOnce(() -> m_elevator.setElevatorPreset(.53)).alongWith(Commands.runOnce(() -> m_scoringMechPivot.scoringMechGoalAngle = -60)));
-    m_driver.pov(180)
-    .whileTrue(Commands.runOnce(() -> m_elevator.setElevatorPreset(.25)).alongWith(Commands.runOnce(() -> m_scoringMechPivot.scoringMechGoalAngle = -60)));
-    m_driver.pov(270)
-    .whileTrue(Commands.runOnce(() -> m_elevator.setElevatorPreset(.33)).alongWith(Commands.runOnce(() -> m_scoringMechPivot.scoringMechGoalAngle = -60)));
+    m_coDriver.pov(0)
+    .whileTrue(Commands.runOnce(() -> m_elevator.setElevatorPreset(.9, "L4")).alongWith(Commands.runOnce(() -> m_scoringMechPivot.scoringMechGoalAngle = -200)));
+    m_coDriver.pov(90)
+    .whileTrue(Commands.runOnce(() -> m_elevator.setElevatorPreset(.53, "L3")).alongWith(Commands.runOnce(() -> m_scoringMechPivot.scoringMechGoalAngle = -60)));
+    m_coDriver.pov(180)
+    .whileTrue(Commands.runOnce(() -> m_elevator.setElevatorPreset(.25, "L1")).alongWith(Commands.runOnce(() -> m_scoringMechPivot.scoringMechGoalAngle = -60)));
+    m_coDriver.pov(270)
+    .whileTrue(Commands.runOnce(() -> m_elevator.setElevatorPreset(.33, "L2")).alongWith(Commands.runOnce(() -> m_scoringMechPivot.scoringMechGoalAngle = -60)));
   } 
 
   public Command getAutonomousCommand() {

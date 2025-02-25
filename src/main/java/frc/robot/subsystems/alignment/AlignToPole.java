@@ -40,6 +40,8 @@ public class AlignToPole {
 
     double yOffset = goalY - robotY;
 
+    if (Math.abs(yOffset) >= 5.0) yOffset = 0;
+
     SmartDashboard.putNumber("Y Offset", yOffset);
 
     m_driveCtrl.setSetpoint(yOffset);

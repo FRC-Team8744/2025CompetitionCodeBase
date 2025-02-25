@@ -98,8 +98,9 @@ public class Elevator extends SubsystemBase {
   /**
    * @param presetNumber Preset of elevator to go to (0 - 1)
    */
-  public void setElevatorPreset(double presetNumber) {
+  public void setElevatorPreset(double presetNumber, String presetName) {
     percentOfElevator = presetNumber;
+    SmartDashboard.putString("Scoring Preset", presetName);
   }
 
   @Override

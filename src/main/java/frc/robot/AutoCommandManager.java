@@ -157,11 +157,11 @@ public class AutoCommandManager {
         ) { 
             
         NamedCommands.registerCommand("Run Elevator", new RunElevator(m_elevator));
-        NamedCommands.registerCommand("L1 Drop", Commands.runOnce(() -> m_elevator.setElevatorPreset(.33)));
-        NamedCommands.registerCommand("L2 Drop", Commands.runOnce(() -> m_elevator.setElevatorPreset(.33)));
+        // NamedCommands.registerCommand("L1 Drop", Commands.runOnce(() -> m_elevator.setElevatorPreset(.33)));
+        // NamedCommands.registerCommand("L2 Drop", Commands.runOnce(() -> m_elevator.setElevatorPreset(.33)));
         NamedCommands.registerCommand("Run Intake", new RunIntake(m_intake, m_intakePivot, m_coralScoring, m_scoringMechSensor));
         NamedCommands.registerCommand("Drop Coral", new TeleopScore(m_coralScoring));
-        NamedCommands.registerCommand("Real Drop L2",Commands.runOnce(() -> m_elevator.setElevatorPreset(.33)).alongWith(Commands.runOnce(() -> m_scoringMechPivot.scoringMechGoalAngle = -60)));
+        // NamedCommands.registerCommand("Real Drop L2",Commands.runOnce(() -> m_elevator.setElevatorPreset(.33)).alongWith(Commands.runOnce(() -> m_scoringMechPivot.scoringMechGoalAngle = -60)));
         
         
     }
