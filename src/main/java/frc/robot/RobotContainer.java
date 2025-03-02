@@ -95,12 +95,12 @@ public class RobotContainer {
     // .whileTrue(Commands.runOnce(() -> m_elevator.elevatorConfig.CurrentLimits.StatorCurrentLimit = 40)
     // .alongWith(Commands.runOnce(() -> m_elevator.position.withSlot(0)))
     // .alongWith(Commands.runOnce(() -> m_elevator.elevatorSlot0 = true))
-    .whileTrue(new RunElevator(m_elevator).alongWith(Commands.runOnce(() -> m_scoringMechPivot.rotatePivot(m_scoringMechPivot.scoringMechGoalAngle)).onlyWhile((() -> m_elevator.getMotorPosition() >= ((327 * m_elevator.percentOfElevator) * .75)))))
+    .whileTrue(new RunElevator(m_elevator).alongWith(Commands.runOnce(() -> m_scoringMechPivot.rotatePivot(m_scoringMechPivot.scoringMechGoalAngle)).onlyWhile((() -> m_elevator.getMotorPosition() >= ((327 * m_elevator.getElevatorPreset()) * .75)))))
     
     // .whileFalse(Commands.runOnce(() -> m_elevator.elevatorConfig.CurrentLimits.StatorCurrentLimit = 5)
     // .alongWith(Commands.runOnce(() -> m_elevator.position.withSlot(1)))
     // .alongWith(Commands.runOnce(() -> m_elevator.elevatorSlot0 = false))
-    .whileFalse(Commands.runOnce(() -> m_scoringMechPivot.rotatePivot(0)).alongWith(Commands.runOnce(() -> m_elevator.rotate(0)).onlyWhile((() -> m_scoringMechPivot.getPositionAngle() >= -20))));
+    .whileFalse(Commands.runOnce(() -> m_scoringMechPivot.rotatePivot(0)).alongWith(Commands.runOnce(() -> m_elevator.setGoal(0)).onlyWhile((() -> m_scoringMechPivot.getPositionAngle() >= -20))));
 
     m_driver.rightTrigger()
     .whileTrue(new RunIntake(m_intake, m_intakePivot, m_coral, m_scoringMechSensor));
