@@ -128,6 +128,11 @@ public class Elevator extends SubsystemBase {
   }
 
   public void setGoal(double targetPosition) {
+    if (TUNE_PID_MODE) {
+      // PID parameters may have been updated in Shuffleboard
+      updateMotorConfig();
+    }
+    
     // m_leftElevator.setControl(position.withEnableFOC(false).withPosition(targetPosition));
     m_leftElevator.setControl(m_goal.withEnableFOC(false).withPosition(targetPosition));
   }
