@@ -6,6 +6,7 @@
 package frc.robot.subsystems.vision;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.isInAreaEnum;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
@@ -17,6 +18,7 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.photonvision.PhotonCamera;
@@ -25,7 +27,7 @@ import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 public class PhotonVisionGS extends SubsystemBase {
-  private PhotonCamera camera = new PhotonCamera("Camera_Module_v1");
+  private PhotonCamera camera = new PhotonCamera("Camera 1");
   private Rotation3d rd = new Rotation3d(0, Units.degreesToRadians(4.6), Units.degreesToRadians(178));
   private Transform3d td = new Transform3d(-0.29, .27, 0.30, rd);
   private Pose3d targetTd;
@@ -57,10 +59,14 @@ public class PhotonVisionGS extends SubsystemBase {
     result = camera.getLatestResult();
     apriltagTime = result.getTimestampSeconds();
     result.getTargets();
-    // camera.setPipelineIndex(1);
+    camera.setPipelineIndex(0);
 
     if (result.hasTargets()) {
-      PhotonTrackedTarget localTarget = result.getBestTarget();
+      PhotonTrackedTarget localTarget;
+      localTarget = result.getTargets().stream()
+        .filter(((t) -> t.getFiducialId() == isInAreaEnum.areaEnum.getAprilTag()))
+        .findAny()
+        .orElseGet((() -> result.getBestTarget()));
 
       // Start of check list
       boolean foundSpeaker = true;

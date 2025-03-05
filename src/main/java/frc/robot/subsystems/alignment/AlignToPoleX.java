@@ -16,12 +16,13 @@ import frc.robot.Constants;
 import frc.robot.Constants.SwerveConstants;
 import frc.robot.isInAreaEnum;
 
-public class AlignToPole {
+public class AlignToPoleX {
   /** Creates a new AlignToPole. */
   private PIDController m_driveCtrl = new PIDController(0.2, 0, 0);
   // private double heading;
   private double m_output;
-  public AlignToPole() {}
+  public boolean hasReachedX = false;  
+  public AlignToPoleX() {}
 
   public void initialize() {
     // m_driveCtrl.enableContinuousInput(-180, 180);
@@ -29,27 +30,33 @@ public class AlignToPole {
     m_driveCtrl.reset();
   }
 
-  public double execute(boolean rightPoint, Pose2d estimatedPose2d) {
+  public double execute(boolean rightPoint, Pose2d estimatedPose2d, boolean backUp) {
     double[] translatedRobotPosition = calculateTransformation(new double[]{estimatedPose2d.getX(), estimatedPose2d.getY()}, isInAreaEnum.areaEnum.getAngle() * -1);
 
-    double robotY = translatedRobotPosition[1];
-    double goalY = rightPoint ? Constants.rightPoint[1] : Constants.leftPoint[1];
+    double robotX = translatedRobotPosition[0];
+    double goalX = 3.2;
 
-    SmartDashboard.putNumber("Goal Y", goalY);
-    SmartDashboard.putNumber("Robot Y", robotY);
+    if (backUp) {
+      goalX = 2.95;
+    }
 
-    double yOffset = goalY - robotY;
+    SmartDashboard.putNumber("Goal X", goalX);
+    SmartDashboard.putNumber("Robot X", robotX);
 
-    SmartDashboard.putNumber("Y Offset", yOffset);
+    double xOffset = goalX - robotX;
 
-    m_driveCtrl.setSetpoint(yOffset);
+    SmartDashboard.putNumber("X Offset", xOffset);
+
+    m_driveCtrl.setSetpoint(xOffset);
 
     m_output = MathUtil.clamp(m_driveCtrl.calculate(0), -1.0, 1.0);
 
     if (Math.abs(m_driveCtrl.getError()) <= m_driveCtrl.getErrorTolerance()) {
+      hasReachedX = true;
       return 0;
     }
     else {
+      hasReachedX = false;
       return m_output * SwerveConstants.kMaxSpeedTeleop;
     }
   }

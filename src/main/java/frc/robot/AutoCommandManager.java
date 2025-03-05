@@ -35,6 +35,7 @@ import frc.robot.subsystems.mechanisms.IntakePivot;
 import frc.robot.subsystems.mechanisms.ScoringMechanismPivot;
 import frc.robot.subsystems.vision.PhotonVisionGS;
 import frc.robot.subsystems.vision.PhotonVisionGS2;
+// import frc.robot.commands.AutoLineUp;
 import frc.robot.commands.RunElevator;
 // import frc.robot.commands.DropCoral;
 import frc.robot.commands.RunIntake;
@@ -156,13 +157,9 @@ public class AutoCommandManager {
         
         ) { 
             
-        NamedCommands.registerCommand("Run Elevator", new RunElevator(m_elevator));
-        // NamedCommands.registerCommand("L1 Drop", Commands.runOnce(() -> m_elevator.setElevatorPreset(.33)));
-        // NamedCommands.registerCommand("L2 Drop", Commands.runOnce(() -> m_elevator.setElevatorPreset(.33)));
+        // NamedCommands.registerCommand("Auto line up", new AutoLineUp(m_elevator, m_robotDrive, m_scoringMechPivot));
+        NamedCommands.registerCommand("Auto rotate", Commands.runOnce(() -> m_robotDrive.isAutoRotate = m_robotDrive.isAutoRotate == RotationEnum.STRAFEONTARGET ? RotationEnum.NONE : RotationEnum.STRAFEONTARGET));
         NamedCommands.registerCommand("Run Intake", new RunIntake(m_intake, m_intakePivot, m_coralScoring, m_scoringMechSensor));
-        NamedCommands.registerCommand("Drop Coral", new TeleopScore(m_coralScoring));
-        // NamedCommands.registerCommand("Real Drop L2",Commands.runOnce(() -> m_elevator.setElevatorPreset(.33)).alongWith(Commands.runOnce(() -> m_scoringMechPivot.scoringMechGoalAngle = -60)));
-        
-        
+        NamedCommands.registerCommand("Drop Coral", new TeleopScore(m_coralScoring).finallyDo((() -> {m_robotDrive.isAutoYSpeed = false; m_robotDrive.isAutoRotate = m_robotDrive.isAutoRotate == RotationEnum.STRAFEONTARGET ? RotationEnum.NONE : RotationEnum.STRAFEONTARGET;})));        
     }
 }

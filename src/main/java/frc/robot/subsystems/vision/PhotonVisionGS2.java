@@ -6,6 +6,7 @@
 package frc.robot.subsystems.vision;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.isInAreaEnum;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
@@ -17,6 +18,7 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.photonvision.PhotonCamera;
@@ -25,14 +27,14 @@ import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 public class PhotonVisionGS2 extends SubsystemBase {
-  private PhotonCamera camera = new PhotonCamera("Camera_Module_v2");
-  private Rotation3d rd = new Rotation3d(0, Units.degreesToRadians(0), Units.degreesToRadians(0));
-  private Transform3d td = new Transform3d(0.305, 0.305, 0.305, rd);
+  private PhotonCamera camera = new PhotonCamera("Camera 2");
+  private Rotation3d rd = new Rotation3d(Units.degreesToRadians(2.6), Units.degreesToRadians(0), Units.degreesToRadians(190.4));
+  private Transform3d td = new Transform3d(-0.29, -0.285, 0.400, rd);
   private Pose3d targetTd;
   private double apriltagTime; 
   public double distanceToApriltag = 0;
 
-  private AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
+  private AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2025ReefscapeWelded.loadAprilTagLayoutField();
   private PhotonPipelineResult result;
   private PhotonTrackedTarget target;
 
@@ -58,76 +60,49 @@ public class PhotonVisionGS2 extends SubsystemBase {
     result = camera.getLatestResult();
     apriltagTime = result.getTimestampSeconds();
     result.getTargets();
-    camera.setPipelineIndex(2);
+    camera.setPipelineIndex(1);
 
     if (result.hasTargets()) {
-      PhotonTrackedTarget localTarget = result.getBestTarget();
-
+      PhotonTrackedTarget localTarget;
+      localTarget = result.getTargets().stream()
+        .filter(((t) -> t.getFiducialId() == isInAreaEnum.areaEnum.getAprilTag()))
+        .findAny()
+        .orElseGet((() -> result.getBestTarget()));
       // Start of check list
       boolean foundSpeaker = true;
-      // for (var thisTarget : result.targets) {  // Java 'for each' loop
-      //   int myID = thisTarget.getFiducialId();
-        // if ((myID == 4) || (myID == 7)) {
-        //   foundSpeaker = true;
-        // }
-        // //they have -31 for height of camera
-        // if (myID >= 11 && myID <= 16){
-        //   //this is chian thingy
-        //   //heightMatters = 1.35;
-        // }
-        // else if (myID == 5 || myID == 6){
-        //   //this is amp
-        //   //heightMatters = .61;
-        // }
-        // else if (myID == 8 || myID == 7 || myID == 3 || myID == 4){
-        //   //heightMatters = 2.025;
-        //   //this is speaker
-        // }
-        //else {heightMatters = -1;}
-      // }
 
       Transform3d cameraToTarget = localTarget.getBestCameraToTarget();
-
-      Pose3d aprilTagPose3d = aprilTagFieldLayout.getTagPose(localTarget.getFiducialId()).get();
+      var id = localTarget == null ? null : localTarget.getFiducialId();
+      Pose3d aprilTagPose3d = aprilTagFieldLayout.getTagPose(id).get();
 
       targetTd = PhotonUtils.estimateFieldToRobotAprilTag(cameraToTarget, aprilTagPose3d, td);
 
       ID = localTarget.getFiducialId();
 
-      // if(ID == 3){ID = 4;}
-
-      // if ((ID == 4) || (ID == 7)) { //blue-7 red-4
       target = localTarget;
-      SmartDashboard.putNumber("April tag local targer number", localTarget.getFiducialId());
+      // SmartDashboard.putNumber("April tag local targer number", localTarget.getFiducialId());
 
       if (foundSpeaker) {
         speakerInView = true;
         double yaw = (PhotonUtils.getYawToPose(targetTd.toPose2d(), aprilTagPose3d.toPose2d()).getDegrees());
         yaw *= ID == 7 ? 1 : -1;
         distanceToApriltag = PhotonUtils.getDistanceToPose(targetTd.toPose2d(), aprilTagPose3d.toPose2d());
-        // SmartDashboard.putNumber("yaw", yaw);
-
         tx_out = yaw; //m_lowpass.calculate(yaw);
-
       } else {
         speakerInView = false;
         // m_lowpass.reset();
       }
       speakerInView_filtered = m_filterSpeakerInView.calculate(speakerInView);
 
-  // SmartDashboard.putNumber("Height",heightMatters);
-
   double yaw = Units.radiansToDegrees(targetTd.getRotation().getZ());
   tx_out = m_lowpass.calculate(yaw);
-  SmartDashboard.putNumber("April tag target number", target.getFiducialId());
-  SmartDashboard.putNumber("April tag targetTd number", targetTd.getX());
+  // SmartDashboard.putNumber("April tag target number", target.getFiducialId());
+  // SmartDashboard.putNumber("April tag targetTd number", targetTd.getX());
 } else {
   ID = 0;
   targetTd = null;
   target = null;
-}
-  // SmartDashboard.putNumber("April tag target number", target.getFiducialId());
-  // SmartDashboard.putNumber("April tag targetTd number", targetTd.getX());
+  }
 }
   // port: http://photonvision.local:5800
 

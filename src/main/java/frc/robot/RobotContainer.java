@@ -5,15 +5,15 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.ConstantsOffboard;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.SwerveConstants;
+import frc.robot.commands.CoralEject;
 import frc.robot.commands.RunElevator;
 import frc.robot.commands.TeleopScore;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ScoringMechSensor;
-import frc.robot.subsystems.alignment.AlignToClimb;
+import frc.robot.subsystems.alignment.AlignToPoleX;
 // import frc.robot.subsystems.mechanisms.AlgaeMechanism;
 import frc.robot.subsystems.mechanisms.Climber;
 import frc.robot.subsystems.mechanisms.CoralScoring;
@@ -29,7 +29,6 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.RunIntake;
-import frc.robot.commands.TeleopOuttake;
 
 /*
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -41,7 +40,6 @@ public class RobotContainer {
   // The robot's subsystems
   private PhotonVisionGS m_vision = new PhotonVisionGS();
   private PhotonVisionGS2 m_vision2 = new PhotonVisionGS2();
-  private DriveSubsystem m_robotDrive = new DriveSubsystem(m_vision, m_vision2);
   private Elevator m_elevator = new Elevator();
   private Intake m_intake = new Intake();
   private IntakePivot m_intakePivot = new IntakePivot();
@@ -50,6 +48,8 @@ public class RobotContainer {
   private Climber m_climber = new Climber();
   // private AlgaeMechanism m_algae = new AlgaeMechanism();
   private ScoringMechSensor m_scoringMechSensor = new ScoringMechSensor();
+  private AlignToPoleX m_alignToPoleX = new AlignToPoleX();
+  private DriveSubsystem m_robotDrive = new DriveSubsystem(m_vision, m_vision2, m_alignToPoleX);
   // The driver's controller
   private CommandXboxController m_driver = new CommandXboxController(OIConstants.kDriverControllerPort);
   private CommandXboxController m_coDriver = new CommandXboxController(1);
@@ -88,36 +88,31 @@ public class RobotContainer {
     m_driver.back().onTrue(Commands.runOnce (() -> m_robotDrive.zeroGyro()));
     m_driver.rightStick()
     .toggleOnTrue(Commands.runOnce(() -> m_robotDrive.isAutoRotate = m_robotDrive.isAutoRotate == RotationEnum.STRAFEONTARGET ? RotationEnum.NONE : RotationEnum.STRAFEONTARGET));
-    // m_driver.leftTrigger()
-    // .toggleOnTrue(Commands.runOnce(() -> m_robotDrive.isAutoRotate = m_robotDrive.isAutoRotate == RotationEnum.ALIGNTOCLIMB ? RotationEnum.NONE : RotationEnum.ALIGNTOCLIMB));
-    m_driver.rightTrigger()
-    // .whileTrue(Commands.runOnce(() -> m_elevator.elevatorConfig.CurrentLimits.StatorCurrentLimit = 40)
-    // .alongWith(Commands.runOnce(() -> m_elevator.position.withSlot(0)))
-    // .alongWith(Commands.runOnce(() -> m_elevator.elevatorSlot0 = true))
-    .whileTrue(new RunElevator(m_elevator).alongWith(Commands.runOnce(() -> m_robotDrive.isAutoYSpeed = true)).alongWith(Commands.runOnce(() -> m_scoringMechPivot.rotatePivot(m_scoringMechPivot.scoringMechGoalAngle)).onlyWhile((() -> m_elevator.getMotorPosition() >= ((327 * m_elevator.percentOfElevator) * .75)))))
     
-    // .whileFalse(Commands.runOnce(() -> m_elevator.elevatorConfig.CurrentLimits.StatorCurrentLimit = 5)
-    // .alongWith(Commands.runOnce(() -> m_elevator.position.withSlot(1)))
-    // .alongWith(Commands.runOnce(() -> m_elevator.elevatorSlot0 = false))
+    m_driver.rightTrigger()
+    .whileTrue(new RunElevator(m_elevator).alongWith(Commands.runOnce(() -> m_robotDrive.isAutoYSpeed = true)).alongWith(Commands.runOnce(() -> m_robotDrive.isAutoXSpeed = true)).alongWith(Commands.runOnce(() -> m_scoringMechPivot.rotatePivot(m_scoringMechPivot.scoringMechGoalAngle)).onlyWhile((() -> m_elevator.getMotorPosition() >= ((327 * m_elevator.percentOfElevator) * .75)))))
     .whileFalse(Commands.runOnce(() -> m_scoringMechPivot.rotatePivot(0)).alongWith(Commands.runOnce(() -> m_elevator.rotate(0)).onlyWhile((() -> m_scoringMechPivot.getPositionAngle() >= -20))));
 
     m_driver.leftTrigger()
-    .whileTrue(new RunIntake(m_intake, m_intakePivot, m_coral, m_scoringMechSensor).finallyDo((() -> m_robotDrive.isAutoRotate = RotationEnum.STRAFEONTARGET)));
+    .whileTrue(new RunIntake(m_intake, m_intakePivot, m_coral, m_scoringMechSensor));
 
     m_driver.y()
-    .whileTrue(new TeleopScore(m_coral).finallyDo((() -> m_robotDrive.isAutoYSpeed = false)).finallyDo((() -> {m_robotDrive.isAutoYSpeed = false; m_robotDrive.isAutoRotate = RotationEnum.NONE;})));
+    .whileTrue(new TeleopScore(m_coral).andThen(Commands.runOnce(() -> m_robotDrive.backUp = true).andThen(Commands.waitUntil((() -> m_alignToPoleX.hasReachedX)))).finallyDo((() -> {m_robotDrive.isAutoYSpeed = false; m_robotDrive.isAutoXSpeed = false;})));
+
+    m_driver.x()
+    .whileTrue(new CoralEject(m_intake, m_coral));
     
     m_coDriver.rightBumper()
-    .toggleOnTrue(Commands.runOnce(() -> m_robotDrive.rightPoint = false));
+    .toggleOnTrue(Commands.runOnce(() -> m_robotDrive.leftPoint = false));
     
     m_coDriver.leftBumper()
-    .toggleOnTrue(Commands.runOnce(() -> m_robotDrive.rightPoint = true));
+    .toggleOnTrue(Commands.runOnce(() -> m_robotDrive.leftPoint = true));
 
     // m_driver.x()
     // .whileTrue(Commands.runOnce(() -> m_intake.runIndexer(.3)));
 
     m_driver.b()
-    .whileTrue(Commands.runOnce(() -> m_robotDrive.isAutoYSpeed = false));
+    .whileTrue(Commands.runOnce(() -> m_robotDrive.isAutoYSpeed = false).alongWith(Commands.runOnce(() -> m_robotDrive.isAutoXSpeed = false)));
 
     m_coDriver.pov(0)
     .whileTrue(Commands.runOnce(() -> m_elevator.setElevatorPreset(.9, "L4")).alongWith(Commands.runOnce(() -> m_scoringMechPivot.scoringMechGoalAngle = -200)));

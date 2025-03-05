@@ -86,7 +86,8 @@ public final class Constants {
     public static final int kRearRightMagEncoderPort = 21; // 21
 
     public static final int kRightElevatorMotorPort = 2;
-    public static final int kIndexerMotorPort = 6;
+    public static final int kIndexerMotorPortL = 6;
+    public static final int kIndexerMotorPortR = 23;
     public static final int kIntakeRollerMotorPort = 11;
     public static final int kIntakePivotMotorPort = 12;
     public static final int kLeftElevatorMotorPort = 13;

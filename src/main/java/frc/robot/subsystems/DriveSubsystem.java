@@ -40,6 +40,7 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.SwerveConstants;
 import frc.robot.subsystems.alignment.AlignToClimb;
 import frc.robot.subsystems.alignment.AlignToPole;
+import frc.robot.subsystems.alignment.AlignToPoleX;
 import frc.robot.subsystems.alignment.StrafeOnTarget;
 import frc.robot.subsystems.vision.PhotonVisionGS;
 import frc.robot.subsystems.vision.PhotonVisionGS2;
@@ -66,8 +67,9 @@ public class DriveSubsystem extends SubsystemBase {
 
   private double autoRotateSpeed = 0;
   private double autoYSpeed = 0;
+  private double autoXSpeed = 0;
 
-  public boolean rightPoint = true;
+  public boolean leftPoint = true;
 
   private double goalAngle = 0;
   private PIDController m_turnCtrl = new PIDController(0.03, 0.0065, 0.0035);
@@ -92,11 +94,16 @@ public class DriveSubsystem extends SubsystemBase {
   private final PhotonVisionGS2 m_vision2;
   public final AlignToClimb m_alignToClimb = new AlignToClimb();
   private final AlignToPole m_alignToPole = new AlignToPole();
+  private final AlignToPoleX m_alignToPoleX;
 
   public RotationEnum isAutoRotate = RotationEnum.NONE;
   public boolean isAutoYSpeed = false;
+  public boolean isAutoXSpeed = false;
   public boolean isAutoRotateToggle = true;
   public boolean isAutoYSpeedToggle = true;
+  public boolean isAutoXSpeedToggle = true;
+
+  public boolean backUp = false;
   
   public SwerveModulePosition[] getModulePositions() {
     return new SwerveModulePosition[] {
@@ -116,10 +123,11 @@ public class DriveSubsystem extends SubsystemBase {
   public Field2d m_field;
   
   /** Creates a new DriveSubsystem. */
-  public DriveSubsystem(PhotonVisionGS m_vision, PhotonVisionGS2 m_vision2) {
+  public DriveSubsystem(PhotonVisionGS m_vision, PhotonVisionGS2 m_vision2, AlignToPoleX m_alignToPoleX) {
     m_turnCtrl.setTolerance(10.00);
     this.m_vision = m_vision;
     this.m_vision2 = m_vision2;
+    this.m_alignToPoleX = m_alignToPoleX;
     
     offset_FL = SwerveConstants.kFrontLeftMagEncoderOffsetDegrees_NoNo;
     offset_RL = SwerveConstants.kRearLeftMagEncoderOffsetDegrees_NoNo;
@@ -223,25 +231,25 @@ public class DriveSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // Update the odometry in the periodic block
+    if (isAutoRotate == RotationEnum.STRAFEONTARGET) {
+      if (m_vision.getTarget().map((t) -> t.getPoseAmbiguity()).orElse(1.0) <= .2 && m_vision.getTargetDistance() >= .7) {
+        m_vision.getRobotPose().ifPresent((robotPose) -> m_poseEstimator.addVisionMeasurement(robotPose, m_vision.getApriltagTime()));
+      }
+    }
+    else {
+      if ((m_vision.getTarget().map((t) -> t.getPoseAmbiguity()).orElse(1.0) <= 0.2 && m_vision.getTargetDistance() >= 0.7) || (m_vision2.getTarget().map((t) -> t.getPoseAmbiguity()).orElse(1.0) <= 0.2) && m_vision2.getTargetDistance() >= 0.7) {
+        if (m_vision.getTarget().map((t) -> t.getPoseAmbiguity()).orElse(1.0) <= m_vision2.getTarget().map((t) -> t.getPoseAmbiguity()).orElse(1.0) && m_vision.getTargetDistance() >= 0.7) {
+          m_vision.getRobotPose().ifPresent((robotPose) -> m_poseEstimator.addVisionMeasurement(robotPose, m_vision.getApriltagTime()));
+        }
+        else if (m_vision2.getTarget().map((t) -> t.getPoseAmbiguity()).orElse(1.0) <= m_vision.getTarget().map((t) -> t.getPoseAmbiguity()).orElse(1.0) && m_vision2.getTargetDistance() >= 0.7) {
+          m_vision2.getRobotPose().ifPresent((robotPose) -> m_poseEstimator.addVisionMeasurement(robotPose, m_vision.getApriltagTime()));
+        }
+      }
+    }
 
-    // if (m_vision.getTarget().map((t) -> t.getPoseAmbiguity()).orElse(1.0) <= .2 && m_vision2.getTarget().map((t) -> t.getPoseAmbiguity()).orElse(1.0) <= .2) {
-    //   if (m_vision.getTarget().map((t) -> t.getPoseAmbiguity()).orElse(1.0) <= m_vision2.getTarget().map((t) -> t.getPoseAmbiguity()).orElse(1.0)) {
-    //     m_vision.getRobotPose().ifPresent((robotPose) -> m_poseEstimator.addVisionMeasurement(robotPose, m_vision.getApriltagTime()));
-    //   }
-    //   else {
-    //     m_vision2.getRobotPose().ifPresent((robotPose) -> m_poseEstimator.addVisionMeasurement(robotPose, m_vision.getApriltagTime()));
-    //   }
-    //   }
-    // else if (m_vision.getTarget().map((t) -> t.getPoseAmbiguity()).orElse(1.0) <= .2) {
+    // if (m_vision.getTarget().map((t) -> t.getPoseAmbiguity()).orElse(1.0) <= .2 && m_vision.getTargetDistance() >= .7) {
     //   m_vision.getRobotPose().ifPresent((robotPose) -> m_poseEstimator.addVisionMeasurement(robotPose, m_vision.getApriltagTime()));
     // }
-    // else if (m_vision2.getTarget().map((t) -> t.getPoseAmbiguity()).orElse(1.0) < .2) {
-    //     m_vision2.getRobotPose().ifPresent((robotPose) -> m_poseEstimator.addVisionMeasurement(robotPose, m_vision.getApriltagTime()));
-    // }
-
-    if (m_vision.getTarget().map((t) -> t.getPoseAmbiguity()).orElse(1.0) <= .2 && m_vision.getTargetDistance() >= .7) {
-      m_vision.getRobotPose().ifPresent((robotPose) -> m_poseEstimator.addVisionMeasurement(robotPose, m_vision.getApriltagTime()));
-    }
 
     m_poseEstimator.update(m_imu.getRotation2d(), getModulePositions());
 
@@ -321,7 +329,11 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     if (isAutoYSpeed) {
-      autoYSpeed = m_alignToPole.execute(rightPoint, m_poseEstimator.getEstimatedPosition());
+      autoYSpeed = m_alignToPole.execute(leftPoint, m_poseEstimator.getEstimatedPosition());
+    }
+
+    if (isAutoXSpeed) {
+      autoXSpeed = m_alignToPoleX.execute(leftPoint, m_poseEstimator.getEstimatedPosition(), backUp);
     }
 
     if (isAutoRotate == RotationEnum.STRAFEONTARGET && isAutoRotateToggle) {
@@ -342,6 +354,15 @@ public class DriveSubsystem extends SubsystemBase {
       isAutoYSpeedToggle = true;
     }
 
+    if (isAutoXSpeed && isAutoXSpeedToggle) {
+      m_alignToPoleX.initialize();
+      isAutoXSpeedToggle = false;
+    }
+
+    if (!isAutoXSpeed) {
+      isAutoXSpeedToggle = true;
+    }
+
     if (isAutoRotate == RotationEnum.ALIGNTOCLIMB) {
       autoRotateSpeed = m_alignToClimb.execute(getEstimatedPose());
     }
@@ -351,15 +372,13 @@ public class DriveSubsystem extends SubsystemBase {
       isAutoRotateToggle = false;
     }
 
-    SmartDashboard.putBoolean("Is Right", rightPoint);
-    SmartDashboard.putBoolean("Y Speed", isAutoYSpeed);
+    SmartDashboard.putBoolean("Is Right", leftPoint);
     
     getRobotVelocityX();
     getRobotVelocityY();
 
     SmartDashboard.putNumber("Estimated rotation", m_poseEstimator.getEstimatedPosition().getRotation().getDegrees());
-    SmartDashboard.putNumber("Distance to april tag", m_vision.getTargetDistance());
-}
+  }
 
   /**
    * Returns the currently-estimated pose of the robot.
@@ -403,14 +422,17 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
     rot = isAutoRotate != RotationEnum.NONE ? autoRotateSpeed : rot;
-    // ySpeed = isAutoYSpeedRotate ? autoYSpeed : ySpeed;
 
     if (isAutoYSpeed && isAutoRotate == RotationEnum.STRAFEONTARGET) {
       ySpeed = autoYSpeed;
     }
 
+    if (isAutoXSpeed && isAutoRotate == RotationEnum.STRAFEONTARGET) {
+      xSpeed = autoXSpeed;
+    }
+
     // Apply joystick deadband
-    xSpeed = MathUtil.applyDeadband(xSpeed, OIConstants.kDeadband, 1.0);
+    xSpeed = isAutoXSpeed ? xSpeed : MathUtil.applyDeadband(xSpeed, OIConstants.kDeadband, 1.0);
     ySpeed = isAutoYSpeed ? ySpeed : MathUtil.applyDeadband(ySpeed, OIConstants.kDeadband, 1.0);
     rot = isAutoRotate != RotationEnum.NONE ? rot : MathUtil.applyDeadband(rot, OIConstants.kRotationDeadband, 1.0);
 
