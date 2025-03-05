@@ -51,18 +51,30 @@ public class Elevator extends SubsystemBase {
   // TODO: Move constants to Constants.java after tuning
   private static final double ELEV_CURRENT_LIMIT = 40.0;  // Stator current limit (not sure if needed)
   // https://v6.docs.ctr-electronics.com/en/stable/docs/api-reference/device-specific/talonfx/motion-magic.html
-  private static final double ELEV_kG = 0.0; // output to overcome gravity (output)
+  private static final double ELEV_kG = 0.0; // 0.1 output to overcome gravity (output)
   private static final double ELEV_kS = 0.0; // output to overcome static friction (output)
   private static final double ELEV_kV = 0.0; // output per unit of target velocity (output/rps)
   private static final double ELEV_kA = 0.0; // output per unit of target acceleration (output/(rps/s))
-  private static final double ELEV_kP = 0.0; // output per unit of error in position (output/rotation)
+  private static final double ELEV_kP = 0.0; // 1.7 output per unit of error in position (output/rotation)
   private static final double ELEV_kI = 0.0; // output per unit of integrated error in position (output/(rotation*s))
   private static final double ELEV_kD = 0.0; // output per unit of error in velocity (output/rps)
-  private static final double ELEV_maxV = 80.0; // Maximum velocity (rps)
-  private static final double ELEV_maxA = 160.0; // Maximum acceleration (rps/s)
+  private static final double ELEV_maxV = 80.0; // 80 Maximum velocity (rps)
+  private static final double ELEV_maxA = 160.0; // 250 Maximum acceleration (rps/s)
   private static final double ELEV_maxJ = 1600.0; // Maximum jerk (rps/s/s)
 
   public Elevator() {
+    SmartDashboard.putNumber("Elev Current Limit", ELEV_CURRENT_LIMIT);
+    SmartDashboard.putNumber("Elev kGravity", ELEV_kG);
+    SmartDashboard.putNumber("Elev kStaticFriction", ELEV_kS);
+    SmartDashboard.putNumber("Elev kVelocity", ELEV_kV);
+    SmartDashboard.putNumber("Elev kAcceleration", ELEV_kA);
+    SmartDashboard.putNumber("Elev kProportion", ELEV_kP);
+    SmartDashboard.putNumber("Elev kIntegral", ELEV_kI);
+  SmartDashboard.putNumber("Elev kDifferential", ELEV_kD);
+    SmartDashboard.putNumber("Elev kMaxVelocity", ELEV_maxV);
+    SmartDashboard.putNumber("Elev kMaxAcceleration", ELEV_maxA);
+    SmartDashboard.putNumber("Elev kMaxJerk", ELEV_maxJ);
+
     m_leftElevator = new TalonFX(Constants.SwerveConstants.kLeftElevatorMotorPort);
 
     m_rightElevator = new TalonFX(Constants.SwerveConstants.kRightElevatorMotorPort);
