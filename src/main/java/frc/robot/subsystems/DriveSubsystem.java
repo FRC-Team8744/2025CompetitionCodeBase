@@ -231,21 +231,21 @@ public class DriveSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // Update the odometry in the periodic block
-    if (isAutoRotate == RotationEnum.STRAFEONTARGET) {
-      if (m_vision.getTarget().map((t) -> t.getPoseAmbiguity()).orElse(1.0) <= .2 && m_vision.getTargetDistance() >= .7) {
-        m_vision.getRobotPose().ifPresent((robotPose) -> m_poseEstimator.addVisionMeasurement(robotPose, m_vision.getApriltagTime()));
+    // if (isAutoRotate == RotationEnum.STRAFEONTARGET) {
+      if (m_vision2.getTarget().map((t) -> t.getPoseAmbiguity()).orElse(1.0) <= .2 && m_vision2.getTargetDistance() >= .7) {
+        m_vision2.getRobotPose().ifPresent((robotPose) -> m_poseEstimator.addVisionMeasurement(robotPose, m_vision2.getApriltagTime()));
       }
-    }
-    else {
-      if ((m_vision.getTarget().map((t) -> t.getPoseAmbiguity()).orElse(1.0) <= 0.2 && m_vision.getTargetDistance() >= 0.7) || (m_vision2.getTarget().map((t) -> t.getPoseAmbiguity()).orElse(1.0) <= 0.2) && m_vision2.getTargetDistance() >= 0.7) {
-        if (m_vision.getTarget().map((t) -> t.getPoseAmbiguity()).orElse(1.0) <= m_vision2.getTarget().map((t) -> t.getPoseAmbiguity()).orElse(1.0) && m_vision.getTargetDistance() >= 0.7) {
-          m_vision.getRobotPose().ifPresent((robotPose) -> m_poseEstimator.addVisionMeasurement(robotPose, m_vision.getApriltagTime()));
-        }
-        else if (m_vision2.getTarget().map((t) -> t.getPoseAmbiguity()).orElse(1.0) <= m_vision.getTarget().map((t) -> t.getPoseAmbiguity()).orElse(1.0) && m_vision2.getTargetDistance() >= 0.7) {
-          m_vision2.getRobotPose().ifPresent((robotPose) -> m_poseEstimator.addVisionMeasurement(robotPose, m_vision.getApriltagTime()));
-        }
-      }
-    }
+    // }
+    // else {
+    //   if ((m_vision.getTarget().map((t) -> t.getPoseAmbiguity()).orElse(1.0) <= 0.2 && m_vision.getTargetDistance() >= 0.7) || (m_vision2.getTarget().map((t) -> t.getPoseAmbiguity()).orElse(1.0) <= 0.2) && m_vision2.getTargetDistance() >= 0.7) {
+    //     if (m_vision.getTarget().map((t) -> t.getPoseAmbiguity()).orElse(1.0) <= m_vision2.getTarget().map((t) -> t.getPoseAmbiguity()).orElse(1.0) && m_vision.getTargetDistance() >= 0.7) {
+    //       m_vision.getRobotPose().ifPresent((robotPose) -> m_poseEstimator.addVisionMeasurement(robotPose, m_vision.getApriltagTime()));
+    //     }
+    //     else if (m_vision2.getTarget().map((t) -> t.getPoseAmbiguity()).orElse(1.0) <= m_vision.getTarget().map((t) -> t.getPoseAmbiguity()).orElse(1.0) && m_vision2.getTargetDistance() >= 0.7) {
+    //       m_vision2.getRobotPose().ifPresent((robotPose) -> m_poseEstimator.addVisionMeasurement(robotPose, m_vision.getApriltagTime()));
+    //     }
+    //   }
+    // }
 
     // if (m_vision.getTarget().map((t) -> t.getPoseAmbiguity()).orElse(1.0) <= .2 && m_vision.getTargetDistance() >= .7) {
     //   m_vision.getRobotPose().ifPresent((robotPose) -> m_poseEstimator.addVisionMeasurement(robotPose, m_vision.getApriltagTime()));

@@ -31,6 +31,7 @@ public class Elevator extends SubsystemBase {
   public Slot1Configs elevatorConfigPIDDown = elevatorConfig.Slot1;
   public boolean elevatorSlot0 = true;
   public double percentOfElevator = 0.9;
+  public String scoringPreset = "L4";
   public Elevator() {
     elevatorConfig.Voltage.PeakForwardVoltage = 12;
     elevatorConfig.Voltage.PeakReverseVoltage = -12;
@@ -100,6 +101,7 @@ public class Elevator extends SubsystemBase {
    */
   public void setElevatorPreset(double presetNumber, String presetName) {
     percentOfElevator = presetNumber;
+    scoringPreset = presetName;
     SmartDashboard.putString("Scoring Preset", presetName);
   }
 

@@ -32,7 +32,7 @@ public class IntakePivot extends SubsystemBase {
     intakePivotConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
     intakePivotConfig.CurrentLimits.StatorCurrentLimitEnable = true;
     intakePivotConfig.CurrentLimits.StatorCurrentLimit = 40.0;
-    intakePivotConfigPID.kS = 0.0; // Add 0.25 V output to overcome static friction
+    intakePivotConfigPID.kS = 24.0; // Add 0.25 V output to overcome static friction
     intakePivotConfigPID.kV = 0.0; // A velocity target of 1 rps results in 0.12 V output
     intakePivotConfigPID.kA = 0.0; // An acceleration of 1 rps/s requires 0.01 V output
     intakePivotConfigPID.kP = 1.0; // A position error of 2.5 rotations results in 12 V output

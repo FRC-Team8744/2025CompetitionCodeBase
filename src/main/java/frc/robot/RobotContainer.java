@@ -9,9 +9,11 @@ import frc.robot.Constants.ConstantsOffboard;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.SwerveConstants;
 import frc.robot.commands.CoralEject;
+import frc.robot.commands.NoTwoPieces;
 import frc.robot.commands.RunElevator;
 import frc.robot.commands.TeleopScore;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.LEDS;
 import frc.robot.subsystems.ScoringMechSensor;
 import frc.robot.subsystems.alignment.AlignToPoleX;
 // import frc.robot.subsystems.mechanisms.AlgaeMechanism;
@@ -46,6 +48,7 @@ public class RobotContainer {
   private ScoringMechanismPivot m_scoringMechPivot = new ScoringMechanismPivot();
   private CoralScoring m_coral = new CoralScoring();
   private Climber m_climber = new Climber();
+  private LEDS m_leds = new LEDS();
   // private AlgaeMechanism m_algae = new AlgaeMechanism();
   private ScoringMechSensor m_scoringMechSensor = new ScoringMechSensor();
   private AlignToPoleX m_alignToPoleX = new AlignToPoleX();
@@ -57,6 +60,7 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    m_leds.ledOn(0,0,255);
     // Configure the button bindings
     configureButtonBindings();
 
@@ -94,10 +98,10 @@ public class RobotContainer {
     .whileFalse(Commands.runOnce(() -> m_scoringMechPivot.rotatePivot(0)).alongWith(Commands.runOnce(() -> m_elevator.rotate(0)).onlyWhile((() -> m_scoringMechPivot.getPositionAngle() >= -20))));
 
     m_driver.leftTrigger()
-    .whileTrue(new RunIntake(m_intake, m_intakePivot, m_coral, m_scoringMechSensor));
+    .whileTrue(new RunIntake(m_intake, m_intakePivot, m_coral, m_scoringMechSensor, m_elevator).finallyDo(() -> new NoTwoPieces(m_intake, m_intakePivot)));
 
     m_driver.y()
-    .whileTrue(new TeleopScore(m_coral).andThen(Commands.runOnce(() -> m_robotDrive.backUp = true).andThen(Commands.waitUntil((() -> m_alignToPoleX.hasReachedX)))).finallyDo((() -> {m_robotDrive.isAutoYSpeed = false; m_robotDrive.isAutoXSpeed = false;})));
+    .whileTrue(new TeleopScore(m_coral, m_elevator, m_intake, m_intakePivot).andThen(Commands.runOnce(() -> m_robotDrive.backUp = true).andThen(Commands.waitUntil((() -> m_alignToPoleX.hasReachedX)))).finallyDo((() -> {m_robotDrive.isAutoYSpeed = false; m_robotDrive.isAutoXSpeed = false;})));
 
     m_driver.x()
     .whileTrue(new CoralEject(m_intake, m_coral));
