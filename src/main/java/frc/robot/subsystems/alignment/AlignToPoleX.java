@@ -30,15 +30,11 @@ public class AlignToPoleX {
     m_driveCtrl.reset();
   }
 
-  public double execute(boolean rightPoint, Pose2d estimatedPose2d, boolean backUp) {
+  public double execute(boolean rightPoint, Pose2d estimatedPose2d) {
     double[] translatedRobotPosition = calculateTransformation(new double[]{estimatedPose2d.getX(), estimatedPose2d.getY()}, isInAreaEnum.areaEnum.getAngle() * -1);
 
     double robotX = translatedRobotPosition[0];
-    double goalX = 3.2;
-
-    if (backUp) {
-      goalX = 2.95;
-    }
+    double goalX = 3.1746; // 3.2
 
     SmartDashboard.putNumber("Goal X", goalX);
     SmartDashboard.putNumber("Robot X", robotX);

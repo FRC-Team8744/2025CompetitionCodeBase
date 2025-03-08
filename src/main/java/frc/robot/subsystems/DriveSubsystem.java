@@ -65,9 +65,9 @@ public class DriveSubsystem extends SubsystemBase {
   private final SwerveModuleOffboard m_frontRight;
   private final SwerveModuleOffboard m_rearRight;
 
-  private double autoRotateSpeed = 0;
-  private double autoYSpeed = 0;
-  private double autoXSpeed = 0;
+  public double autoRotateSpeed = 0;
+  public double autoYSpeed = 0;
+  public double autoXSpeed = 0;
 
   public boolean leftPoint = true;
 
@@ -102,8 +102,6 @@ public class DriveSubsystem extends SubsystemBase {
   public boolean isAutoRotateToggle = true;
   public boolean isAutoYSpeedToggle = true;
   public boolean isAutoXSpeedToggle = true;
-
-  public boolean backUp = false;
   
   public SwerveModulePosition[] getModulePositions() {
     return new SwerveModulePosition[] {
@@ -232,8 +230,8 @@ public class DriveSubsystem extends SubsystemBase {
   public void periodic() {
     // Update the odometry in the periodic block
     // if (isAutoRotate == RotationEnum.STRAFEONTARGET) {
-      if (m_vision2.getTarget().map((t) -> t.getPoseAmbiguity()).orElse(1.0) <= .2 && m_vision2.getTargetDistance() >= .7) {
-        m_vision2.getRobotPose().ifPresent((robotPose) -> m_poseEstimator.addVisionMeasurement(robotPose, m_vision2.getApriltagTime()));
+      if (m_vision.getTarget().map((t) -> t.getPoseAmbiguity()).orElse(1.0) <= .2 && m_vision.getTargetDistance() >= .7) {
+        m_vision.getRobotPose().ifPresent((robotPose) -> m_poseEstimator.addVisionMeasurement(robotPose, m_vision.getApriltagTime()));
       }
     // }
     // else {
@@ -333,7 +331,7 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
     if (isAutoXSpeed) {
-      autoXSpeed = m_alignToPoleX.execute(leftPoint, m_poseEstimator.getEstimatedPosition(), backUp);
+      autoXSpeed = m_alignToPoleX.execute(leftPoint, m_poseEstimator.getEstimatedPosition());
     }
 
     if (isAutoRotate == RotationEnum.STRAFEONTARGET && isAutoRotateToggle) {

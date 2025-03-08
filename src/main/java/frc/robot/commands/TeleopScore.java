@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.ScoringMechSensor;
 import frc.robot.subsystems.mechanisms.CoralScoring;
 import frc.robot.subsystems.mechanisms.Elevator;
 import frc.robot.subsystems.mechanisms.Intake;
@@ -17,7 +18,8 @@ public class TeleopScore extends Command{
   private final Elevator m_elevator;
   private final Intake m_intake;
   private final IntakePivot m_intakePivot;
-  public TeleopScore(CoralScoring co, Elevator ele, Intake in, IntakePivot inp) {
+  private final ScoringMechSensor m_scoringMechSensor;
+  public TeleopScore(CoralScoring co, Elevator ele, Intake in, IntakePivot inp, ScoringMechSensor sms) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_coral = co;
     addRequirements(m_coral);
@@ -26,6 +28,7 @@ public class TeleopScore extends Command{
     addRequirements(m_intake);
     m_intakePivot = inp;
     addRequirements(m_intakePivot);
+    m_scoringMechSensor = sms;
   }
 
   // Called when the command is initially scheduled.
@@ -48,7 +51,7 @@ public class TeleopScore extends Command{
   public void end(boolean interrupted) {
     m_coral.stopMotor();
     m_intake.stopBoth();
-    m_intakePivot.intakeDown(0);
+    // m_intakePivot.intakeDown(0);
   }
 
   // Returns true when the command should end.

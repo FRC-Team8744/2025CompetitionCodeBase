@@ -160,6 +160,6 @@ public class AutoCommandManager {
         // NamedCommands.registerCommand("Auto line up", new AutoLineUp(m_elevator, m_robotDrive, m_scoringMechPivot));
         NamedCommands.registerCommand("Auto rotate", Commands.runOnce(() -> m_robotDrive.isAutoRotate = m_robotDrive.isAutoRotate == RotationEnum.STRAFEONTARGET ? RotationEnum.NONE : RotationEnum.STRAFEONTARGET));
         NamedCommands.registerCommand("Run Intake", new RunIntake(m_intake, m_intakePivot, m_coralScoring, m_scoringMechSensor, m_elevator));
-        NamedCommands.registerCommand("Drop Coral", new TeleopScore(m_coralScoring, m_elevator, m_intake, m_intakePivot).finallyDo((() -> {m_robotDrive.isAutoYSpeed = false; m_robotDrive.isAutoRotate = m_robotDrive.isAutoRotate == RotationEnum.STRAFEONTARGET ? RotationEnum.NONE : RotationEnum.STRAFEONTARGET;})));        
+        NamedCommands.registerCommand("Drop Coral", new TeleopScore(m_coralScoring, m_elevator, m_intake, m_intakePivot, m_scoringMechSensor).finallyDo((() -> {m_robotDrive.isAutoYSpeed = false; m_robotDrive.isAutoRotate = m_robotDrive.isAutoRotate == RotationEnum.STRAFEONTARGET ? RotationEnum.NONE : RotationEnum.STRAFEONTARGET;})));        
     }
 }

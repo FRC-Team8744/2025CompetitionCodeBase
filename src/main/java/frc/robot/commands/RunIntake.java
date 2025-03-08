@@ -44,7 +44,7 @@ public class RunIntake extends Command {
     else {
       m_intake.runIndexer(.5, -0.5);
       m_intake.runIntake(.6);
-      m_coral.runCoralMotor(-.1);
+      m_coral.runCoralMotor(-.05);
       m_intakePivot.intakeDown(-3393.45703125);
     }
   }
@@ -58,7 +58,7 @@ public class RunIntake extends Command {
   public void end(boolean interrupted) {
     m_coral.stopMotor();
     m_intake.stopBoth();
-    m_intakePivot.intakeDown(0);
+    // m_intakePivot.intakeDown(0);
     if (m_elevator.scoringPreset == "L1") {
       m_intakePivot.intakeDown(-900);
     }

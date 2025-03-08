@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.mechanisms.Intake;
 import frc.robot.subsystems.mechanisms.IntakePivot;
@@ -13,6 +14,7 @@ public class NoTwoPieces extends Command {
   /** Creates a new NoTwoPieces. */
   private Intake m_intake;
   private IntakePivot m_intakePivot;
+  private Timer timer = new Timer();
   public NoTwoPieces(Intake in, IntakePivot inp) {
     m_intake = in;
     addRequirements(m_intake);
@@ -25,6 +27,7 @@ public class NoTwoPieces extends Command {
   public void initialize() {
     m_intake.runIndexer(-0.5, 0.5);
     m_intake.runIntake(-0.6);
+    timer.start();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -33,11 +36,13 @@ public class NoTwoPieces extends Command {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    m_intake.stopBoth();
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return m_intakePivot.getPositionAngle() >= -20;
+    return timer.hasElapsed(2);
   }
 }
