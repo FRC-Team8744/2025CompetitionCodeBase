@@ -270,10 +270,10 @@ public class DriveSubsystem extends SubsystemBase {
     // SmartDashboard.putNumber("Gyro pitch", m_imu.getPitch().getValueAsDouble());
     // SmartDashboard.putNumber("Gyro roll", m_imu.getRoll().getValueAsDouble());
 
-    SmartDashboard.putNumber("Estimated Pose X", m_poseEstimator.getEstimatedPosition().getX());
-    SmartDashboard.putNumber("Estimated Pose Y", m_poseEstimator.getEstimatedPosition().getY());
+    // SmartDashboard.putNumber("Estimated Pose X", m_poseEstimator.getEstimatedPosition().getX());
+    // SmartDashboard.putNumber("Estimated Pose Y", m_poseEstimator.getEstimatedPosition().getY());
 
-    SmartDashboard.putNumber("Pose Rotation", getPose().getRotation().getDegrees());
+    // SmartDashboard.putNumber("Pose Rotation", getPose().getRotation().getDegrees());
 
     // SmartDashboard.putNumber("Yep", m_frontLeft.getVelocity());
 
@@ -370,12 +370,14 @@ public class DriveSubsystem extends SubsystemBase {
       isAutoRotateToggle = false;
     }
 
-    SmartDashboard.putBoolean("Is Right", leftPoint);
+    SmartDashboard.putBoolean("Is Right", !leftPoint);
     
     getRobotVelocityX();
     getRobotVelocityY();
 
-    SmartDashboard.putNumber("Estimated rotation", m_poseEstimator.getEstimatedPosition().getRotation().getDegrees());
+    // SmartDashboard.putNumber("Estimated rotation", m_poseEstimator.getEstimatedPosition().getRotation().getDegrees());
+    SmartDashboard.putString("Scoring mode", Constants.scoringMode);
+    SmartDashboard.putString("Scoring level", Constants.scoringMode);
   }
 
   /**
@@ -498,9 +500,9 @@ public class DriveSubsystem extends SubsystemBase {
 
   public void driveRobotRelative(ChassisSpeeds speeds){
     this.drive(speeds.vxMetersPerSecond,speeds.vyMetersPerSecond,speeds.omegaRadiansPerSecond,false);
-    SmartDashboard.putNumber("DriveVelX", speeds.vxMetersPerSecond);
-    SmartDashboard.putNumber("DriveVelY", speeds.vyMetersPerSecond);
-    SmartDashboard.putNumber("DriveRotZ", speeds.omegaRadiansPerSecond);
+    // SmartDashboard.putNumber("DriveVelX", speeds.vxMetersPerSecond);
+    // SmartDashboard.putNumber("DriveVelY", speeds.vyMetersPerSecond);
+    // SmartDashboard.putNumber("DriveRotZ", speeds.omegaRadiansPerSecond);
   }
   
   public ChassisSpeeds getRobotRelativeSpeeds(){

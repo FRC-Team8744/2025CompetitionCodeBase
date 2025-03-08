@@ -36,12 +36,16 @@ public class AlignToPoleX {
     double robotX = translatedRobotPosition[0];
     double goalX = 3.1746; // 3.2
 
-    SmartDashboard.putNumber("Goal X", goalX);
-    SmartDashboard.putNumber("Robot X", robotX);
+    // SmartDashboard.putNumber("Goal X", goalX);
+    // SmartDashboard.putNumber("Robot X", robotX);
 
     double xOffset = goalX - robotX;
 
-    SmartDashboard.putNumber("X Offset", xOffset);
+    if (Math.abs(xOffset) >= 1.0) {
+      xOffset = 0;
+    }
+
+    // SmartDashboard.putNumber("X Offset", xOffset);
 
     m_driveCtrl.setSetpoint(xOffset);
 

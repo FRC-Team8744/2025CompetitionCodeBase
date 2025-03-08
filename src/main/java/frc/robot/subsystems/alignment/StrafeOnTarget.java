@@ -37,7 +37,7 @@ public StrafeOnTarget() {}
 
     if (goalAngle > 180) goalAngle -= 360;
     if (goalAngle < -180) goalAngle += 360;
-    SmartDashboard.putNumber("Goal Angle", goalAngle);
+    // SmartDashboard.putNumber("Goal Angle", goalAngle);
 
     m_turnCtrl.reset();
 

@@ -30,8 +30,6 @@ public class Elevator extends SubsystemBase {
   public Slot0Configs elevatorConfigPIDUp = elevatorConfig.Slot0;
   public Slot1Configs elevatorConfigPIDDown = elevatorConfig.Slot1;
   public boolean elevatorSlot0 = true;
-  public double percentOfElevator = 0.9;
-  public String scoringPreset = "L4";
   public Elevator() {
     elevatorConfig.Voltage.PeakForwardVoltage = 12;
     elevatorConfig.Voltage.PeakReverseVoltage = -12;
@@ -45,11 +43,12 @@ public class Elevator extends SubsystemBase {
     elevatorConfigPIDUp.kA = 0.0; // An acceleration of 1 rps/s requires 0.01 V output
     elevatorConfigPIDUp.kP = 1.0; // A position error of 2.5 rotations results in 12 V output
     elevatorConfigPIDUp.kI = 0.05; // no output for integrated error
-    elevatorConfigPIDDown.kD = 0.0; // A velocity error of 1 rps results in 0.1 V output
-    elevatorConfigPIDDown.kP = 0.1; // A position error of 2.5 rotations results in 12 V output
+    // elevatorConfigPIDDown.kD = 0.0; // A velocity error of 1 rps results in 0.1 V output
+    elevatorConfigPIDDown.kP = 0.0; // A position error of 2.5 rotations results in 12 V output
     elevatorConfigPIDDown.kI = 0.0; // no output for integrated error
     elevatorConfigPIDDown.kD = 0.0; // A velocity error of 1 rps results in 0.1 V output
     elevatorConfig.withSlot0(elevatorConfigPIDUp);
+    elevatorConfig.withSlot1(elevatorConfigPIDDown);
     
     m_leftElevator = new TalonFX(Constants.SwerveConstants.kLeftElevatorMotorPort);
     m_rightElevator = new TalonFX(Constants.SwerveConstants.kRightElevatorMotorPort);
@@ -73,15 +72,15 @@ public class Elevator extends SubsystemBase {
   }
 
   public void goDown() {
-    position.Slot = 1;
-    // m_leftElevator.set(0);
-    m_leftElevator.setControl(position.withEnableFOC(false).withPosition(0));
+    velocityControl.Slot = 1;
+    m_leftElevator.setControl(velocityControl.withEnableFOC(false).withVelocity(0).withFeedForward(-4).withSlot(1));
     m_rightElevator.setControl(followControl);
   }
 
-  public void rotateVelocity(double velocity) {
-    m_leftElevator.setControl(velocityControl.withEnableFOC(false).withVelocity(velocity));
-    m_rightElevator.setControl(followControl);
+  public void resetElevatorPosition() {
+    stopRotate();
+    m_leftElevator.setPosition(0);
+    m_rightElevator.setPosition(0);
   }
 
   public void stopRotate() {
@@ -96,23 +95,20 @@ public class Elevator extends SubsystemBase {
   public boolean isAtSetpoint() {
     return Math.abs(m_leftElevator.getClosedLoopError().getValueAsDouble()) <= 1.0;
   }
-  /**
-   * @param presetNumber Preset of elevator to go to (0 - 1)
-   */
-  public void setElevatorPreset(double presetNumber, String presetName) {
-    percentOfElevator = presetNumber;
-    scoringPreset = presetName;
-    SmartDashboard.putString("Scoring Preset", presetName);
+
+  public void setScoringPreset(double presetNumber, double scoringMechAngle, String presetName, double algaePresetNumber, double algaeScoringMechAngle, String algaePresetName) {
+    Constants.percentOfElevator = presetNumber;
+    Constants.scoringLevel = presetName;
+    Constants.scoringMechGoalAngle = scoringMechAngle;
+    Constants.percentOfElevatorAlgae = algaePresetNumber;
+    Constants.algaeScoringLevel = algaePresetName;
+    Constants.scoringMechGoalAngleAlgae = algaeScoringMechAngle;
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("ELevator Position", m_leftElevator.getPosition().getValueAsDouble());
-    // SmartDashboard.putNumber("Kraken Acceleration", m_leftElevator.getAcceleration().getValueAsDouble());
-    // SmartDashboard.putNumber("Kraken Error", m_leftElevator.getClosedLoopError().getValueAsDouble());
-    // SmartDashboard.putBoolean("Is at setpoint", isAtSetpoint());
-    // SmartDashboard.putBoolean("Is Slot0?", elevatorSlot0);
-    SmartDashboard.putNumber("Elevator Goal Percent", percentOfElevator);
+    SmartDashboard.putNumber("Elevator Goal Percent", Constants.percentOfElevator);
   }
 }

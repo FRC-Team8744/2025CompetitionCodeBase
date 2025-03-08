@@ -5,12 +5,12 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants;
 import frc.robot.subsystems.ScoringMechSensor;
+import frc.robot.subsystems.mechanisms.AlgaeMechanism;
 import frc.robot.subsystems.mechanisms.CoralScoring;
-import frc.robot.subsystems.mechanisms.Elevator;
 import frc.robot.subsystems.mechanisms.Intake;
 import frc.robot.subsystems.mechanisms.IntakePivot;
-import frc.robot.subsystems.mechanisms.ScoringMechanismPivot;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class RunIntake extends Command {
@@ -19,8 +19,9 @@ public class RunIntake extends Command {
   private final IntakePivot m_intakePivot;
   private final CoralScoring m_coral;
   private final ScoringMechSensor m_sensor;
-  private final Elevator m_elevator;
-  public RunIntake(Intake in, IntakePivot inp, CoralScoring co, ScoringMechSensor scp, Elevator ele) {
+  private final AlgaeMechanism m_algae;
+  private final ElevatorToScore m_elevatorToScore;
+  public RunIntake(Intake in, IntakePivot inp, CoralScoring co, ScoringMechSensor scp, AlgaeMechanism alg, ElevatorToScore ets) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_intake = in;
     addRequirements(m_intake);
@@ -29,23 +30,25 @@ public class RunIntake extends Command {
     m_coral = co;
     addRequirements(m_coral);
     m_sensor = scp;
-    m_elevator = ele;
+    m_elevatorToScore = ets;
+    m_algae = alg;
+    addRequirements(m_algae);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if (m_elevator.scoringPreset == "L1") {
-      m_intake.runIndexer(-0.2, 0.2);
-      m_intake.runIntake(.3);
-      m_coral.runCoralMotor(0.1);
-      m_intakePivot.intakeDown(-3393.45703125);
-    }
-    else {
+    if (Constants.scoringMode == "Coral") {
       m_intake.runIndexer(.5, -0.5);
       m_intake.runIntake(.6);
       m_coral.runCoralMotor(-.05);
       m_intakePivot.intakeDown(-3393.45703125);
+    }
+    else if (Constants.scoringMode == "Algae") {
+      if (Constants.algaeScoringLevel == "L2" || Constants.algaeScoringLevel == "L3") {
+        m_algae.intakeAlgae(0.4);
+        m_elevatorToScore.schedule();
+      }
     }
   }
 
@@ -58,10 +61,6 @@ public class RunIntake extends Command {
   public void end(boolean interrupted) {
     m_coral.stopMotor();
     m_intake.stopBoth();
-    // m_intakePivot.intakeDown(0);
-    if (m_elevator.scoringPreset == "L1") {
-      m_intakePivot.intakeDown(-900);
-    }
   }
 
   // Returns true when the command should end.

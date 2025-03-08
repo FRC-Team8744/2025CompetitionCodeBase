@@ -35,12 +35,20 @@ public class AlignToPole {
     double robotY = translatedRobotPosition[1];
     double goalY = rightPoint ? Constants.rightPoint[1] : Constants.leftPoint[1];
 
-    SmartDashboard.putNumber("Goal Y", goalY);
-    SmartDashboard.putNumber("Robot Y", robotY);
+    if (Constants.scoringMode == "Algae") {
+      goalY = 4.0403;
+    }
+
+    // SmartDashboard.putNumber("Goal Y", goalY);
+    // SmartDashboard.putNumber("Robot Y", robotY);
 
     double yOffset = goalY - robotY;
 
-    SmartDashboard.putNumber("Y Offset", yOffset);
+    if (Math.abs(yOffset) >= 1) {
+      yOffset = 0;
+    }
+
+    // SmartDashboard.putNumber("Y Offset", yOffset);
 
     m_driveCtrl.setSetpoint(yOffset);
 
