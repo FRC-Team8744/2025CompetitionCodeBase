@@ -41,9 +41,9 @@ public class AlignToPoleX {
 
     double xOffset = goalX - robotX;
 
-    if (Math.abs(xOffset) >= 1.0) {
-      xOffset = 0;
-    }
+    // if (Math.abs(xOffset) >= 1.0) {
+    //   xOffset = 0;
+    // }
 
     // SmartDashboard.putNumber("X Offset", xOffset);
 

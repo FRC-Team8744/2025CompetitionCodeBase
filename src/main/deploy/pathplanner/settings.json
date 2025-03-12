@@ -3,8 +3,9 @@
   "robotLength": 0.787,
   "holonomicMode": true,
   "pathFolders": [
+    "5 piece top source",
     "Fake Autos",
-    "5 piece top source"
+    "Test for 1 score"
   ],
   "autoFolders": [],
   "defaultMaxVel": 5.944,

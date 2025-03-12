@@ -102,6 +102,7 @@ public class DriveSubsystem extends SubsystemBase {
   public boolean isAutoRotateToggle = true;
   public boolean isAutoYSpeedToggle = true;
   public boolean isAutoXSpeedToggle = true;
+  // public boolean hasYFinished = false;
   
   public SwerveModulePosition[] getModulePositions() {
     return new SwerveModulePosition[] {
@@ -185,7 +186,7 @@ public class DriveSubsystem extends SubsystemBase {
         this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
         new PPHolonomicDriveController( // HolonomicPathFollowerConfig, this should likely live in your Constants class
           new PIDConstants(7.0, 0.0, 0.0), // Translation PID constants
-          new PIDConstants(Math.PI + Math.E - 2, 0.0, 0.0)), // Rotation PID constants
+          new PIDConstants(3.86, 0.0, 0.0)), // Rotation PID constants
         RobotConfig.fromGUISettings(),
             ()->{
         // Boolean supplier that controls when the path will be mirrored for the red alliance
@@ -270,10 +271,10 @@ public class DriveSubsystem extends SubsystemBase {
     // SmartDashboard.putNumber("Gyro pitch", m_imu.getPitch().getValueAsDouble());
     // SmartDashboard.putNumber("Gyro roll", m_imu.getRoll().getValueAsDouble());
 
-    // SmartDashboard.putNumber("Estimated Pose X", m_poseEstimator.getEstimatedPosition().getX());
-    // SmartDashboard.putNumber("Estimated Pose Y", m_poseEstimator.getEstimatedPosition().getY());
+    SmartDashboard.putNumber("Estimated Pose X", m_poseEstimator.getEstimatedPosition().getX());
+    SmartDashboard.putNumber("Estimated Pose Y", m_poseEstimator.getEstimatedPosition().getY());
 
-    // SmartDashboard.putNumber("Pose Rotation", getPose().getRotation().getDegrees());
+    SmartDashboard.putNumber("Pose Rotation", getPose().getRotation().getDegrees());
 
     // SmartDashboard.putNumber("Yep", m_frontLeft.getVelocity());
 
@@ -330,6 +331,13 @@ public class DriveSubsystem extends SubsystemBase {
       autoYSpeed = m_alignToPole.execute(leftPoint, m_poseEstimator.getEstimatedPosition());
     }
 
+    // if (autoYSpeed == 0) {
+    //   hasYFinished = true;
+    // }
+    // else {
+    //   hasYFinished = false;
+    // }
+
     if (isAutoXSpeed) {
       autoXSpeed = m_alignToPoleX.execute(leftPoint, m_poseEstimator.getEstimatedPosition());
     }
@@ -377,7 +385,8 @@ public class DriveSubsystem extends SubsystemBase {
 
     // SmartDashboard.putNumber("Estimated rotation", m_poseEstimator.getEstimatedPosition().getRotation().getDegrees());
     SmartDashboard.putString("Scoring mode", Constants.scoringMode);
-    SmartDashboard.putString("Scoring level", Constants.scoringMode);
+    SmartDashboard.putString("Scoring level", Constants.scoringLevel);
+    SmartDashboard.putBoolean("Vision elevator", Constants.visionElevator);
   }
 
   /**

@@ -44,9 +44,9 @@ public class AlignToPole {
 
     double yOffset = goalY - robotY;
 
-    if (Math.abs(yOffset) >= 1) {
-      yOffset = 0;
-    }
+    // if (Math.abs(yOffset) >= 1) {
+    //   yOffset = 0;
+    // }
 
     // SmartDashboard.putNumber("Y Offset", yOffset);
 
