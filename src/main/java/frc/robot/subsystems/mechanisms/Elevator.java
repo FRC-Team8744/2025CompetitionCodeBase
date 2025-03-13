@@ -12,6 +12,9 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.epilogue.Logged;
+import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -47,15 +50,16 @@ public class Elevator extends SubsystemBase {
   private final MotionMagicVoltage m_goal = new MotionMagicVoltage(0);
 
   private double percentOfElevator = 0.9;
+  private double lastGoal = 0.0;
 
   // TODO: Move constants to Constants.java after tuning
   private static final double ELEV_CURRENT_LIMIT = 40.0;  // Stator current limit (not sure if needed)
   // https://v6.docs.ctr-electronics.com/en/stable/docs/api-reference/device-specific/talonfx/motion-magic.html
-  private static final double ELEV_kG = 0.0; // output to overcome gravity (output)
+  private static final double ELEV_kG = 0.1; // output to overcome gravity (output)
   private static final double ELEV_kS = 0.0; // output to overcome static friction (output)
   private static final double ELEV_kV = 0.0; // output per unit of target velocity (output/rps)
   private static final double ELEV_kA = 0.0; // output per unit of target acceleration (output/(rps/s))
-  private static final double ELEV_kP = 0.0; // output per unit of error in position (output/rotation)
+  private static final double ELEV_kP = 1.7; // output per unit of error in position (output/rotation)
   private static final double ELEV_kI = 0.0; // output per unit of integrated error in position (output/(rotation*s))
   private static final double ELEV_kD = 0.0; // output per unit of error in velocity (output/rps)
   private static final double ELEV_maxV = 80.0; // Maximum velocity (rps)
@@ -134,7 +138,15 @@ public class Elevator extends SubsystemBase {
     }
     
     // m_leftElevator.setControl(position.withEnableFOC(false).withPosition(targetPosition));
-    m_leftElevator.setControl(m_goal.withEnableFOC(false).withPosition(targetPosition));
+    // Going UP or DOWN? Change control parameters based on direction
+    if (lastGoal < targetPosition) {
+      // Going UP
+      m_leftElevator.setControl(m_goal.withEnableFOC(false).withPosition(targetPosition));
+    } else {
+      // Going DOWN
+      m_leftElevator.setControl(m_goal.withEnableFOC(false).withPosition(targetPosition));
+    }
+    lastGoal = targetPosition;
   }
 
   public void stopRotate() {
