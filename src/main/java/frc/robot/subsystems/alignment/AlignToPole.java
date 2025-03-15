@@ -21,6 +21,7 @@ public class AlignToPole {
   private PIDController m_driveCtrl = new PIDController(0.2, 0, 0);
   // private double heading;
   private double m_output;
+  public boolean hasReachedY;
   public AlignToPole() {}
 
   public void initialize() {
@@ -55,9 +56,11 @@ public class AlignToPole {
     m_output = MathUtil.clamp(m_driveCtrl.calculate(0), -1.0, 1.0);
 
     if (Math.abs(m_driveCtrl.getError()) <= m_driveCtrl.getErrorTolerance()) {
+      hasReachedY = true;
       return 0;
     }
     else {
+      hasReachedY = false;
       return m_output * SwerveConstants.kMaxSpeedTeleop;
     }
   }

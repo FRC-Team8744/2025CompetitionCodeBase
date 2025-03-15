@@ -32,9 +32,9 @@ public class ElevatorToScore extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    // if (Constants.visionElevator = true) {
+    if (Constants.visionElevator = true) {
       m_robotDrive.isAutoRotate = RotationEnum.STRAFEONTARGET;
-    // }
+    }
     toggle = true;
   }
 
@@ -47,10 +47,10 @@ public class ElevatorToScore extends Command {
       if (m_robotDrive.autoRotateSpeed == 0) {
         m_elevator.rotate(16.35 * Constants.ELEVATOR_GEARING * Constants.percentOfElevator); // 327
         if (m_elevator.getMotorPosition() >= ((16.35 * Constants.ELEVATOR_GEARING * Constants.percentOfElevator) * .50) && toggle) {
-          // if (Constants.visionElevator) {
+          if (Constants.visionElevator) {
             m_robotDrive.isAutoYSpeed = true;
             m_robotDrive.isAutoXSpeed = true;
-          // }
+          }
           m_scoringMechPivot.rotatePivot(Constants.scoringMechGoalAngle);
           toggle = false;
         }
@@ -60,10 +60,10 @@ public class ElevatorToScore extends Command {
       if (m_robotDrive.autoRotateSpeed == 0) {
         m_elevator.rotate(16.35 * Constants.ELEVATOR_GEARING * Constants.percentOfElevatorAlgae);
         if (m_elevator.getMotorPosition() >= ((16.35 * Constants.ELEVATOR_GEARING * Constants.percentOfElevatorAlgae) * 0.50) && toggle) {
-          // if (Constants.visionElevator) {
+          if (Constants.visionElevator) {
             m_robotDrive.isAutoYSpeed = true;
             m_robotDrive.isAutoXSpeed = true;
-          // }
+          }
           m_scoringMechPivot.rotatePivot(Constants.scoringMechGoalAngleAlgae);
           toggle = false;
         }

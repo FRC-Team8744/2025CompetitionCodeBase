@@ -36,6 +36,7 @@ import frc.robot.subsystems.mechanisms.ScoringMechanismPivot;
 import frc.robot.subsystems.vision.PhotonVisionGS;
 import frc.robot.subsystems.vision.PhotonVisionGS2;
 import frc.robot.commands.AutoScore;
+import frc.robot.commands.ElevatorGoDownAuto;
 import frc.robot.commands.ElevatorToScore;
 import frc.robot.commands.ElevatorToScoreAuto;
 // import frc.robot.commands.AutoLineUp;
@@ -115,11 +116,13 @@ public class AutoCommandManager {
 
         isSim = true;
 
-        PathPlannerAuto m_test = new PathPlannerAuto("Test Auto");
+        PathPlannerAuto m_test = new PathPlannerAuto("1 Piece Test");
+        PathPlannerAuto m_intaketest = new PathPlannerAuto("Coral Intaking Auto");
 
         m_chooser.setDefaultOption("None", new InstantCommand());
 
-        m_chooser.addOption("Test Auto", m_test);
+        m_chooser.addOption("1 Piece Test", m_test);
+        m_chooser.addOption("Intake Test", m_intaketest);
 
         SmartDashboard.putData(m_chooser);
     }
@@ -161,15 +164,17 @@ public class AutoCommandManager {
         
         ) { 
             
-        // NamedCommands.registerCommand("Auto line up", new AutoLineUp(m_elevator, m_robotDrive, m_scoringMechPivot));
+        NamedCommands.registerCommand("AutoLineUp", Commands.runOnce(() -> m_robotDrive.isAutoRotate = RotationEnum.STRAFEONTARGET));
         NamedCommands.registerCommand("L1", Commands.runOnce(() -> m_elevator.setScoringPreset(.25, -60, "L1", .25, -60, "Processor")));
         NamedCommands.registerCommand("L2", Commands.runOnce(() -> m_elevator.setScoringPreset(.33, -60, "L2", .33, -60, "L2")));
         NamedCommands.registerCommand("L3", Commands.runOnce(() -> m_elevator.setScoringPreset(.53, -60, "L3", .53, -60, "L3")));
         NamedCommands.registerCommand("L4", Commands.runOnce(() -> m_elevator.setScoringPreset(.9, -200, "L4", .9, -200, "Net")));
+        NamedCommands.registerCommand("LeftPole", Commands.runOnce(() -> m_robotDrive.leftPoint = true));
+        NamedCommands.registerCommand("RightPole", Commands.runOnce(() -> m_robotDrive.leftPoint = false));
         // NamedCommands.registerCommand("Auto rotate", Commands.runOnce(() -> m_robotDrive.isAutoRotate = m_robotDrive.isAutoRotate == RotationEnum.STRAFEONTARGET ? RotationEnum.NONE : RotationEnum.STRAFEONTARGET));
-        NamedCommands.registerCommand("RunIntake", new RunIntakeAuto(m_intake, m_intakePivot, m_coralScoring, m_scoringMechSensor, m_algaMechanism, new ElevatorToScoreAuto(m_elevator, m_robotDrive, m_scoringMechPivot)));
-        NamedCommands.registerCommand("ElevatorToScore", new ElevatorToScoreAuto(m_elevator, m_robotDrive, m_scoringMechPivot));
-        NamedCommands.registerCommand("ElevatorDown", Commands.runOnce(() -> m_elevator.rotate(0)));
+        NamedCommands.registerCommand("RunIntake", new RunIntakeAuto(m_intake, m_intakePivot, m_coralScoring, m_scoringMechSensor, m_algaMechanism, new ElevatorToScoreAuto(m_elevator, m_robotDrive, m_scoringMechPivot, m_scoringMechSensor)));
+        NamedCommands.registerCommand("ElevatorToScore", new ElevatorToScoreAuto(m_elevator, m_robotDrive, m_scoringMechPivot, m_scoringMechSensor));
+        NamedCommands.registerCommand("ElevatorDown", new ElevatorGoDownAuto(m_elevator, m_scoringMechPivot));
         NamedCommands.registerCommand("ScoreCoral", new AutoScore(m_coralScoring, m_elevator, m_intake, m_intakePivot, m_scoringMechSensor).finallyDo((() -> {m_robotDrive.isAutoYSpeed = false; m_robotDrive.isAutoRotate = m_robotDrive.isAutoRotate == RotationEnum.STRAFEONTARGET ? RotationEnum.NONE : RotationEnum.STRAFEONTARGET;})));        
     }
 }

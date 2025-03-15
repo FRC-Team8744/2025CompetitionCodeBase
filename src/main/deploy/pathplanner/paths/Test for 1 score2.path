@@ -3,12 +3,12 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 6.223943661971831,
+        "x": 6.5,
         "y": 4.180897887323942
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.223943661971831,
+        "x": 7.5,
         "y": 4.180897887323942
       },
       "isLocked": false,
@@ -36,7 +36,12 @@
       "name": "ElevatorDown",
       "waypointRelativePos": 0,
       "endWaypointRelativePos": null,
-      "command": null
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "ElevatorDown"
+        }
+      }
     }
   ],
   "globalConstraints": {
@@ -48,7 +53,7 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
+    "velocity": 0.0,
     "rotation": 0.0
   },
   "reversed": false,

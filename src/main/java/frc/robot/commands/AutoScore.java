@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.ScoringMechSensor;
@@ -20,6 +21,7 @@ public class AutoScore extends Command{
   private final Intake m_intake;
   private final IntakePivot m_intakePivot;
   private final ScoringMechSensor m_scoringMechSensor;
+  private final Timer m_timer = new Timer();
   public AutoScore(CoralScoring co, Elevator ele, Intake in, IntakePivot inp, ScoringMechSensor sms) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_coral = co;
@@ -35,7 +37,8 @@ public class AutoScore extends Command{
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_coral.runCoralMotor(-.4);  
+    m_coral.runCoralMotor(-.4);
+    m_timer.start();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -47,12 +50,17 @@ public class AutoScore extends Command{
   public void end(boolean interrupted) {
     m_coral.stopMotor();
     m_intake.stopBoth();
-    // m_intakePivot.intakeDown(0);
+    m_intakePivot.intakeDown(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    if (m_scoringMechSensor.getScoringSensor()) {
+      return true;
+    }
+    else {
+      return false;
+    }
   }
 }

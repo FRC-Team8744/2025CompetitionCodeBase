@@ -26,7 +26,7 @@ public class AlignToPoleX {
 
   public void initialize() {
     // m_driveCtrl.enableContinuousInput(-180, 180);
-    m_driveCtrl.setTolerance(0.02);
+    m_driveCtrl.setTolerance(0.05);
     m_driveCtrl.reset();
   }
 
@@ -45,7 +45,7 @@ public class AlignToPoleX {
     //   xOffset = 0;
     // }
 
-    // SmartDashboard.putNumber("X Offset", xOffset);
+    SmartDashboard.putNumber("X Offset", xOffset);
 
     m_driveCtrl.setSetpoint(xOffset);
 

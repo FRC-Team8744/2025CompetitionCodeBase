@@ -13,6 +13,24 @@
         {
           "type": "named",
           "data": {
+            "name": "RunIntake"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "RightPole"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "L4"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "ElevatorToScore"
           }
         },

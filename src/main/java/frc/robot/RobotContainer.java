@@ -116,8 +116,8 @@ public class RobotContainer {
     m_driver.start()
     .whileTrue(new ResetEncoders(m_elevator, m_scoringMechPivot, m_intakePivot));
 
-    // m_driver.pov(0)
-    // .toggleOnTrue(Commands.runOnce(() -> Constants.visionElevator = !Constants.visionElevator));
+    m_driver.pov(0)
+    .whileTrue(Commands.runOnce(() -> Constants.visionElevator = !Constants.visionElevator));
     
     m_coDriver.rightBumper()
     .toggleOnTrue(Commands.runOnce(() -> m_robotDrive.leftPoint = false));
@@ -144,7 +144,7 @@ public class RobotContainer {
     .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(.33, -60, "L2", .33, -60, "L2")));
 
     m_coDriver.back()
-    .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(0.99, -200, "100%", 0.99, -200, "100%")));
+    .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(.99, -200, "100%", .99, -200, "100%")));
   }
 
   public Command getAutonomousCommand() {

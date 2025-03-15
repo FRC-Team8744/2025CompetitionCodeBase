@@ -75,9 +75,14 @@ public class ScoringMechanismPivot extends SubsystemBase {
     return m_scoringMechPivot.getPosition().getValueAsDouble() * 360;
   }
 
+  public boolean isAtSetpoint() {
+    return Math.abs(m_scoringMechPivot.getClosedLoopError().getValueAsDouble()) <= 1/18;
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Scoring Mech Pivot Angle", getPositionAngle());
+    SmartDashboard.putBoolean("Is scoring mech pivot at setpoint", isAtSetpoint());
   }
 }
