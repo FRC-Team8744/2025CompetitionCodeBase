@@ -58,6 +58,7 @@ public class DriveSubsystem extends SubsystemBase {
   double offset_RR = 0;
   
   private double m_DriverSpeedScale = 1.0;
+  private double m_AutoSpeedScale = 1.0;
 
   // Robot swerve modules
   private final SwerveModuleOffboard m_frontLeft;
@@ -65,9 +66,9 @@ public class DriveSubsystem extends SubsystemBase {
   private final SwerveModuleOffboard m_frontRight;
   private final SwerveModuleOffboard m_rearRight;
 
-  private double autoRotateSpeed = 0;
-  private double autoYSpeed = 0;
-  private double autoXSpeed = 0;
+  public double autoRotateSpeed = 0;
+  public double autoYSpeed = 0;
+  public double autoXSpeed = 0;
 
   public boolean leftPoint = true;
 
@@ -93,8 +94,8 @@ public class DriveSubsystem extends SubsystemBase {
   private final PhotonVisionGS m_vision;
   private final PhotonVisionGS2 m_vision2;
   public final AlignToClimb m_alignToClimb = new AlignToClimb();
-  private final AlignToPole m_alignToPole = new AlignToPole();
-  private final AlignToPoleX m_alignToPoleX;
+  public final AlignToPole m_alignToPole = new AlignToPole();
+  public final AlignToPoleX m_alignToPoleX;
 
   public RotationEnum isAutoRotate = RotationEnum.NONE;
   public boolean isAutoYSpeed = false;
@@ -102,8 +103,7 @@ public class DriveSubsystem extends SubsystemBase {
   public boolean isAutoRotateToggle = true;
   public boolean isAutoYSpeedToggle = true;
   public boolean isAutoXSpeedToggle = true;
-
-  public boolean backUp = false;
+  // public boolean hasYFinished = false;
   
   public SwerveModulePosition[] getModulePositions() {
     return new SwerveModulePosition[] {
@@ -187,7 +187,7 @@ public class DriveSubsystem extends SubsystemBase {
         this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
         new PPHolonomicDriveController( // HolonomicPathFollowerConfig, this should likely live in your Constants class
           new PIDConstants(7.0, 0.0, 0.0), // Translation PID constants
-          new PIDConstants(Math.PI + Math.E - 2, 0.0, 0.0)), // Rotation PID constants
+          new PIDConstants(10.0, 0.0, 0.0)), // Rotation PID constants
         RobotConfig.fromGUISettings(),
             ()->{
         // Boolean supplier that controls when the path will be mirrored for the red alliance
@@ -231,7 +231,7 @@ public class DriveSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // Update the odometry in the periodic block
-    if (isAutoRotate == RotationEnum.STRAFEONTARGET) {
+    // if (isAutoRotate == RotationEnum.STRAFEONTARGET) {
       if (m_vision.getTarget().map((t) -> t.getPoseAmbiguity()).orElse(1.0) <= .2 && m_vision.getTargetDistance() >= .7) {
         m_vision.getRobotPose().ifPresent((robotPose) -> m_poseEstimator.addVisionMeasurement(robotPose, m_vision.getApriltagTime()));
       }
@@ -332,8 +332,15 @@ public class DriveSubsystem extends SubsystemBase {
       autoYSpeed = m_alignToPole.execute(leftPoint, m_poseEstimator.getEstimatedPosition());
     }
 
+    // if (autoYSpeed == 0) {
+    //   hasYFinished = true;
+    // }
+    // else {
+    //   hasYFinished = false;
+    // }
+
     if (isAutoXSpeed) {
-      autoXSpeed = m_alignToPoleX.execute(leftPoint, m_poseEstimator.getEstimatedPosition(), backUp);
+      autoXSpeed = m_alignToPoleX.execute(leftPoint, m_poseEstimator.getEstimatedPosition());
     }
 
     if (isAutoRotate == RotationEnum.STRAFEONTARGET && isAutoRotateToggle) {
@@ -372,12 +379,17 @@ public class DriveSubsystem extends SubsystemBase {
       isAutoRotateToggle = false;
     }
 
-    SmartDashboard.putBoolean("Is Right", leftPoint);
+    SmartDashboard.putBoolean("Is Right", !leftPoint);
     
     getRobotVelocityX();
     getRobotVelocityY();
 
-    SmartDashboard.putNumber("Estimated rotation", m_poseEstimator.getEstimatedPosition().getRotation().getDegrees());
+    // SmartDashboard.putNumber("Estimated rotation", m_poseEstimator.getEstimatedPosition().getRotation().getDegrees());
+    SmartDashboard.putString("Scoring mode", Constants.scoringMode);
+    SmartDashboard.putString("Scoring level", Constants.scoringLevel);
+    SmartDashboard.putBoolean("Vision elevator", Constants.visionElevator);
+    SmartDashboard.putNumber("X Speed", autoXSpeed);
+    // SmartDashboard.putNumber("Y Speed", autoYSpeed);
   }
 
   /**
@@ -499,10 +511,37 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public void driveRobotRelative(ChassisSpeeds speeds){
+    // SmartDashboard.putNumber("Robot Auto X", speeds.vxMetersPerSecond);
+    // SmartDashboard.putNumber("Auto Rotate Speed", autoRotateSpeed);
+    // SmartDashboard.putBoolean("Auto Rotate", isAutoRotate == RotationEnum.STRAFEONTARGET);
+
+    speeds.omegaRadiansPerSecond = isAutoRotate != RotationEnum.NONE ? autoRotateSpeed : speeds.omegaRadiansPerSecond;
+
+    if (isAutoYSpeed && isAutoRotate == RotationEnum.STRAFEONTARGET) {
+      speeds.vyMetersPerSecond = autoYSpeed;
+    }
+
+    if (isAutoXSpeed && isAutoRotate == RotationEnum.STRAFEONTARGET) {
+      speeds.vxMetersPerSecond = autoXSpeed;
+    }
+
+    if (isAutoRotate == RotationEnum.STRAFEONTARGET) {
+      // fieldRelative = false;
+      // ySpeed = -ySpeed;
+      speeds.vxMetersPerSecond = -speeds.vxMetersPerSecond;
+    }
+
+    // Apply speed scaling
+    speeds.vxMetersPerSecond = speeds.vxMetersPerSecond * m_AutoSpeedScale;
+    speeds.vyMetersPerSecond = speeds.vyMetersPerSecond * m_AutoSpeedScale;
+    speeds.omegaRadiansPerSecond = -speeds.omegaRadiansPerSecond * m_AutoSpeedScale;
+    
+    // SmartDashboard.putNumber("Robot Auto X After align", speeds.vxMetersPerSecond);
+
     this.drive(speeds.vxMetersPerSecond,speeds.vyMetersPerSecond,speeds.omegaRadiansPerSecond,false);
-    SmartDashboard.putNumber("DriveVelX", speeds.vxMetersPerSecond);
-    SmartDashboard.putNumber("DriveVelY", speeds.vyMetersPerSecond);
-    SmartDashboard.putNumber("DriveRotZ", speeds.omegaRadiansPerSecond);
+    // SmartDashboard.putNumber("DriveVelX", speeds.vxMetersPerSecond);
+    // SmartDashboard.putNumber("DriveVelY", speeds.vyMetersPerSecond);
+    // SmartDashboard.putNumber("DriveRotZ", speeds.omegaRadiansPerSecond);
   }
   
   public ChassisSpeeds getRobotRelativeSpeeds(){

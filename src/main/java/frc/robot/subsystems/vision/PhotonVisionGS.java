@@ -80,7 +80,7 @@ public class PhotonVisionGS extends SubsystemBase {
       ID = localTarget.getFiducialId();
 
       target = localTarget;
-      SmartDashboard.putNumber("April tag local targer number", localTarget.getFiducialId());
+      // SmartDashboard.putNumber("April tag local targer number", localTarget.getFiducialId());
 
       if (foundSpeaker) {
         speakerInView = true;
@@ -96,8 +96,8 @@ public class PhotonVisionGS extends SubsystemBase {
 
   double yaw = Units.radiansToDegrees(targetTd.getRotation().getZ());
   tx_out = m_lowpass.calculate(yaw);
-  SmartDashboard.putNumber("April tag target number", target.getFiducialId());
-  SmartDashboard.putNumber("April tag targetTd number", targetTd.getX());
+  // SmartDashboard.putNumber("April tag target number", target.getFiducialId());
+  // SmartDashboard.putNumber("April tag targetTd number", targetTd.getX());
 } else {
   ID = 0;
   targetTd = null;

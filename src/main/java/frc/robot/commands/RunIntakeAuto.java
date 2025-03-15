@@ -7,32 +7,49 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.ScoringMechSensor;
+import frc.robot.subsystems.mechanisms.AlgaeMechanism;
 import frc.robot.subsystems.mechanisms.CoralScoring;
+import frc.robot.subsystems.mechanisms.Intake;
+import frc.robot.subsystems.mechanisms.IntakePivot;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class TeleopScore extends Command{
+public class RunIntakeAuto extends Command {
   /** Creates a new TeleopIntake. */
-  private final CoralScoring m_coral;
-  private final Elevator m_elevator;
   private final Intake m_intake;
   private final IntakePivot m_intakePivot;
-  private final ScoringMechSensor m_scoringMechSensor;
-  public TeleopScore(CoralScoring co, Elevator ele, Intake in, IntakePivot inp, ScoringMechSensor sms) {
+  private final CoralScoring m_coral;
+  private final ScoringMechSensor m_sensor;
+  private final AlgaeMechanism m_algae;
+  private final ElevatorToScoreAuto m_elevatorToScore;
+  public RunIntakeAuto(Intake in, IntakePivot inp, CoralScoring co, ScoringMechSensor scp, AlgaeMechanism alg, ElevatorToScoreAuto ets) {
     // Use addRequirements() here to declare subsystem dependencies.
-    m_coral = co;
-    addRequirements(m_coral);
-    m_elevator = ele;
     m_intake = in;
     addRequirements(m_intake);
     m_intakePivot = inp;
     addRequirements(m_intakePivot);
-    m_scoringMechSensor = sms;
+    m_coral = co;
+    addRequirements(m_coral);
+    m_sensor = scp;
+    m_elevatorToScore = ets;
+    m_algae = alg;
+    addRequirements(m_algae);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    m_coral.runCoralMotor(-.4);  
+    if (Constants.scoringMode == "Coral") {
+      m_intake.runIndexer(.5, -0.5);
+      m_intake.runIntake(.6);
+      m_coral.runCoralMotor(-.05);
+      m_intakePivot.intakeDown(-3393.45703125);
+    }
+    else if (Constants.scoringMode == "Algae") {
+      if (Constants.algaeScoringLevel == "L2" || Constants.algaeScoringLevel == "L3") {
+        m_algae.intakeAlgae(0.4);
+        m_elevatorToScore.schedule();
+      }
+    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -44,12 +61,11 @@ public class TeleopScore extends Command{
   public void end(boolean interrupted) {
     m_coral.stopMotor();
     m_intake.stopBoth();
-    // m_intakePivot.intakeDown(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return !m_sensor.getScoringSensor();
   }
 }

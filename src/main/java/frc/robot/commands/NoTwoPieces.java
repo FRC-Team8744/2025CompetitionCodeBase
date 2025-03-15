@@ -4,41 +4,45 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants;
-import frc.robot.subsystems.mechanisms.Elevator;
+import frc.robot.subsystems.mechanisms.Intake;
+import frc.robot.subsystems.mechanisms.IntakePivot;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class RunElevator extends Command {
-  /** Creates a new RunKraken. */
-  private final Elevator m_elevator;
-  private double motorPosition;
-  public RunElevator(Elevator ele) {
-    m_elevator = ele;
-    addRequirements(m_elevator);
+public class NoTwoPieces extends Command {
+  /** Creates a new NoTwoPieces. */
+  private Intake m_intake;
+  private IntakePivot m_intakePivot;
+  private Timer timer = new Timer();
+  public NoTwoPieces(Intake in, IntakePivot inp) {
+    m_intake = in;
+    addRequirements(m_intake);
+    m_intakePivot = inp;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    m_intake.runIndexer(-0.5, 0.5);
+    m_intake.runIntake(-0.6);
+    timer.start();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    motorPosition = m_elevator.getMotorPosition();
-
-    m_elevator.rotate(16.35 * Constants.ELEVATOR_GEARING * Constants.percentOfElevator); // 327
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    m_intake.stopBoth();
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return m_elevator.isAtSetpoint();
+    return timer.hasElapsed(2);
   }
 }

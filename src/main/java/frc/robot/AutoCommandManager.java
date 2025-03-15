@@ -26,7 +26,7 @@ import frc.robot.subsystems.ScoringMechSensor;
 import frc.robot.subsystems.alignment.AlignToClimb;
 import frc.robot.subsystems.alignment.AlignToPole;
 import frc.robot.subsystems.alignment.LockOnTarget;
-// import frc.robot.subsystems.mechanisms.AlgaeMechanism;
+import frc.robot.subsystems.mechanisms.AlgaeMechanism;
 import frc.robot.subsystems.mechanisms.Climber;
 import frc.robot.subsystems.mechanisms.CoralScoring;
 import frc.robot.subsystems.mechanisms.Elevator;
@@ -35,10 +35,15 @@ import frc.robot.subsystems.mechanisms.IntakePivot;
 import frc.robot.subsystems.mechanisms.ScoringMechanismPivot;
 import frc.robot.subsystems.vision.PhotonVisionGS;
 import frc.robot.subsystems.vision.PhotonVisionGS2;
+import frc.robot.commands.AutoScore;
+import frc.robot.commands.ElevatorGoDownAuto;
+import frc.robot.commands.ElevatorToScore;
+import frc.robot.commands.ElevatorToScoreAuto;
 // import frc.robot.commands.AutoLineUp;
 import frc.robot.commands.RunElevator;
 // import frc.robot.commands.DropCoral;
 import frc.robot.commands.RunIntake;
+import frc.robot.commands.RunIntakeAuto;
 import frc.robot.commands.TeleopScore;
 
 /** Add your docs here. */
@@ -55,7 +60,7 @@ public class AutoCommandManager {
     public AutoCommandManager(
         Elevator m_elevator,
         Intake m_intake,
-        // AlgaeMechanism m_algaMechanism,
+        AlgaeMechanism m_algaMechanism,
         Climber m_climber,
         CoralScoring m_coralScoring,
         IntakePivot m_intakePivot,
@@ -72,7 +77,7 @@ public class AutoCommandManager {
         configureNamedCommands(
             m_elevator,
             m_intake,
-            // m_algaMechanism,
+            m_algaMechanism,
             m_climber,
             m_coralScoring,
             m_intakePivot,
@@ -111,11 +116,13 @@ public class AutoCommandManager {
 
         isSim = true;
 
-        PathPlannerAuto m_test = new PathPlannerAuto("Height Matters");
+        PathPlannerAuto m_test = new PathPlannerAuto("1 Piece Test");
+        PathPlannerAuto m_intaketest = new PathPlannerAuto("Coral Intaking Auto");
 
         m_chooser.setDefaultOption("None", new InstantCommand());
 
-        m_chooser.addOption("Height Matters", m_test);
+        m_chooser.addOption("1 Piece Test", m_test);
+        m_chooser.addOption("Intake Test", m_intaketest);
 
         SmartDashboard.putData(m_chooser);
     }
@@ -142,7 +149,7 @@ public class AutoCommandManager {
 
         Elevator m_elevator,
         Intake m_intake,
-        // AlgaeMechanism m_algaMechanism,
+        AlgaeMechanism m_algaMechanism,
         Climber m_climber,
         CoralScoring m_coralScoring,
         IntakePivot m_intakePivot,
@@ -157,9 +164,17 @@ public class AutoCommandManager {
         
         ) { 
             
-        // NamedCommands.registerCommand("Auto line up", new AutoLineUp(m_elevator, m_robotDrive, m_scoringMechPivot));
-        NamedCommands.registerCommand("Auto rotate", Commands.runOnce(() -> m_robotDrive.isAutoRotate = m_robotDrive.isAutoRotate == RotationEnum.STRAFEONTARGET ? RotationEnum.NONE : RotationEnum.STRAFEONTARGET));
-        NamedCommands.registerCommand("Run Intake", new RunIntake(m_intake, m_intakePivot, m_coralScoring, m_scoringMechSensor));
-        NamedCommands.registerCommand("Drop Coral", new TeleopScore(m_coralScoring).finallyDo((() -> {m_robotDrive.isAutoYSpeed = false; m_robotDrive.isAutoRotate = m_robotDrive.isAutoRotate == RotationEnum.STRAFEONTARGET ? RotationEnum.NONE : RotationEnum.STRAFEONTARGET;})));        
+        NamedCommands.registerCommand("AutoLineUp", Commands.runOnce(() -> m_robotDrive.isAutoRotate = RotationEnum.STRAFEONTARGET));
+        NamedCommands.registerCommand("L1", Commands.runOnce(() -> m_elevator.setScoringPreset(.25, -60, "L1", .25, -60, "Processor")));
+        NamedCommands.registerCommand("L2", Commands.runOnce(() -> m_elevator.setScoringPreset(.33, -60, "L2", .33, -60, "L2")));
+        NamedCommands.registerCommand("L3", Commands.runOnce(() -> m_elevator.setScoringPreset(.53, -60, "L3", .53, -60, "L3")));
+        NamedCommands.registerCommand("L4", Commands.runOnce(() -> m_elevator.setScoringPreset(.9, -200, "L4", .9, -200, "Net")));
+        NamedCommands.registerCommand("LeftPole", Commands.runOnce(() -> m_robotDrive.leftPoint = true));
+        NamedCommands.registerCommand("RightPole", Commands.runOnce(() -> m_robotDrive.leftPoint = false));
+        // NamedCommands.registerCommand("Auto rotate", Commands.runOnce(() -> m_robotDrive.isAutoRotate = m_robotDrive.isAutoRotate == RotationEnum.STRAFEONTARGET ? RotationEnum.NONE : RotationEnum.STRAFEONTARGET));
+        NamedCommands.registerCommand("RunIntake", new RunIntakeAuto(m_intake, m_intakePivot, m_coralScoring, m_scoringMechSensor, m_algaMechanism, new ElevatorToScoreAuto(m_elevator, m_robotDrive, m_scoringMechPivot, m_scoringMechSensor)));
+        NamedCommands.registerCommand("ElevatorToScore", new ElevatorToScoreAuto(m_elevator, m_robotDrive, m_scoringMechPivot, m_scoringMechSensor));
+        NamedCommands.registerCommand("ElevatorDown", new ElevatorGoDownAuto(m_elevator, m_scoringMechPivot));
+        NamedCommands.registerCommand("ScoreCoral", new AutoScore(m_coralScoring, m_elevator, m_intake, m_intakePivot, m_scoringMechSensor).finallyDo((() -> {m_robotDrive.isAutoYSpeed = false; m_robotDrive.isAutoRotate = m_robotDrive.isAutoRotate == RotationEnum.STRAFEONTARGET ? RotationEnum.NONE : RotationEnum.STRAFEONTARGET;})));        
     }
 }

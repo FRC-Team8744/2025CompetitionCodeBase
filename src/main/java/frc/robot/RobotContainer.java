@@ -5,15 +5,21 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.ConstantsOffboard;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.SwerveConstants;
 import frc.robot.commands.CoralEject;
+import frc.robot.commands.ElevatorToScore;
+import frc.robot.commands.NoTwoPieces;
+import frc.robot.commands.ResetEncoders;
 import frc.robot.commands.RunElevator;
 import frc.robot.commands.TeleopScore;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ScoringMechSensor;
+import frc.robot.subsystems.alignment.AlignToPole;
 import frc.robot.subsystems.alignment.AlignToPoleX;
+import frc.robot.subsystems.mechanisms.AlgaeMechanism;
 // import frc.robot.subsystems.mechanisms.AlgaeMechanism;
 import frc.robot.subsystems.mechanisms.Climber;
 import frc.robot.subsystems.mechanisms.CoralScoring;
@@ -46,15 +52,18 @@ public class RobotContainer {
   private ScoringMechanismPivot m_scoringMechPivot = new ScoringMechanismPivot();
   private CoralScoring m_coral = new CoralScoring();
   private Climber m_climber = new Climber();
-  // private AlgaeMechanism m_algae = new AlgaeMechanism();
+  private LEDS m_leds = new LEDS();
+  private AlgaeMechanism m_algae = new AlgaeMechanism();
   private ScoringMechSensor m_scoringMechSensor = new ScoringMechSensor();
   private AlignToPoleX m_alignToPoleX = new AlignToPoleX();
+  private AlignToPole m_alignToPoleY = new AlignToPole();
   private DriveSubsystem m_robotDrive = new DriveSubsystem(m_vision, m_vision2, m_alignToPoleX);
   // The driver's controller
   private CommandXboxController m_driver = new CommandXboxController(OIConstants.kDriverControllerPort);
   private CommandXboxController m_coDriver = new CommandXboxController(1);
-  private AutoCommandManager m_autoManager = new AutoCommandManager(m_elevator, m_intake, m_climber, m_coral, m_intakePivot, m_scoringMechPivot, m_vision, m_vision2, null, null, m_robotDrive, null,m_scoringMechSensor);
-
+  private AutoCommandManager m_autoManager = new AutoCommandManager(m_leds, m_elevator, m_intake, m_algae, m_climber, m_coral, m_intakePivot, m_scoringMechPivot, m_vision, m_vision2, m_alignToPoleY, null, m_robotDrive, null,m_scoringMechSensor);
+  
+  
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the button bindings
@@ -90,17 +99,26 @@ public class RobotContainer {
     .toggleOnTrue(Commands.runOnce(() -> m_robotDrive.isAutoRotate = m_robotDrive.isAutoRotate == RotationEnum.STRAFEONTARGET ? RotationEnum.NONE : RotationEnum.STRAFEONTARGET));
     
     m_driver.rightTrigger()
-    .whileTrue(new RunElevator(m_elevator).alongWith(Commands.runOnce(() -> m_robotDrive.isAutoYSpeed = true)).alongWith(Commands.runOnce(() -> m_robotDrive.isAutoXSpeed = true)).alongWith(Commands.runOnce(() -> m_scoringMechPivot.rotatePivot(m_scoringMechPivot.scoringMechGoalAngle)).onlyWhile((() -> m_elevator.getMotorPosition() >= ((327 * m_elevator.percentOfElevator) * .75)))))
-    .whileFalse(Commands.runOnce(() -> m_scoringMechPivot.rotatePivot(0)).alongWith(Commands.runOnce(() -> m_elevator.rotate(0)).onlyWhile((() -> m_scoringMechPivot.getPositionAngle() >= -20))));
+    // .whileTrue(new RunElevator(m_elevator).alongWith(Commands.runOnce(() -> m_robotDrive.isAutoYSpeed = true)).alongWith(Commands.runOnce(() -> m_robotDrive.isAutoXSpeed = true)).alongWith(Commands.runOnce(() -> m_scoringMechPivot.rotatePivot(m_scoringMechPivot.scoringMechGoalAngle)).onlyWhile((() -> m_elevator.getMotorPosition() >= ((327 * m_elevator.percentOfElevator) * .75)))))
+    // .whileFalse(Commands.runOnce(() -> m_scoringMechPivot.rotatePivot(0)).alongWith(Commands.runOnce(() -> m_elevator.rotate(0)).onlyWhile((() -> m_scoringMechPivot.getPositionAngle() >= -20))));
+    .whileTrue(new ElevatorToScore(m_elevator, m_robotDrive, m_scoringMechPivot));
 
     m_driver.leftTrigger()
-    .whileTrue(new RunIntake(m_intake, m_intakePivot, m_coral, m_scoringMechSensor));
+    .whileTrue(new RunIntake(m_leds, m_intake, m_intakePivot, m_coral, m_scoringMechSensor, m_algae, new ElevatorToScore(m_elevator, m_robotDrive, m_scoringMechPivot))
+    .alongWith(Commands.runOnce(() -> m_leds.SetSegmentByIntake(Color.kSeaGreen, Color.kWhite, Color.kBlue, 50, m_scoringMechSensor)))
+    .finallyDo(() -> new NoTwoPieces(m_intake, m_intakePivot).schedule()));
 
     m_driver.y()
-    .whileTrue(new TeleopScore(m_coral).andThen(Commands.runOnce(() -> m_robotDrive.backUp = true).andThen(Commands.waitUntil((() -> m_alignToPoleX.hasReachedX)))).finallyDo((() -> {m_robotDrive.isAutoYSpeed = false; m_robotDrive.isAutoXSpeed = false;})));
+    .whileTrue(new TeleopScore(m_coral, m_elevator, m_intake, m_intakePivot, m_scoringMechSensor).andThen(Commands.waitUntil((() -> m_alignToPoleX.hasReachedX))).finallyDo((() -> {m_robotDrive.isAutoYSpeed = false; m_robotDrive.isAutoXSpeed = false; m_robotDrive.isAutoRotate = RotationEnum.NONE;})));
 
     m_driver.x()
     .whileTrue(new CoralEject(m_intake, m_coral));
+
+    m_driver.start()
+    .whileTrue(new ResetEncoders(m_elevator, m_scoringMechPivot, m_intakePivot));
+
+    m_driver.pov(0)
+    .whileTrue(Commands.runOnce(() -> Constants.visionElevator = !Constants.visionElevator));
     
     m_coDriver.rightBumper()
     .toggleOnTrue(Commands.runOnce(() -> m_robotDrive.leftPoint = false));
@@ -108,8 +126,11 @@ public class RobotContainer {
     m_coDriver.leftBumper()
     .toggleOnTrue(Commands.runOnce(() -> m_robotDrive.leftPoint = true));
 
-    // m_driver.x()
-    // .whileTrue(Commands.runOnce(() -> m_intake.runIndexer(.3)));
+    m_coDriver.rightTrigger()
+    .toggleOnTrue(Commands.runOnce(() -> Constants.scoringMode = "Coral"));
+
+    m_coDriver.leftTrigger()
+    .toggleOnTrue(Commands.runOnce(() -> Constants.scoringMode = "Algae"));
 
     m_driver.b()
     .whileTrue(Commands.runOnce(() -> m_robotDrive.isAutoYSpeed = false).alongWith(Commands.runOnce(() -> m_robotDrive.isAutoXSpeed = false)));

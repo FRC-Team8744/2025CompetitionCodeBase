@@ -26,24 +26,24 @@ public class AlignToPoleX {
 
   public void initialize() {
     // m_driveCtrl.enableContinuousInput(-180, 180);
-    m_driveCtrl.setTolerance(0.02);
+    m_driveCtrl.setTolerance(0.05);
     m_driveCtrl.reset();
   }
 
-  public double execute(boolean rightPoint, Pose2d estimatedPose2d, boolean backUp) {
+  public double execute(boolean rightPoint, Pose2d estimatedPose2d) {
     double[] translatedRobotPosition = calculateTransformation(new double[]{estimatedPose2d.getX(), estimatedPose2d.getY()}, isInAreaEnum.areaEnum.getAngle() * -1);
 
     double robotX = translatedRobotPosition[0];
-    double goalX = 3.2;
+    double goalX = 3.1746; // 3.2
 
-    if (backUp) {
-      goalX = 2.95;
-    }
-
-    SmartDashboard.putNumber("Goal X", goalX);
-    SmartDashboard.putNumber("Robot X", robotX);
+    // SmartDashboard.putNumber("Goal X", goalX);
+    // SmartDashboard.putNumber("Robot X", robotX);
 
     double xOffset = goalX - robotX;
+
+    // if (Math.abs(xOffset) >= 1.0) {
+    //   xOffset = 0;
+    // }
 
     SmartDashboard.putNumber("X Offset", xOffset);
 
