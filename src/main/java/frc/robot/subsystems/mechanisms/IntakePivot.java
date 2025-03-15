@@ -47,12 +47,17 @@ public class IntakePivot extends SubsystemBase {
     m_intakePivot.setPosition(startingPositionRotations);
   }
 
+  /**
+   * @param angle Give the angle in degrees 
+   */
+  // Moves the intake to the position given  
   public void intakeDown(double angle) {
     if (angle < minimumAngle) {angle = minimumAngle;}
     if (angle > maximumAngle) {angle = maximumAngle;}
     m_intakePivot.setControl(goalPosition.withEnableFOC(false).withSlot(0).withPosition(angle / 360));
   }
 
+  // Returns the position of the intake
   public double getPositionAngle() {
     return m_intakePivot.getPosition().getValueAsDouble() * 360;
   }

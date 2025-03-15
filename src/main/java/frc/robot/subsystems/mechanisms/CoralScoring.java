@@ -24,10 +24,12 @@ public class CoralScoring extends SubsystemBase {
     m_coralMotor.configure(coralConfig, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
   }
 
+  // Runs the motor with the speed set
   public void runCoralMotor(double speed) {
     m_coralMotor.set(speed);
   }
 
+  // Stops the motor
   public void stopMotor() {
     m_coralMotor.stopMotor();
   }

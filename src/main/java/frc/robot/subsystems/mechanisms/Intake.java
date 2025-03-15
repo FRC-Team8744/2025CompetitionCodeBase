@@ -59,30 +59,36 @@ public class Intake extends SubsystemBase {
     m_indexMotorR.setPosition(0);
   }
 
+  // Runs the motors at set speeds for the indexer
   public void runIndexer(double speedL, double speedR) {
     m_indexMotorL.set(speedL);
     m_indexMotorR.set(speedR);
   }
 
+  // Runs the motor for teh intake
   public void runIntake(double speed) {
     m_intakeMotor.set(speed);
   }
 
+  // Sets the intake motor to 1 and the intake motors for what the driver sets
   public void runIntakeAndIndexer(double speedL, double speedR) {
     m_intakeMotor.set(1);
     m_indexMotorL.set(speedL);
     m_indexMotorR.set(speedR);
   }
 
+  // Stops the indexer motors
   public void stopIndexer() {
     m_indexMotorL.stopMotor();
     m_indexMotorR.stopMotor();
   }
 
+  // Stops the intake motor
   public void stopIntake() {
     m_intakeMotor.stopMotor();
   }
 
+  // Stops both the intake and index motors
   public void stopBoth() {
     m_intakeMotor.stopMotor();
     m_indexMotorL.stopMotor();

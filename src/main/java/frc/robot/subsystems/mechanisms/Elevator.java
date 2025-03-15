@@ -65,6 +65,7 @@ public class Elevator extends SubsystemBase {
     m_leftElevator.setPosition(0);
   }
 
+  // Takes the elevator position from all the way down to the position given
   public void rotate(double targetPosition) {
     // position.Slot = 0;
     position.Slot = 0;
@@ -72,6 +73,7 @@ public class Elevator extends SubsystemBase {
     m_rightElevator.setControl(followControl);
   }
 
+  // Takes the elevator position from all the way up to all the way down
   public void goDown() {
     position.Slot = 1;
     // m_leftElevator.set(0);
@@ -79,25 +81,31 @@ public class Elevator extends SubsystemBase {
     m_rightElevator.setControl(followControl);
   }
 
+  // Sets the # of rotations for the left motor and makes the right follow suit
   public void rotateVelocity(double velocity) {
     m_leftElevator.setControl(velocityControl.withEnableFOC(false).withVelocity(velocity));
     m_rightElevator.setControl(followControl);
   }
 
+  // Stops both the motors
   public void stopRotate() {
     m_leftElevator.stopMotor();
     m_rightElevator.stopMotor();
   }
 
+  // Gives the position of the left elevator motor
   public double getMotorPosition() {
     return m_leftElevator.getPosition().getValueAsDouble();
   }
 
+  // Gives the absolute value of the distance off from the desired point then if it is < or = to 1 it will be true otherwise its false
   public boolean isAtSetpoint() {
     return Math.abs(m_leftElevator.getClosedLoopError().getValueAsDouble()) <= 1.0;
   }
   /**
-   * @param presetNumber Preset of elevator to go to (0 - 1)
+   * This method defines different presets for name and number
+   * @param presetNumber Decisions of elevator to go to 0=elevator all the way down, or 1=elevator all the way up
+   * @param presetName Give the name of what you decide
    */
   public void setElevatorPreset(double presetNumber, String presetName) {
     percentOfElevator = presetNumber;
@@ -105,6 +113,7 @@ public class Elevator extends SubsystemBase {
     SmartDashboard.putString("Scoring Preset", presetName);
   }
 
+  // Gives the position of the left elevator in motor rotations and the # the driver sets
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
