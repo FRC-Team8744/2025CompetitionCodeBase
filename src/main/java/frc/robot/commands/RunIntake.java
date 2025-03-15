@@ -39,10 +39,10 @@ public class RunIntake extends Command {
   @Override
   public void initialize() {
     if (Constants.scoringMode == "Coral") {
-      m_intake.runIndexer(.5, -0.5);
+      m_intake.runIndexer(.6, -0.6);
       m_intake.runIntake(.6);
       m_coral.runCoralMotor(-.05);
-      m_intakePivot.intakeDown(-3393.45703125);
+      m_intakePivot.intakeDown(-4570);
     }
     else if (Constants.scoringMode == "Algae") {
       if (Constants.algaeScoringLevel == "L2" || Constants.algaeScoringLevel == "L3") {

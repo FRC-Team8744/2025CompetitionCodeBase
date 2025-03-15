@@ -113,6 +113,9 @@ public class RobotContainer {
     m_driver.x()
     .whileTrue(new CoralEject(m_intake, m_coral));
 
+    m_driver.a()
+    .whileTrue(Commands.runOnce(() -> m_intakePivot.intakeDown(0)));
+
     m_driver.start()
     .whileTrue(new ResetEncoders(m_elevator, m_scoringMechPivot, m_intakePivot));
 

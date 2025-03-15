@@ -33,7 +33,7 @@ public class TeleopOuttake extends Command {
     m_intake.runIndexer(-.7, 0.7);
     m_intake.runIntake(-.5);
     m_coral.runCoralMotor(.4);
-    m_intakePivot.intakeDown(-4000);
+    m_intakePivot.intakeDown(-4570);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

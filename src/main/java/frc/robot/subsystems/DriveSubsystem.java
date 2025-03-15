@@ -275,7 +275,7 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putNumber("Estimated Pose X", m_poseEstimator.getEstimatedPosition().getX());
     SmartDashboard.putNumber("Estimated Pose Y", m_poseEstimator.getEstimatedPosition().getY());
 
-    SmartDashboard.putNumber("Pose Rotation", getPose().getRotation().getDegrees());
+    SmartDashboard.putNumber("Estimated Pose Rotation", m_poseEstimator.getEstimatedPosition().getRotation().getDegrees());
 
     // SmartDashboard.putNumber("Yep", m_frontLeft.getVelocity());
 

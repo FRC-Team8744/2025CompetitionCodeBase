@@ -24,7 +24,7 @@ public class IntakePivot extends SubsystemBase {
   private final Slot0Configs intakePivotConfigPID = intakePivotConfig.Slot0;
   private final Slot1Configs intakePivotConfigResetPID = intakePivotConfig.Slot1;
   private final double startingPositionRotations = 0;
-  private final double minimumAngle = -4000;
+  private final double minimumAngle = -4600;
   private final double maximumAngle = 0;
   private final PositionVoltage goalPosition = new PositionVoltage(startingPositionRotations);
   private final VelocityVoltage velocity = new VelocityVoltage(0);
@@ -71,7 +71,7 @@ public class IntakePivot extends SubsystemBase {
 
   public void resetIntakePivot() {
     m_intakePivot.stopMotor();
-    m_intakePivot.setPosition(-9.4262695312);
+    // m_intakePivot.setPosition(-9.4262695312);
   }
 
   @Override

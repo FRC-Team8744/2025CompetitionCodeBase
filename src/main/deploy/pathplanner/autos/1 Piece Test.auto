@@ -13,12 +13,6 @@
         {
           "type": "named",
           "data": {
-            "name": "RunIntake"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
             "name": "RightPole"
           }
         },
