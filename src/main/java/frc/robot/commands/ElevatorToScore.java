@@ -48,8 +48,8 @@ public class ElevatorToScore extends Command {
         m_elevator.rotate(16.35 * Constants.ELEVATOR_GEARING * Constants.percentOfElevator); // 327
         if (m_elevator.getMotorPosition() >= ((16.35 * Constants.ELEVATOR_GEARING * Constants.percentOfElevator) * .50) && toggle) {
           if (Constants.visionElevator) {
-            m_robotDrive.isAutoYSpeed = true;
-            m_robotDrive.isAutoXSpeed = true;
+            // m_robotDrive.isAutoYSpeed = true;
+            // m_robotDrive.isAutoXSpeed = true;
           }
           m_scoringMechPivot.rotatePivot(Constants.scoringMechGoalAngle);
           toggle = false;

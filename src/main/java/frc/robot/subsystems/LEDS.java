@@ -7,16 +7,11 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 import edu.wpi.first.wpilibj.AddressableLEDBufferView;
 import edu.wpi.first.wpilibj.LEDPattern;
-import edu.wpi.first.wpilibj.AddressableLED.ColorOrder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
-import static frc.robot.Constants.LEDConstants.*;
-import frc.robot.subsystems.mechanisms.Elevator;
-import frc.robot.subsystems.ScoringMechSensor;
-import frc.robot.commands.RunIntake;
+// import frc.robot.Constants.LEDConstants;
 
 import java.util.Map;
 
@@ -24,7 +19,7 @@ import edu.wpi.first.units.Units;
 
 public class LEDS extends SubsystemBase {
 
-  public final AddressableLED m_led;
+  private AddressableLED m_led;
   int totalBufferLength = 179; 
   //Create the buffer 
   private AddressableLEDBuffer ledStrip = new AddressableLEDBuffer(totalBufferLength); //180
@@ -33,12 +28,16 @@ public class LEDS extends SubsystemBase {
 // ScoringMechSensor getMechSensor = 
 
     final AddressableLEDBufferView LEDSegmentRightFrontBotom = ledStrip.createView(0,21);
-    final AddressableLEDBufferView LEDSegmentRightFrontTop = ledStrip.createView(22,43); 
-    final AddressableLEDBufferView LEDSegmentRightRearTop = ledStrip.createView(44,65).reversed();
+    final AddressableLEDBufferView LEDSegmentRightFrontTop = ledStrip.createView(22,38); 
+    final AddressableLEDBufferView LEDSegmentRightFrontVision = ledStrip.createView(39,43);
+    final AddressableLEDBufferView LEDSegmentRightRearVision = ledStrip.createView(44, 48).reversed();
+    final AddressableLEDBufferView LEDSegmentRightRearTop = ledStrip.createView(49,65).reversed();
     final AddressableLEDBufferView LEDSegmentRightRearBotom = ledStrip.createView(66,88).reversed();
     final AddressableLEDBufferView LEDSegmentLeftRearBotom = ledStrip.createView(89,111);
-    final AddressableLEDBufferView LEDSegmentLeftRearTop = ledStrip.createView(112,133);
-    final AddressableLEDBufferView LEDSegmentLeftFrontTop = ledStrip.createView(134,155).reversed();
+    final AddressableLEDBufferView LEDSegmentLeftRearTop = ledStrip.createView(112,128);
+    final AddressableLEDBufferView LEDSegmentLeftRearVision = ledStrip.createView(129, 133);
+    final AddressableLEDBufferView LEDSegmentLeftFrontVision = ledStrip.createView(134, 138).reversed();
+    final AddressableLEDBufferView LEDSegmentLeftFrontTop = ledStrip.createView(139,155).reversed();
     final AddressableLEDBufferView LEDsegmentLeftFrontBotom = ledStrip.createView(156,178).reversed(); 
   
   
@@ -58,35 +57,9 @@ public class LEDS extends SubsystemBase {
 
 
   public LEDS() {
-    // Add up the lengths
-    // for (int len : ledSegLens){
-  //     totalBufferLength += len;
-  // }
-  // Create a view corresponding to each of the elements in ledSegLens
-  // The parameters to createView are the start-index and the end-index.
-  // The end-index is one less than the start-index plus the length.
-  // Note that the "inxNext+=ledSegLens[seg]" updates inxNext to start-inx of the next view
-
-  //  int inxNext = 0;
-  //   for (int seg =0; seg<ledSegLens.length; seg++){
-  //     ledStripSegs[seg] = ledStrip.createView(inxNext, ((inxNext+=ledSegLens[seg])-1));
-  // }
-    // PWM port 9
-
-    
-  //   public static final AddressableLEDBufferView LEDSegmentRightFrontBotom = ledStripSegs[0];
-  // public static final AddressableLEDBufferView LEDSegmentRightFrontTop = ledStripSegs[1]; 
-  // public static final AddressableLEDBufferView LEDSegmentRightRearTop = ledStripSegs[2];
-  // public static final AddressableLEDBufferView LEDSegmentRightRearBotom = ledStripSegs[3];
-  // public static final AddressableLEDBufferView LEDSegmentLeftRearBotom = ledStripSegs[4];
-  // public static final AddressableLEDBufferView LEDSegmentLeftRearTop = ledStripSegs[5];
-  // public static final AddressableLEDBufferView LEDSegmentLeftFrontTop = ledStripSegs[6];
-  // public static final AddressableLEDBufferView LEDsegmentFrontBotom = ledStripSegs[7]; 
-
-
 
   // Must be a PWM header, not MXP or DIO
-    m_led = new AddressableLED(LEDPWMport);
+    m_led = new AddressableLED(0);
     // Reuse buffer
     m_led.setLength(179);
 
@@ -127,7 +100,7 @@ public void SetSegmentByLevel(double length, Color ElevatorColor, Color Alliance
   }
 public void SetSegmentByIntake(Color Algae, Color Coral, Color AllianceColor, double brightness, ScoringMechSensor m_sensor) {
   LEDPattern NewPattern; 
-  if (!m_sensor.getScoringSensor()) {
+  if (m_sensor.getScoringSensor()) {
   NewPattern = LEDPattern.solid(AllianceColor);
     }
     else { 
@@ -168,18 +141,25 @@ public void allOff(){
      ledStrip.setRGB(i, 0, 0, 0);
   }
 }
-
-  public void setLed(int position, int r, int g, int b) {
-    if (position < 0) position = 0;
-    if (position > ledStrip.getLength()) position = ledStrip.getLength();
-    if (position < ledStrip.getLength()) {
-      ledStrip.setRGB(position, r, g, b);
-    }
+public void SetSegmentByVision(boolean hasReachedX, boolean hasReachedY, boolean isAutoYSpeed, boolean isAutoXSpeed, Color Aligned, Color Aligning1, Color Aligning2, Color AllianceColor, double brightness) {
+  LEDPattern NewPattern;
+  if (!hasReachedY && !hasReachedX && !isAutoYSpeed && !isAutoXSpeed) {
+    NewPattern = LEDPattern.solid(Aligned);
+  } else if (isAutoYSpeed && isAutoXSpeed) {
+    NewPattern = LEDPattern.gradient(LEDPattern.GradientType.kDiscontinuous, Aligning1, Aligning2);
   }
-  public void setSlashLed(int r, int g, int b) {
-      for (int Index = 19; Index <= 33; Index ++){
-        ledStrip.setRGB(Index, r, g, b);
-      };
+  else {
+    NewPattern = LEDPattern.solid(AllianceColor);
+  }
+  NewPattern.atBrightness(Units.Percent.of(brightness));
+  NewPattern.applyTo(LEDSegmentLeftFrontVision);
+  NewPattern.applyTo(LEDSegmentLeftRearVision);
+  NewPattern.applyTo(LEDSegmentRightFrontVision);
+  NewPattern.applyTo(LEDSegmentRightRearVision);
+  m_led.setData(ledStrip);
+  m_led.start();
+}
+  public void SetSegment(int r, int g, int b) {
     }
   private void setRainbow(int r, int g, int b) {
     for (var i = 0; i < ledStrip.getLength(); i++) {
