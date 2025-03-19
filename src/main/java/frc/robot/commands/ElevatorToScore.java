@@ -54,12 +54,12 @@ public class ElevatorToScore extends Command {
     if (Constants.scoringMode == "Coral") {
       if (m_robotDrive.autoRotateSpeed == 0) {
         m_elevator.rotate(16.35 * Constants.ELEVATOR_GEARING * Constants.percentOfElevator); // 327
+        m_scoringMechPivot.rotatePivot(Constants.scoringMechGoalAngle);
         if (m_elevator.getMotorPosition() >= ((16.35 * Constants.ELEVATOR_GEARING * Constants.percentOfElevator) * .50) && toggle) {
           if (Constants.visionElevator) {
             m_robotDrive.isAutoYSpeed = true;
             m_robotDrive.isAutoXSpeed = true;
           }
-          m_scoringMechPivot.rotatePivot(Constants.scoringMechGoalAngle);
           toggle = false;
         }
       }

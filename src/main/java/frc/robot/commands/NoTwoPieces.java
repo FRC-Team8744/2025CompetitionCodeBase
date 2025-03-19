@@ -27,7 +27,7 @@ public class NoTwoPieces extends Command {
   public void initialize() {
     m_intake.runIndexer(-0.5, 0.5);
     m_intake.runIntake(-0.6);
-    timer.start();
+    timer.restart();
   }
 
   // Called every time the scheduler runs while the command is scheduled.

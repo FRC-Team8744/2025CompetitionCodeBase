@@ -136,14 +136,14 @@ public class RobotContainer {
     .toggleOnTrue(Commands.runOnce(() -> Constants.scoringMode = "Algae"));
 
     m_driver.b()
-    .whileTrue(Commands.runOnce(() -> m_robotDrive.isAutoYSpeed = false).alongWith(Commands.runOnce(() -> m_robotDrive.isAutoXSpeed = false)));
+    .whileTrue(Commands.runOnce(() -> m_robotDrive.isAutoYSpeed = false).alongWith(Commands.runOnce(() -> m_robotDrive.isAutoXSpeed = false).alongWith(Commands.runOnce(() -> m_robotDrive.isAutoRotate = RotationEnum.NONE))));
 
     m_coDriver.pov(0)
     .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(.9, -200, "L4", .95, -200, "Net")));
     m_coDriver.pov(90)
     .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(.53, -60, "L3", .49, -260, "L3")));
     m_coDriver.pov(180)
-    .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(.25, -60, "L1", .15, -250, "Processor")));
+    .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(.20, -60, "L1", .15, -250, "Processor")));
     m_coDriver.pov(270)
     .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(.33, -60, "L2", .30, -250, "L2")));
 
