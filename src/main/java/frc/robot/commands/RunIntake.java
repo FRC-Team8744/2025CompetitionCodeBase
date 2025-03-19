@@ -61,6 +61,7 @@ public class RunIntake extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    m_coral.stopMotor();
     m_intake.stopBoth();
     m_coral.stopMotor();
     m_intake.stopBoth();

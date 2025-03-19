@@ -8,6 +8,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
 import frc.robot.subsystems.ScoringMechSensor;
 import frc.robot.subsystems.mechanisms.CoralScoring;
+import frc.robot.subsystems.mechanisms.Elevator;
+import frc.robot.subsystems.mechanisms.Intake;
+import frc.robot.subsystems.mechanisms.IntakePivot;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class TeleopScore extends Command{

@@ -30,7 +30,6 @@ public class Elevator extends SubsystemBase {
   public Slot0Configs elevatorConfigPIDUp = elevatorConfig.Slot0;
   public Slot1Configs elevatorConfigPIDDown = elevatorConfig.Slot1;
   public boolean elevatorSlot0 = true;
-  public double percentOfElevator = 0.9;
   public Elevator() {
     elevatorConfig.Voltage.PeakForwardVoltage = 12;
     elevatorConfig.Voltage.PeakReverseVoltage = -12;

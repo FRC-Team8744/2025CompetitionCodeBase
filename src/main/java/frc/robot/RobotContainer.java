@@ -16,6 +16,7 @@ import frc.robot.commands.ResetEncoders;
 import frc.robot.commands.RunElevator;
 import frc.robot.commands.TeleopScore;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.LEDS;
 import frc.robot.subsystems.ScoringMechSensor;
 import frc.robot.subsystems.alignment.AlignToPole;
 import frc.robot.subsystems.alignment.AlignToPoleX;
@@ -66,6 +67,7 @@ public class RobotContainer {
   
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    m_leds.ledOn(0,0,255);
     // Configure the button bindings
     configureButtonBindings();
 
@@ -136,14 +138,17 @@ public class RobotContainer {
     .whileTrue(Commands.runOnce(() -> m_robotDrive.isAutoYSpeed = false).alongWith(Commands.runOnce(() -> m_robotDrive.isAutoXSpeed = false)));
 
     m_coDriver.pov(0)
-    .whileTrue(Commands.runOnce(() -> m_elevator.setElevatorPreset(.9, "L4")).alongWith(Commands.runOnce(() -> m_scoringMechPivot.scoringMechGoalAngle = -200)));
+    .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(.9, -200, "L4", .9, -200, "Net")));
     m_coDriver.pov(90)
-    .whileTrue(Commands.runOnce(() -> m_elevator.setElevatorPreset(.53, "L3")).alongWith(Commands.runOnce(() -> m_scoringMechPivot.scoringMechGoalAngle = -60)));
+    .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(.53, -60, "L3", .53, -60, "L3")));
     m_coDriver.pov(180)
-    .whileTrue(Commands.runOnce(() -> m_elevator.setElevatorPreset(.25, "L1")).alongWith(Commands.runOnce(() -> m_scoringMechPivot.scoringMechGoalAngle = -60)));
+    .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(.25, -60, "L1", .25, -60, "Processor")));
     m_coDriver.pov(270)
-    .whileTrue(Commands.runOnce(() -> m_elevator.setElevatorPreset(.33, "L2")).alongWith(Commands.runOnce(() -> m_scoringMechPivot.scoringMechGoalAngle = -60)));
-  } 
+    .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(.33, -60, "L2", .33, -60, "L2")));
+
+    m_coDriver.back()
+    .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(.99, -200, "100%", .99, -200, "100%")));
+  }
 
   public Command getAutonomousCommand() {
     Command autoCommand = m_autoManager.getAutoManagerSelected();
