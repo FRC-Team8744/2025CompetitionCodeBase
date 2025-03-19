@@ -64,6 +64,7 @@ public class Elevator extends SubsystemBase {
     m_leftElevator.setPosition(0);
   }
 
+  // Takes the elevator position from all the way down to the position given
   public void rotate(double targetPosition) {
     // position.Slot = 0;
     position.Slot = 0;
@@ -71,6 +72,7 @@ public class Elevator extends SubsystemBase {
     m_rightElevator.setControl(followControl);
   }
 
+  // Takes the elevator position from all the way up to all the way down
   public void goDown() {
     velocityControl.Slot = 1;
     m_leftElevator.setControl(velocityControl.withEnableFOC(false).withVelocity(0).withFeedForward(-4).withSlot(1));
@@ -83,15 +85,18 @@ public class Elevator extends SubsystemBase {
     m_rightElevator.setPosition(0);
   }
 
+  // Stops both the motors
   public void stopRotate() {
     m_leftElevator.stopMotor();
     m_rightElevator.stopMotor();
   }
 
+  // Gives the position of the left elevator motor
   public double getMotorPosition() {
     return m_leftElevator.getPosition().getValueAsDouble();
   }
 
+  // Gives the absolute value of the distance off from the desired point then if it is < or = to 1 it will be true otherwise its false
   public boolean isAtSetpoint() {
     return Math.abs(m_leftElevator.getClosedLoopError().getValueAsDouble()) <= 1.0;
   }
@@ -105,6 +110,7 @@ public class Elevator extends SubsystemBase {
     Constants.scoringMechGoalAngleAlgae = algaeScoringMechAngle;
   }
 
+  // Gives the position of the left elevator in motor rotations and the # the driver sets
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
