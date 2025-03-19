@@ -87,6 +87,36 @@
           "data": {
             "name": "ScoreCoral"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "ER4-3"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "RunIntake"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "RightPole"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ElevatorToScore"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ScoreCoral"
+          }
         }
       ]
     }

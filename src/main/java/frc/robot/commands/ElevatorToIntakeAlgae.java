@@ -35,7 +35,7 @@ public class ElevatorToIntakeAlgae extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if (Constants.visionElevator = true) {
+    if (Constants.visionElevator) {
       if (Constants.scoringMode == "Algae" && Constants.algaeScoringLevel == "Net") {
         m_robotDrive.isAutoRotate = RotationEnum.NONE;
       }

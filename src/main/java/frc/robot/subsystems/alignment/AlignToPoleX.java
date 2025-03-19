@@ -26,7 +26,7 @@ public class AlignToPoleX {
 
   public void initialize() {
     // m_driveCtrl.enableContinuousInput(-180, 180);
-    m_driveCtrl.setTolerance(0.05);
+    m_driveCtrl.setTolerance(0.1);
     m_driveCtrl.reset();
   }
 

@@ -3,51 +3,51 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.569392123287671,
-        "y": 4.167744006849315
+        "x": 2.0572183098591537,
+        "y": 4.421830985915492
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.2020547945205478,
-        "y": 4.8138484589041095
+        "x": 0.6898809810920306,
+        "y": 5.067935437970287
       },
       "isLocked": false,
       "linkedName": "ER4-1"
     },
     {
       "anchor": {
-        "x": 1.487542808219178,
-        "y": 6.872367294520547
+        "x": 1.504489436619717,
+        "y": 6.760299295774648
       },
       "prevControl": {
-        "x": 0.7006893908632744,
-        "y": 6.255227359339446
+        "x": 0.7176360192638137,
+        "y": 6.143159360593547
       },
       "nextControl": {
-        "x": 2.2538527397260273,
-        "y": 7.473394691780822
+        "x": 2.270799368126566,
+        "y": 7.361326693034923
       },
       "isLocked": false,
       "linkedName": "ER4-1Intake"
     },
     {
       "anchor": {
-        "x": 3.756421232876712,
-        "y": 5.505029965753424
+        "x": 3.573679577464788,
+        "y": 5.881602112676055
       },
       "prevControl": {
-        "x": 3.5009845890410953,
-        "y": 7.443343321917808
+        "x": 3.318242933629171,
+        "y": 7.819915468840438
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "ER4-2"
     }
   ],
   "rotationTargets": [
     {
       "waypointRelativePos": 0.6337662337662338,
-      "rotationDegrees": 46.548023702442585
+      "rotationDegrees": 76.49881680227065
     }
   ],
   "constraintZones": [],
@@ -60,7 +60,7 @@
       "command": {
         "type": "named",
         "data": {
-          "name": "RunIntake"
+          "name": "ElevatorDown"
         }
       }
     },
@@ -77,8 +77,8 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 5.944,
-    "maxAcceleration": 6.0,
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -86,13 +86,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -55.78429786756263
+    "rotation": 121.15440519892796
   },
   "reversed": false,
   "folder": "Ryder Auto",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": -179.8757292574851
   },
   "useDefaultConstraints": true
 }

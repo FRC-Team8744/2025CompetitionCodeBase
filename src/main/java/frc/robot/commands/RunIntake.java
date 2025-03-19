@@ -43,7 +43,7 @@ public class RunIntake extends Command {
     if (Constants.scoringMode == "Coral") {
       m_intake.runIndexer(.5, -0.5);
       m_intake.runIntake(.6);
-      m_coral.runCoralMotor(-.05);
+      m_coral.runCoralMotor(-.2);
       m_intakePivot.intakeDown(-3393);
     }
     else if (Constants.scoringMode == "Algae") {

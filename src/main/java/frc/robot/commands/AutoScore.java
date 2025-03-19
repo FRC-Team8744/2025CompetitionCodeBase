@@ -50,7 +50,7 @@ public class AutoScore extends Command{
   public void end(boolean interrupted) {
     m_coral.stopMotor();
     m_intake.stopBoth();
-    m_intakePivot.intakeDown(0);
+    // m_intakePivot.intakeDown(0);
   }
 
   // Returns true when the command should end.

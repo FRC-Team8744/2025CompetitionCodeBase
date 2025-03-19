@@ -120,11 +120,13 @@ public class AutoCommandManager {
 
         PathPlannerAuto m_test = new PathPlannerAuto("1 Piece Test");
         PathPlannerAuto m_intaketest = new PathPlannerAuto("Coral Intaking Auto");
+        PathPlannerAuto m_4plrs = new PathPlannerAuto("4plrs");
 
         m_chooser.setDefaultOption("None", new InstantCommand());
 
         m_chooser.addOption("1 Piece Test", m_test);
         m_chooser.addOption("Intake Test", m_intaketest);
+        m_chooser.addOption("4plrs", m_4plrs);
 
         SmartDashboard.putData(m_chooser);
     }
