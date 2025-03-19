@@ -14,7 +14,7 @@ import frc.robot.subsystems.mechanisms.Elevator;
 import frc.robot.subsystems.mechanisms.ScoringMechanismPivot;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class ElevatorToScore extends Command {
+public class ElevatorToIntakeAlgae extends Command {
   /** Creates a new ElevatorToScore. */
   private Elevator m_elevator;
   private DriveSubsystem m_robotDrive;
@@ -22,7 +22,7 @@ public class ElevatorToScore extends Command {
   private ScoringMechanismPivot m_scoringMechPivot;
   private boolean toggle = true;
   private AlgaeMechanism m_algae;
-  public ElevatorToScore(Elevator ele, DriveSubsystem dr, ScoringMechanismPivot scp, AlgaeMechanism alg) {
+  public ElevatorToIntakeAlgae(Elevator ele, DriveSubsystem dr, ScoringMechanismPivot scp, AlgaeMechanism alg) {
     m_elevator = ele;
     addRequirements(m_elevator);
     m_robotDrive = dr;
@@ -51,20 +51,7 @@ public class ElevatorToScore extends Command {
   public void execute() {
     motorPosition = m_elevator.getMotorPosition();
 
-    if (Constants.scoringMode == "Coral") {
-      if (m_robotDrive.autoRotateSpeed == 0) {
-        m_elevator.rotate(16.35 * Constants.ELEVATOR_GEARING * Constants.percentOfElevator); // 327
-        if (m_elevator.getMotorPosition() >= ((16.35 * Constants.ELEVATOR_GEARING * Constants.percentOfElevator) * .50) && toggle) {
-          if (Constants.visionElevator) {
-            m_robotDrive.isAutoYSpeed = true;
-            m_robotDrive.isAutoXSpeed = true;
-          }
-          m_scoringMechPivot.rotatePivot(Constants.scoringMechGoalAngle);
-          toggle = false;
-        }
-      }
-    }
-    else if (Constants.scoringMode == "Algae") {
+    if (Constants.scoringMode == "Algae") {
       if (m_robotDrive.autoRotateSpeed == 0) {
         m_algae.intakeAlgae(0.2);
         m_elevator.rotate(16.35 * Constants.ELEVATOR_GEARING * Constants.percentOfElevatorAlgae);
@@ -83,21 +70,17 @@ public class ElevatorToScore extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    if (Constants.scoringMode == "Coral") {
-      m_elevator.rotate(0);
-      m_scoringMechPivot.rotatePivot(0);
-    }
-    if (Constants.scoringMode == "Algae") {
-      m_algae.intakeAlgae(0.2);
-      m_robotDrive.isAutoYSpeed = false;
-      m_robotDrive.isAutoXSpeed = false;
-      m_robotDrive.isAutoRotate = RotationEnum.NONE;
-    }
+    // m_scoringMechPivot.rotatePivot(0);
+    // m_elevator.rotate(0);
+    m_algae.intakeAlgae(0.2);
+    m_robotDrive.isAutoYSpeed = false;
+    m_robotDrive.isAutoXSpeed = false;
+    m_robotDrive.isAutoRotate = RotationEnum.NONE;
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return !m_algae.intakingAlgae;
   }
 }

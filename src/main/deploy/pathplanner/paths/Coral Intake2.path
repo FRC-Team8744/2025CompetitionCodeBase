@@ -1,0 +1,116 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 2.374058219178082,
+        "y": 4.302975171232877
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 0.5883187825583633,
+        "y": 4.657288551514567
+      },
+      "isLocked": false,
+      "linkedName": "CoralIntake1"
+    },
+    {
+      "anchor": {
+        "x": 1.2493838028169,
+        "y": 6.8595070422535205
+      },
+      "prevControl": {
+        "x": 0.20763350979391282,
+        "y": 5.932095196025739
+      },
+      "nextControl": {
+        "x": 2.411531690140844,
+        "y": 7.894102112676056
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.672887323943661,
+        "y": 5.697359154929577
+      },
+      "prevControl": {
+        "x": 2.8792253521126754,
+        "y": 6.731954225352113
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.6909090909090909,
+      "rotationDegrees": 90.0
+    },
+    {
+      "waypointRelativePos": 1.189695550351288,
+      "rotationDegrees": 135.0
+    }
+  ],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0,
+      "maxWaypointRelativePos": 2.0,
+      "constraints": {
+        "maxVelocity": 2.0,
+        "maxAcceleration": 6.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "ElevatorDown",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "ElevatorDown"
+        }
+      }
+    },
+    {
+      "name": "RunIntake",
+      "waypointRelativePos": 0.4482758620689652,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "RunIntake"
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 5.944,
+    "maxAcceleration": 6.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 117.37770277133174
+  },
+  "reversed": false,
+  "folder": "3 Piece Auto",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 180.0
+  },
+  "useDefaultConstraints": true
+}

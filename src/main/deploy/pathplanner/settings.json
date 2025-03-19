@@ -3,9 +3,10 @@
   "robotLength": 0.787,
   "holonomicMode": true,
   "pathFolders": [
+    "3 Piece Auto",
     "5 piece top source",
     "Fake Autos",
-    "3 Piece Auto",
+    "Ryder Auto",
     "Test for 1 score"
   ],
   "autoFolders": [],

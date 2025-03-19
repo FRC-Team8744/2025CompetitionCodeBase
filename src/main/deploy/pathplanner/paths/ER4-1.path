@@ -1,0 +1,98 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 5.229,
+        "y": 5.67
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 4.3386418014673716,
+        "y": 6.125260670721437
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.487542808219178,
+        "y": 6.872367294520547
+      },
+      "prevControl": {
+        "x": 2.2557640878165532,
+        "y": 7.512551694185025
+      },
+      "nextControl": {
+        "x": 0.315539383561644,
+        "y": 5.895697773972603
+      },
+      "isLocked": false,
+      "linkedName": "ER4-1Intake"
+    },
+    {
+      "anchor": {
+        "x": 2.569392123287671,
+        "y": 4.167744006849315
+      },
+      "prevControl": {
+        "x": 3.0352429824459475,
+        "y": 3.928972590456409
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "ER4-1"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.6753246753246752,
+      "rotationDegrees": -142.95752522691714
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "ElevatorDown",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "ElevatorDown"
+        }
+      }
+    },
+    {
+      "name": "RunIntake",
+      "waypointRelativePos": 0.4967320261437909,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "RunIntake"
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 5.944,
+    "maxAcceleration": 6.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 0.0
+  },
+  "reversed": false,
+  "folder": "Ryder Auto",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 58.518361746607255
+  },
+  "useDefaultConstraints": true
+}

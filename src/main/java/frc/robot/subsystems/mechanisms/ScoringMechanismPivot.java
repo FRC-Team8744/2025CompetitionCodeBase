@@ -37,7 +37,7 @@ public class ScoringMechanismPivot extends SubsystemBase {
     scoringMechPivotConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
     scoringMechPivotConfig.CurrentLimits.StatorCurrentLimitEnable = true;
     scoringMechPivotConfig.CurrentLimits.StatorCurrentLimit = 40.0;
-    scoringMechPivotConfigPID.kS = 0.0; // Add 0.25 V output to overcome static friction
+    scoringMechPivotConfigPID.kS = 0.5; // Add 0.25 V output to overcome static friction
     scoringMechPivotConfigPID.kV = 0.0; // A velocity target of 1 rps results in 0.12 V output
     scoringMechPivotConfigPID.kA = 0.0; // An acceleration of 1 rps/s requires 0.01 V output
     scoringMechPivotConfigPID.kP = 2.5; // A position error of 2.5 rotations results in 12 V output

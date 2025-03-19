@@ -10,13 +10,14 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
+import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class AlgaeMechanism extends SubsystemBase {
   private final SparkMax m_algaeMotor;
-  private final SparkBaseConfig algaeConfig = new SparkMaxConfig().smartCurrentLimit(20);
+  private final SparkBaseConfig algaeConfig = new SparkMaxConfig().smartCurrentLimit(20).idleMode(IdleMode.kBrake);
   public boolean intakingAlgae = false;
   /** Creates a new AlgaeMechanism. */
   public AlgaeMechanism() {
@@ -26,11 +27,11 @@ public class AlgaeMechanism extends SubsystemBase {
   }
 
   public void intakeAlgae(double speed) {
-    m_algaeMotor.set(speed);
+    m_algaeMotor.set(-speed);
   }
 
   public void scoreAlgae(double speed) {
-    m_algaeMotor.set(-speed);
+    m_algaeMotor.set(speed);
   }
 
   public void passiveAlgae() {
@@ -44,8 +45,5 @@ public class AlgaeMechanism extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    if (!intakingAlgae && Constants.scoringMode == "Algae") {
-        passiveAlgae();
-    }
   }
 }

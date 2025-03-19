@@ -1,0 +1,98 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 2.569392123287671,
+        "y": 4.167744006849315
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 1.2020547945205478,
+        "y": 4.8138484589041095
+      },
+      "isLocked": false,
+      "linkedName": "ER4-1"
+    },
+    {
+      "anchor": {
+        "x": 1.487542808219178,
+        "y": 6.872367294520547
+      },
+      "prevControl": {
+        "x": 0.7006893908632744,
+        "y": 6.255227359339446
+      },
+      "nextControl": {
+        "x": 2.2538527397260273,
+        "y": 7.473394691780822
+      },
+      "isLocked": false,
+      "linkedName": "ER4-1Intake"
+    },
+    {
+      "anchor": {
+        "x": 3.756421232876712,
+        "y": 5.505029965753424
+      },
+      "prevControl": {
+        "x": 3.5009845890410953,
+        "y": 7.443343321917808
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.6337662337662338,
+      "rotationDegrees": 46.548023702442585
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "ElevatorDown",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "RunIntake"
+        }
+      }
+    },
+    {
+      "name": "RunIntake",
+      "waypointRelativePos": 0.300653594771242,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "RunIntake"
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 5.944,
+    "maxAcceleration": 6.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -55.78429786756263
+  },
+  "reversed": false,
+  "folder": "Ryder Auto",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 0.0
+  },
+  "useDefaultConstraints": true
+}

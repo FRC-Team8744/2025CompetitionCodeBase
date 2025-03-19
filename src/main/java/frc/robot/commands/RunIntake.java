@@ -20,8 +20,9 @@ public class RunIntake extends Command {
   private final CoralScoring m_coral;
   private final ScoringMechSensor m_sensor;
   private final AlgaeMechanism m_algae;
-  private final ElevatorToScore m_elevatorToScore;
-  public RunIntake(Intake in, IntakePivot inp, CoralScoring co, ScoringMechSensor scp, AlgaeMechanism alg, ElevatorToScore ets) {
+  private final NoTwoPieces m_noTwoPieces;
+  private final ElevatorToIntakeAlgae m_elevatorToIntakeAlgae;
+  public RunIntake(Intake in, IntakePivot inp, CoralScoring co, ScoringMechSensor scp, AlgaeMechanism alg, ElevatorToIntakeAlgae eia, NoTwoPieces ntp) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_intake = in;
     addRequirements(m_intake);
@@ -30,24 +31,26 @@ public class RunIntake extends Command {
     m_coral = co;
     addRequirements(m_coral);
     m_sensor = scp;
-    m_elevatorToScore = ets;
     m_algae = alg;
     addRequirements(m_algae);
+    m_noTwoPieces = ntp;
+    m_elevatorToIntakeAlgae = eia;
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     if (Constants.scoringMode == "Coral") {
-      m_intake.runIndexer(.6, -0.6);
+      m_intake.runIndexer(.5, -0.5);
       m_intake.runIntake(.6);
       m_coral.runCoralMotor(-.05);
-      m_intakePivot.intakeDown(-4570);
+      m_intakePivot.intakeDown(-3393);
     }
     else if (Constants.scoringMode == "Algae") {
       if (Constants.algaeScoringLevel == "L2" || Constants.algaeScoringLevel == "L3") {
-        m_algae.intakeAlgae(0.4);
-        m_elevatorToScore.schedule();
+        m_algae.intakeAlgae(0.2);
+        m_elevatorToIntakeAlgae.schedule();
+        m_algae.intakingAlgae = true;
       }
     }
   }
@@ -61,6 +64,10 @@ public class RunIntake extends Command {
   public void end(boolean interrupted) {
     m_coral.stopMotor();
     m_intake.stopBoth();
+    if (Constants.scoringMode == "Coral") {
+      m_noTwoPieces.schedule();
+    }
+    m_algae.intakingAlgae = false;
   }
 
   // Returns true when the command should end.

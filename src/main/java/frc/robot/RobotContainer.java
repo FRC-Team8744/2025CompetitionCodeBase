@@ -10,6 +10,7 @@ import frc.robot.Constants.ConstantsOffboard;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.SwerveConstants;
 import frc.robot.commands.CoralEject;
+import frc.robot.commands.ElevatorToIntakeAlgae;
 import frc.robot.commands.ElevatorToScore;
 import frc.robot.commands.NoTwoPieces;
 import frc.robot.commands.ResetEncoders;
@@ -102,13 +103,13 @@ public class RobotContainer {
     m_driver.rightTrigger()
     // .whileTrue(new RunElevator(m_elevator).alongWith(Commands.runOnce(() -> m_robotDrive.isAutoYSpeed = true)).alongWith(Commands.runOnce(() -> m_robotDrive.isAutoXSpeed = true)).alongWith(Commands.runOnce(() -> m_scoringMechPivot.rotatePivot(m_scoringMechPivot.scoringMechGoalAngle)).onlyWhile((() -> m_elevator.getMotorPosition() >= ((327 * m_elevator.percentOfElevator) * .75)))))
     // .whileFalse(Commands.runOnce(() -> m_scoringMechPivot.rotatePivot(0)).alongWith(Commands.runOnce(() -> m_elevator.rotate(0)).onlyWhile((() -> m_scoringMechPivot.getPositionAngle() >= -20))));
-    .whileTrue(new ElevatorToScore(m_elevator, m_robotDrive, m_scoringMechPivot));
+    .whileTrue(new ElevatorToScore(m_elevator, m_robotDrive, m_scoringMechPivot, m_algae));
 
     m_driver.leftTrigger()
-    .whileTrue(new RunIntake(m_intake, m_intakePivot, m_coral, m_scoringMechSensor, m_algae, new ElevatorToScore(m_elevator, m_robotDrive, m_scoringMechPivot)).finallyDo(() -> new NoTwoPieces(m_intake, m_intakePivot).schedule()));
+    .whileTrue(new RunIntake(m_intake, m_intakePivot, m_coral, m_scoringMechSensor, m_algae, new ElevatorToIntakeAlgae(m_elevator, m_robotDrive, m_scoringMechPivot, m_algae), new NoTwoPieces(m_intake, m_intakePivot)));
 
     m_driver.y()
-    .whileTrue(new TeleopScore(m_coral, m_elevator, m_intake, m_intakePivot, m_scoringMechSensor).andThen(Commands.waitUntil((() -> m_alignToPoleX.hasReachedX))).finallyDo((() -> {m_robotDrive.isAutoYSpeed = false; m_robotDrive.isAutoXSpeed = false; m_robotDrive.isAutoRotate = RotationEnum.NONE;})));
+    .whileTrue(new TeleopScore(m_coral, m_elevator, m_intake, m_intakePivot, m_scoringMechSensor, m_algae, m_scoringMechPivot).andThen(Commands.waitUntil((() -> m_alignToPoleX.hasReachedX))).finallyDo((() -> {m_robotDrive.isAutoYSpeed = false; m_robotDrive.isAutoXSpeed = false; m_robotDrive.isAutoRotate = RotationEnum.NONE;})));
 
     m_driver.x()
     .whileTrue(new CoralEject(m_intake, m_coral));
@@ -138,13 +139,13 @@ public class RobotContainer {
     .whileTrue(Commands.runOnce(() -> m_robotDrive.isAutoYSpeed = false).alongWith(Commands.runOnce(() -> m_robotDrive.isAutoXSpeed = false)));
 
     m_coDriver.pov(0)
-    .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(.9, -200, "L4", .9, -200, "Net")));
+    .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(.9, -200, "L4", .95, -200, "Net")));
     m_coDriver.pov(90)
-    .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(.53, -60, "L3", .53, -60, "L3")));
+    .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(.53, -60, "L3", .49, -260, "L3")));
     m_coDriver.pov(180)
-    .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(.25, -60, "L1", .25, -60, "Processor")));
+    .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(.25, -60, "L1", .15, -250, "Processor")));
     m_coDriver.pov(270)
-    .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(.33, -60, "L2", .33, -60, "L2")));
+    .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(.33, -60, "L2", .30, -250, "L2")));
 
     m_coDriver.back()
     .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(.99, -200, "100%", .99, -200, "100%")));

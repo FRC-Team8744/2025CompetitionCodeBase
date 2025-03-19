@@ -6,54 +6,48 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.mechanisms.Elevator;
+import frc.robot.subsystems.ScoringMechSensor;
+import frc.robot.subsystems.mechanisms.Intake;
 import frc.robot.subsystems.mechanisms.IntakePivot;
-import frc.robot.subsystems.mechanisms.ScoringMechanismPivot;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class ResetEncoders extends Command {
-  /** Creates a new ResetEncoders. */
-  private Elevator m_elevator;
-  private ScoringMechanismPivot m_scoringMechPivot;
+public class NoTwoPiecesAuto extends Command {
+  /** Creates a new NoTwoPieces. */
+  private Intake m_intake;
   private IntakePivot m_intakePivot;
-  private Timer m_timer = new Timer();
-  public ResetEncoders(Elevator ele, ScoringMechanismPivot scp, IntakePivot inp) {
-    // Use addRequirements() here to declare subsystem dependencies.
-    m_elevator = ele;
-    addRequirements(m_elevator);
-    m_scoringMechPivot = scp;
-    addRequirements(m_scoringMechPivot);
+  private ScoringMechSensor m_scoringMechSensor;
+  private Timer timer = new Timer();
+  public NoTwoPiecesAuto(Intake in, IntakePivot inp, ScoringMechSensor sms) {
+    m_intake = in;
+    // addRequirements(m_intake);
     m_intakePivot = inp;
-    addRequirements(m_intakePivot);
+    m_scoringMechSensor = sms;
+    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    m_timer.restart();
-    m_scoringMechPivot.goDown();
-    // m_intakePivot.goDown();
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (m_timer.hasElapsed(0.5)) {
-      m_elevator.goDown();
+    if (!m_scoringMechSensor.getScoringSensor()) {
+      m_intake.runIndexer(-0.5, 0.5);
+      m_intake.runIntake(-0.6);
+      timer.start();
     }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_scoringMechPivot.resetEncoder();
-    m_elevator.resetElevatorPosition();
-    // m_intakePivot.resetIntakePivot();
+    m_intake.stopBoth();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return timer.hasElapsed(2);
   }
 }

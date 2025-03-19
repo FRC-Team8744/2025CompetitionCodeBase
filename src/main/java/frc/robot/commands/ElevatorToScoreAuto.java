@@ -37,7 +37,7 @@ public class ElevatorToScoreAuto extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    toggle = true;
+    // toggle = true;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -46,18 +46,19 @@ public class ElevatorToScoreAuto extends Command {
     m_robotDrive.isAutoRotate = RotationEnum.STRAFEONTARGET;
 
     motorPosition = m_elevator.getMotorPosition();
+    SmartDashboard.putBoolean("Has reached X", m_robotDrive.m_alignToPoleX.hasReachedX);
+    SmartDashboard.putBoolean("Has reached Y", m_robotDrive.m_alignToPole.hasReachedY);
 
     if (Constants.scoringMode == "Coral") {
       if (!m_scoringMechSensor.getScoringSensor()) {
         m_elevator.rotate(16.35 * Constants.ELEVATOR_GEARING * Constants.percentOfElevator); // 327
-        if (m_elevator.getMotorPosition() >= ((16.35 * Constants.ELEVATOR_GEARING * Constants.percentOfElevator) * .50) && toggle) {
+        if (m_elevator.getMotorPosition() >= ((16.35 * Constants.ELEVATOR_GEARING * Constants.percentOfElevator) * .50)) {
           m_robotDrive.isAutoYSpeed = true;
           m_robotDrive.isAutoXSpeed = true;
           m_scoringMechPivot.rotatePivot(Constants.scoringMechGoalAngle);
-          toggle = false;
         }
-        m_robotDrive.driveRobotRelative(new ChassisSpeeds());
       }
+      m_robotDrive.driveRobotRelative(new ChassisSpeeds());
     }
     else if (Constants.scoringMode == "Algae") {
       if (m_robotDrive.autoRotateSpeed == 0) {

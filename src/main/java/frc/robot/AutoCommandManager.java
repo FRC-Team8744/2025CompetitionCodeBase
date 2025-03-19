@@ -40,6 +40,7 @@ import frc.robot.commands.ElevatorGoDownAuto;
 import frc.robot.commands.ElevatorToScore;
 import frc.robot.commands.ElevatorToScoreAuto;
 import frc.robot.commands.NoTwoPieces;
+import frc.robot.commands.NoTwoPiecesAuto;
 // import frc.robot.commands.AutoLineUp;
 import frc.robot.commands.RunElevator;
 // import frc.robot.commands.DropCoral;
@@ -174,6 +175,7 @@ public class AutoCommandManager {
         NamedCommands.registerCommand("RightPole", Commands.runOnce(() -> m_robotDrive.leftPoint = false));
         // NamedCommands.registerCommand("Auto rotate", Commands.runOnce(() -> m_robotDrive.isAutoRotate = m_robotDrive.isAutoRotate == RotationEnum.STRAFEONTARGET ? RotationEnum.NONE : RotationEnum.STRAFEONTARGET));
         NamedCommands.registerCommand("RunIntake", new RunIntakeAuto(m_intake, m_intakePivot, m_coralScoring, m_scoringMechSensor, m_algaMechanism, new ElevatorToScoreAuto(m_elevator, m_robotDrive, m_scoringMechPivot, m_scoringMechSensor), new NoTwoPieces(m_intake, m_intakePivot)));
+        NamedCommands.registerCommand("NoTwoPieces", new NoTwoPiecesAuto(m_intake, m_intakePivot, m_scoringMechSensor));
         NamedCommands.registerCommand("ElevatorToScore", new ElevatorToScoreAuto(m_elevator, m_robotDrive, m_scoringMechPivot, m_scoringMechSensor));
         NamedCommands.registerCommand("ElevatorDown", new ElevatorGoDownAuto(m_elevator, m_scoringMechPivot));
         NamedCommands.registerCommand("ScoreCoral", new AutoScore(m_coralScoring, m_elevator, m_intake, m_intakePivot, m_scoringMechSensor).finallyDo((() -> {m_robotDrive.isAutoYSpeed = false; m_robotDrive.isAutoRotate = m_robotDrive.isAutoRotate == RotationEnum.STRAFEONTARGET ? RotationEnum.NONE : RotationEnum.STRAFEONTARGET;})));        
