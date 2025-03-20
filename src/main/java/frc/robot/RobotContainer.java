@@ -3,7 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot;
-
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.ConstantsOffboard;
@@ -16,6 +16,7 @@ import frc.robot.commands.NoTwoPieces;
 import frc.robot.commands.ResetEncoders;
 import frc.robot.commands.RunElevator;
 import frc.robot.commands.TeleopScore;
+import frc.robot.subsystems.ColorInterface;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LEDS;
 import frc.robot.subsystems.ScoringMechSensor;
@@ -55,19 +56,20 @@ public class RobotContainer {
   private CoralScoring m_coral = new CoralScoring();
   private Climber m_climber = new Climber();
   private LEDS m_leds = new LEDS();
-  private AlgaeMechanism m_algae = new AlgaeMechanism();
+  private AlgaeMechanism m_algae = new AlgaeMechanism(m_leds);
   private ScoringMechSensor m_scoringMechSensor = new ScoringMechSensor();
   private AlignToPoleX m_alignToPoleX = new AlignToPoleX();
   private AlignToPole m_alignToPoleY = new AlignToPole();
-  private DriveSubsystem m_robotDrive = new DriveSubsystem(m_vision, m_vision2, m_alignToPoleX);
+  private DriveSubsystem m_robotDrive = new DriveSubsystem(m_vision, m_vision2, m_alignToPoleX, m_leds);
   // The driver's controller
   private CommandXboxController m_driver = new CommandXboxController(OIConstants.kDriverControllerPort);
   private CommandXboxController m_coDriver = new CommandXboxController(1);
-  private AutoCommandManager m_autoManager = new AutoCommandManager(m_elevator, m_intake, m_algae, m_climber, m_coral, m_intakePivot, m_scoringMechPivot, m_vision, m_vision2, m_alignToPoleY, null, m_robotDrive, null,m_scoringMechSensor);
-
+  private AutoCommandManager m_autoManager = new AutoCommandManager(m_leds, m_elevator, m_intake, m_algae, m_climber, m_coral, m_intakePivot, m_scoringMechPivot, m_vision, m_vision2, m_alignToPoleY, null, m_robotDrive, null,m_scoringMechSensor);
+  
+  
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    m_leds.ledOn(0,0,255);
+    // m_leds.ledOn(0,0,255);
     // Configure the button bindings
     configureButtonBindings();
 
@@ -106,7 +108,7 @@ public class RobotContainer {
     .whileTrue(new ElevatorToScore(m_elevator, m_robotDrive, m_scoringMechPivot, m_algae));
 
     m_driver.leftTrigger()
-    .whileTrue(new RunIntake(m_intake, m_intakePivot, m_coral, m_scoringMechSensor, m_algae, new ElevatorToIntakeAlgae(m_elevator, m_robotDrive, m_scoringMechPivot, m_algae), new NoTwoPieces(m_intake, m_intakePivot)));
+    .whileTrue(new RunIntake(m_leds, m_intake, m_intakePivot, m_coral, m_scoringMechSensor, m_algae, new ElevatorToIntakeAlgae(m_elevator, m_robotDrive, m_scoringMechPivot, m_algae), new NoTwoPieces(m_intake, m_intakePivot)));
 
     m_driver.y()
     .whileTrue(new TeleopScore(m_coral, m_elevator, m_intake, m_intakePivot, m_scoringMechSensor, m_algae, m_scoringMechPivot).andThen(Commands.waitUntil((() -> m_alignToPoleX.hasReachedX))).finallyDo((() -> {m_robotDrive.isAutoYSpeed = false; m_robotDrive.isAutoXSpeed = false; m_robotDrive.isAutoRotate = RotationEnum.NONE;})));
@@ -130,22 +132,28 @@ public class RobotContainer {
     .toggleOnTrue(Commands.runOnce(() -> m_robotDrive.leftPoint = true));
 
     m_coDriver.rightTrigger()
-    .toggleOnTrue(Commands.runOnce(() -> Constants.scoringMode = "Coral"));
+    .toggleOnTrue(Commands.runOnce(() -> Constants.scoringMode = "Coral")
+    .alongWith(Commands.runOnce(() -> m_leds.SetSegmentByIntakeMech(Color.kWhite, 50))));
 
     m_coDriver.leftTrigger()
-    .toggleOnTrue(Commands.runOnce(() -> Constants.scoringMode = "Algae"));
+    .toggleOnTrue(Commands.runOnce(() -> Constants.scoringMode = "Algae")
+    .alongWith(Commands.runOnce(() -> m_leds.SetSegmentByIntakeMech(ColorInterface.Algae, 50))));
 
     m_driver.b()
     .whileTrue(Commands.runOnce(() -> m_robotDrive.isAutoYSpeed = false).alongWith(Commands.runOnce(() -> m_robotDrive.isAutoXSpeed = false).alongWith(Commands.runOnce(() -> m_robotDrive.isAutoRotate = RotationEnum.NONE))));
 
     m_coDriver.pov(0)
-    .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(.9, -200, "L4", .95, -200, "Net")));
+    .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(.9, -200, "L4", .95, -200, "Net"))
+    .alongWith(Commands.runOnce(() -> m_leds.SetSegmentByLevel(1.0, ColorInterface.L3, Color.kBlue, 50))));
     m_coDriver.pov(90)
-    .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(.53, -60, "L3", .49, -260, "L3")));
+    .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(.53, -60, "L3", .49, -260, "L3"))
+    .alongWith(Commands.runOnce(() -> m_leds.SetSegmentByLevel(.75, ColorInterface.L3, Color.kBlue, 50))));
     m_coDriver.pov(180)
-    .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(.20, -60, "L1", .15, -250, "Processor")));
+    .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(.20, -60, "L1", .15, -250, "Processor"))
+    .alongWith(Commands.runOnce(() -> m_leds.SetSegmentByLevel(.25, ColorInterface.L3, Color.kBlue, 50))));
     m_coDriver.pov(270)
-    .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(.33, -60, "L2", .30, -250, "L2")));
+    .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(.33, -60, "L2", .30, -250, "L2"))
+    .alongWith(Commands.runOnce(() -> m_leds.SetSegmentByLevel(.5, ColorInterface.L3, Color.kBlue, 50))));
 
     m_coDriver.back()
     .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(.99, -200, "100%", .99, -200, "100%")));

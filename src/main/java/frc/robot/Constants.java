@@ -229,6 +229,15 @@ public final class Constants {
             kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
   }
 
+  public static final class LEDConstants {
+    public static final double L1Constant = .25;
+    public static final double L2Constant = .33;
+    public static final double L3Constant = .53;
+    public static final double L4Constant = .9;
+
+    public static final int LEDPWMport = 0;
+  }
+
   public void configureKrakens() {
     // Driving Configs
     driveConfig.Voltage.PeakForwardVoltage = 12;

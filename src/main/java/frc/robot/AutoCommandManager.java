@@ -47,6 +47,12 @@ import frc.robot.commands.RunElevator;
 import frc.robot.commands.RunIntake;
 import frc.robot.commands.RunIntakeAuto;
 import frc.robot.commands.TeleopScore;
+import frc.robot.subsystems.LEDS;
+import frc.robot.subsystems.alignment.AlignToPoleX;
+import edu.wpi.first.wpilibj.util.Color;
+import frc.robot.subsystems.ColorInterface;
+
+
 
 /** Add your docs here. */
 public class AutoCommandManager {
@@ -60,6 +66,7 @@ public class AutoCommandManager {
     public TrajectoryConfig reverseConfig;
 
     public AutoCommandManager(
+        LEDS m_leds, 
         Elevator m_elevator,
         Intake m_intake,
         AlgaeMechanism m_algaMechanism,
@@ -90,7 +97,8 @@ public class AutoCommandManager {
             m_lockOnTarget,
             m_robotDrive,
             m_alignToClimb,
-            m_scoringMechSensor
+            m_scoringMechSensor, 
+            m_leds
       );
 
         var thetaController = new ProfiledPIDController(
@@ -164,7 +172,8 @@ public class AutoCommandManager {
         LockOnTarget m_lockOnTarget,
         DriveSubsystem m_robotDrive,
         AlignToClimb m_alignToClimb,
-        ScoringMechSensor m_scoringMechSensor
+        ScoringMechSensor m_scoringMechSensor,
+        LEDS m_leds
         
         ) { 
             
@@ -180,6 +189,7 @@ public class AutoCommandManager {
         NamedCommands.registerCommand("NoTwoPieces", new NoTwoPiecesAuto(m_intake, m_intakePivot, m_scoringMechSensor));
         NamedCommands.registerCommand("ElevatorToScore", new ElevatorToScoreAuto(m_elevator, m_robotDrive, m_scoringMechPivot, m_scoringMechSensor));
         NamedCommands.registerCommand("ElevatorDown", new ElevatorGoDownAuto(m_elevator, m_scoringMechPivot));
-        NamedCommands.registerCommand("ScoreCoral", new AutoScore(m_coralScoring, m_elevator, m_intake, m_intakePivot, m_scoringMechSensor).finallyDo((() -> {m_robotDrive.isAutoYSpeed = false; m_robotDrive.isAutoRotate = m_robotDrive.isAutoRotate == RotationEnum.STRAFEONTARGET ? RotationEnum.NONE : RotationEnum.STRAFEONTARGET;})));        
+        NamedCommands.registerCommand("ScoreCoral", new AutoScore(m_coralScoring, m_elevator, m_intake, m_intakePivot, m_scoringMechSensor).finallyDo((() -> {m_robotDrive.isAutoYSpeed = false; m_robotDrive.isAutoRotate = m_robotDrive.isAutoRotate == RotationEnum.STRAFEONTARGET ? RotationEnum.NONE : RotationEnum.STRAFEONTARGET;})));  
+        NamedCommands.registerCommand("LEDS", Commands.runOnce(() -> m_leds.SetSegmentByVision(m_robotDrive.m_alignToPoleX.hasReachedX, m_robotDrive.m_alignToPole.hasReachedY, m_robotDrive.isAutoYSpeed, m_robotDrive.isAutoXSpeed, Color.kRed, ColorInterface.L3, ColorInterface.L2, Color.kBlue, 50)));      
     }
 }

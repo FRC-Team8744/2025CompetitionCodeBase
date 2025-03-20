@@ -46,6 +46,7 @@ import frc.robot.subsystems.vision.PhotonVisionGS;
 import frc.robot.subsystems.vision.PhotonVisionGS2;
 import frc.robot.RotationEnum;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.util.Color; 
 
 
 public class DriveSubsystem extends SubsystemBase {
@@ -96,6 +97,7 @@ public class DriveSubsystem extends SubsystemBase {
   public final AlignToClimb m_alignToClimb = new AlignToClimb();
   public final AlignToPole m_alignToPole = new AlignToPole();
   public final AlignToPoleX m_alignToPoleX;
+  public final LEDS m_leds;
 
   public RotationEnum isAutoRotate = RotationEnum.NONE;
   public boolean isAutoYSpeed = false;
@@ -103,6 +105,7 @@ public class DriveSubsystem extends SubsystemBase {
   public boolean isAutoRotateToggle = true;
   public boolean isAutoYSpeedToggle = true;
   public boolean isAutoXSpeedToggle = true;
+  
   // public boolean hasYFinished = false;
   
   public SwerveModulePosition[] getModulePositions() {
@@ -123,7 +126,9 @@ public class DriveSubsystem extends SubsystemBase {
   public Field2d m_field;
   
   /** Creates a new DriveSubsystem. */
-  public DriveSubsystem(PhotonVisionGS m_vision, PhotonVisionGS2 m_vision2, AlignToPoleX m_alignToPoleX) {
+  public DriveSubsystem(PhotonVisionGS m_vision, PhotonVisionGS2 m_vision2, AlignToPoleX m_alignToPoleX, LEDS m_leds) {
+    this.m_leds = m_leds;
+    
     m_turnCtrl.setTolerance(10.00);
     this.m_vision = m_vision;
     this.m_vision2 = m_vision2;
@@ -435,6 +440,8 @@ public class DriveSubsystem extends SubsystemBase {
    * @param fieldRelative Whether the provided x and y speeds are relative to the field.
    */
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
+    
+    m_leds.SetSegmentByVision(m_alignToPoleX.hasReachedX, m_alignToPole.hasReachedY, isAutoYSpeed, isAutoXSpeed, Color.kRed, ColorInterface.L3, ColorInterface.L2, Color.kBlue, 50);
     rot = isAutoRotate != RotationEnum.NONE ? autoRotateSpeed : rot;
 
     if (isAutoYSpeed && isAutoRotate == RotationEnum.STRAFEONTARGET) {
