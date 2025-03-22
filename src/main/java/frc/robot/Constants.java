@@ -59,8 +59,8 @@ public final class Constants {
   public static final Pose2d[] blueBorder21 = new Pose2d[]{new Pose2d(4.88, 4.0, new Rotation2d(0)), new Pose2d(10.38, 7.0, new Rotation2d(0)), new Pose2d(10.38, 1.0, new Rotation2d(0))};
   public static final Pose2d[] blueBorder22 = new Pose2d[]{new Pose2d(4.691, 3.67, new Rotation2d(0)), new Pose2d(10.191, 0.67, new Rotation2d(0)), new Pose2d(4.691, -0.33, new Rotation2d(0))};
 
-  public static final double[] rightPoint = {5.35, 4.2378}; // 4.2378
-  public static final double[] leftPoint = {5.35, 3.8428}; // 3.8428
+  public static final double[] rightPoint = {5.35, 4.2396}; // 4.25128984 4.2378 4.23 4.2492
+  public static final double[] leftPoint = {5.35, 3.8428}; // 3.85128984 3.8428 3.83
   public static final double[][] rotationMatrix = {{0.5, Math.sin(Math.PI / 3.0)}, {-Math.sin(Math.PI / 3.0), 0.5}};
 
   public static final double ELEVATOR_GEARING = 5.0;

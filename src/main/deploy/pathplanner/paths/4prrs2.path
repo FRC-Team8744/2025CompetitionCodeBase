@@ -3,51 +3,51 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.573679577464788,
-        "y": 5.881602112676055
+        "x": 2.0572183098591537,
+        "y": 3.608
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.483525467875747,
-        "y": 7.188836701717151
+        "x": 0.7962230218391451,
+        "y": 3.011930258103369
       },
       "isLocked": false,
-      "linkedName": "ER4-2"
+      "linkedName": "4prrs1"
     },
     {
       "anchor": {
-        "x": 1.4424657534246574,
-        "y": 6.902418664383561
+        "x": 1.712928082191781,
+        "y": 1.448
       },
       "prevControl": {
-        "x": 2.107986968821037,
-        "y": 7.648797597538379
+        "x": 0.8971509293098564,
+        "y": 2.0263663517493535
       },
       "nextControl": {
-        "x": -0.16528253424657557,
-        "y": 5.099336472602739
+        "x": 2.5393407534246575,
+        "y": 0.8620933219178084
       },
       "isLocked": false,
-      "linkedName": "ER4-1Intake"
+      "linkedName": "4prrsIntake"
     },
     {
       "anchor": {
-        "x": 2.1280809859154917,
-        "y": 3.925792253521126
+        "x": 3.573679577464788,
+        "y": 2.168
       },
       "prevControl": {
-        "x": 1.9345916611146614,
-        "y": 4.084101701085443
+        "x": 3.4192315748738173,
+        "y": 1.0690453586814916
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "4prrs2"
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.5298701298701298,
-      "rotationDegrees": -160.93134549490247
+      "waypointRelativePos": 0.6337662337662338,
+      "rotationDegrees": -76.499
     }
   ],
   "constraintZones": [],
@@ -66,7 +66,7 @@
     },
     {
       "name": "RunIntake",
-      "waypointRelativePos": 0.2614379084967323,
+      "waypointRelativePos": 0.300653594771242,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
@@ -86,13 +86,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 178.94881925045627
+    "rotation": -121.15400000000001
   },
   "reversed": false,
-  "folder": "4plrs",
+  "folder": "4prrs",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 121.15440519892796
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }

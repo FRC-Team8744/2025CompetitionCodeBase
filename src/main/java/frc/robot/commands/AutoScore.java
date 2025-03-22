@@ -38,25 +38,31 @@ public class AutoScore extends Command{
   @Override
   public void initialize() {
     m_coral.runCoralMotor(-.4);
-    m_timer.start();
+    // m_timer.start();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    if (m_scoringMechSensor.getScoringSensor()) {
+      m_timer.start();
+    }
+  }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     m_coral.stopMotor();
     m_intake.stopBoth();
+    m_timer.reset();
     // m_intakePivot.intakeDown(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (m_scoringMechSensor.getScoringSensor()) {
+    if (m_timer.hasElapsed(0.05)) {
+      m_timer.stop();
       return true;
     }
     else {

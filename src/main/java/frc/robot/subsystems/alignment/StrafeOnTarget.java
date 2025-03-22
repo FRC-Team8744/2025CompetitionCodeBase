@@ -78,9 +78,9 @@ public StrafeOnTarget() {}
         isInAreaEnum.areaEnum = isInAreaEnum.NONE;
       }
     }
-    else if  (alliance.get() == DriverStation.Alliance.Red) {
+    else if (alliance.get() == DriverStation.Alliance.Red) {
       if (isInArea (Constants.redBorder11, estimatedPose2d)) {
-        m_turnCtrl.setSetpoint(120);
+        m_turnCtrl.setSetpoint(240);
         inZone = true;
         isInAreaEnum.areaEnum = isInAreaEnum.N11;
       }
@@ -90,12 +90,12 @@ public StrafeOnTarget() {}
         isInAreaEnum.areaEnum = isInAreaEnum.N10;
       }
       else if (isInArea (Constants.redBorder9, estimatedPose2d)) {
-        m_turnCtrl.setSetpoint(240);
+        m_turnCtrl.setSetpoint(120);
         inZone = true;
         isInAreaEnum.areaEnum = isInAreaEnum.N9;
       }
       else if (isInArea (Constants.redBorder8, estimatedPose2d)) {
-        m_turnCtrl.setSetpoint(300);
+        m_turnCtrl.setSetpoint(60);
         inZone = true;
         isInAreaEnum.areaEnum = isInAreaEnum.N8;
       }
@@ -105,7 +105,7 @@ public StrafeOnTarget() {}
         isInAreaEnum.areaEnum = isInAreaEnum.N7;
       }
       else if (isInArea (Constants.redBorder6, estimatedPose2d)) {
-        m_turnCtrl.setSetpoint(60);
+        m_turnCtrl.setSetpoint(300);
         inZone = true;
         isInAreaEnum.areaEnum = isInAreaEnum.N6;
       }

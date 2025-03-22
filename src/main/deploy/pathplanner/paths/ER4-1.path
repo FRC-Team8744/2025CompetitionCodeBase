@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.229,
-        "y": 5.67
+        "x": 5.529452054794521,
+        "y": 5.925749143835617
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.3386418014673716,
-        "y": 6.125260670721437
+        "x": 4.639093856261892,
+        "y": 6.381009814557054
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "ER4-start"
     },
     {
       "anchor": {
-        "x": 1.504489436619717,
-        "y": 6.760299295774648
+        "x": 1.4424657534246574,
+        "y": 6.902418664383561
       },
       "prevControl": {
-        "x": 2.2727107162170923,
-        "y": 7.400483695439126
+        "x": 2.210687033022032,
+        "y": 7.542603064048039
       },
       "nextControl": {
-        "x": 0.3324860119621831,
-        "y": 5.783629775226704
+        "x": 0.2704623287671235,
+        "y": 5.925749143835616
       },
       "isLocked": false,
       "linkedName": "ER4-1Intake"
@@ -81,8 +81,8 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 1.7,
+    "maxAcceleration": 1.7,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -93,10 +93,10 @@
     "rotation": -179.8757292574851
   },
   "reversed": false,
-  "folder": "Ryder Auto",
+  "folder": "4plrs",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 58.518361746607255
+    "rotation": 59.99999999999999
   },
   "useDefaultConstraints": true
 }

@@ -16,16 +16,16 @@
     },
     {
       "anchor": {
-        "x": 1.504489436619717,
-        "y": 6.760299295774648
+        "x": 1.4424657534246574,
+        "y": 6.902418664383561
       },
       "prevControl": {
-        "x": 0.7176360192638137,
-        "y": 6.143159360593547
+        "x": 0.655612336068754,
+        "y": 6.285278729202459
       },
       "nextControl": {
-        "x": 2.270799368126566,
-        "y": 7.361326693034923
+        "x": 2.2087756849315063,
+        "y": 7.503446061643835
       },
       "isLocked": false,
       "linkedName": "ER4-1Intake"
@@ -77,8 +77,8 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 1.7,
+    "maxAcceleration": 1.7,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -89,7 +89,7 @@
     "rotation": 121.15440519892796
   },
   "reversed": false,
-  "folder": "Ryder Auto",
+  "folder": "4plrs",
   "idealStartingState": {
     "velocity": 0,
     "rotation": -179.8757292574851

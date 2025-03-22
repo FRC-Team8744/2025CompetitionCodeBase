@@ -3,45 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.572945205479453,
-        "y": 4.212821061643836
+        "x": 2.4792380136986303,
+        "y": 4.167744006849315
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.5729452054794475,
-        "y": 4.212821061643836
+        "x": 2.7292380136986303,
+        "y": 4.167744006849315
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "4pgilrs1"
     },
     {
       "anchor": {
-        "x": 6.130479452054795,
-        "y": 4.212821061643836
+        "x": 2.359032534246575,
+        "y": 4.167744006849315
       },
       "prevControl": {
-        "x": 6.673338198531641,
-        "y": 4.212821061643836
-      },
-      "nextControl": {
-        "x": 5.587620705577948,
-        "y": 4.212821061643836
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 6.956892123287671,
-        "y": 4.212821061643836
-      },
-      "prevControl": {
-        "x": 6.685462750049247,
-        "y": 4.182769691780822
+        "x": 2.109032534246575,
+        "y": 4.167744006849315
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "4pgilrs2"
     }
   ],
   "rotationTargets": [],
@@ -49,10 +33,22 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "Real Drop L2",
-      "waypointRelativePos": 1.0,
+      "name": "ElevatorDown",
+      "waypointRelativePos": 0,
       "endWaypointRelativePos": null,
-      "command": null
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "ElevatorDown"
+              }
+            }
+          ]
+        }
+      }
     }
   ],
   "globalConstraints": {
@@ -65,13 +61,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": -179.3772443127937
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Ground Intake Left",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }

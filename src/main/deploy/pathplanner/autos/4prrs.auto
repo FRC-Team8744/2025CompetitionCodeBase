@@ -5,45 +5,15 @@
     "data": {
       "commands": [
         {
-          "type": "named",
-          "data": {
-            "name": "IntakeUp"
-          }
-        },
-        {
           "type": "path",
           "data": {
-            "pathName": "Start ER4"
+            "pathName": "4prrsStart"
           }
         },
         {
           "type": "named",
           "data": {
             "name": "L4"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "RightPole"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ElevatorToScore"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ScoreCoral"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "ER4-1"
           }
         },
         {
@@ -67,7 +37,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "ER4-2"
+            "pathName": "4prrs1"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "RightPole"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "RunIntake"
           }
         },
         {
@@ -85,13 +67,43 @@
         {
           "type": "path",
           "data": {
-            "pathName": "ER4-3"
+            "pathName": "4prrs2"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "RightPole"
+            "name": "RunIntake"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ElevatorToScore"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ScoreCoral"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "4prrs3"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "RunIntake"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "LeftPole"
           }
         },
         {

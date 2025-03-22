@@ -40,7 +40,7 @@ public class ElevatorToIntakeAlgae extends Command {
         m_robotDrive.isAutoRotate = RotationEnum.NONE;
       }
       else {
-        m_robotDrive.isAutoRotate = RotationEnum.STRAFEONTARGET;
+        // m_robotDrive.isAutoRotate = RotationEnum.STRAFEONTARGET;
       }
     }
     toggle = true;
@@ -57,8 +57,8 @@ public class ElevatorToIntakeAlgae extends Command {
         m_elevator.rotate(16.35 * Constants.ELEVATOR_GEARING * Constants.percentOfElevatorAlgae);
         if (m_elevator.getMotorPosition() >= ((16.35 * Constants.ELEVATOR_GEARING * Constants.percentOfElevatorAlgae) * 0.50) && toggle) {
           if (Constants.visionElevator && (Constants.algaeScoringLevel == "L2" || Constants.algaeScoringLevel == "L3")) {
-            m_robotDrive.isAutoYSpeed = true;
-            m_robotDrive.isAutoXSpeed = true;
+            // m_robotDrive.isAutoYSpeed = true;
+            // m_robotDrive.isAutoXSpeed = true;
           }
           m_scoringMechPivot.rotatePivot(Constants.scoringMechGoalAngleAlgae);
           toggle = false;

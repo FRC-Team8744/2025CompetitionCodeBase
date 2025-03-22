@@ -45,7 +45,7 @@ public class AlignToPole {
 
     double yOffset = goalY - robotY;
 
-    if (Math.abs(yOffset) >= 1) {
+    if (Math.abs(yOffset) >= 1.5) {
       yOffset = 0;
     }
 
@@ -69,10 +69,12 @@ public class AlignToPole {
     var alliance = DriverStation.getAlliance();
     double[] translationAmount;
     if (alliance.get() == DriverStation.Alliance.Blue) {
-      translationAmount = new double[]{4.489337, 4.05128984}; // 4.026
+      // translationAmount = new double[]{4.489337, 4.05128984}; // 4.026
+      translationAmount = new double[]{4.49, 4.03};
     }
     else {
-      translationAmount = new double[]{12.8945, 4.02588984}; // 4.026
+      // translationAmount = new double[]{12.8945, 4.05128984}; // 4.026
+      translationAmount = new double[]{13.06, 4.03};
     }
 
     double X = ((positionToRotate[0] - translationAmount[0]) * Math.cos(Math.toRadians(angle))) 

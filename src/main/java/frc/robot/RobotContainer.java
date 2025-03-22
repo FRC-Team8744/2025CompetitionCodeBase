@@ -16,6 +16,7 @@ import frc.robot.commands.NoTwoPieces;
 import frc.robot.commands.ResetEncoders;
 import frc.robot.commands.RunElevator;
 import frc.robot.commands.TeleopScore;
+import frc.robot.commands.TimerTest;
 import frc.robot.subsystems.ColorInterface;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.LEDS;
@@ -109,7 +110,7 @@ public class RobotContainer {
 
     m_driver.leftTrigger()
     .whileTrue(new RunIntake(m_leds, m_intake, m_intakePivot, m_coral, m_scoringMechSensor, m_algae, new ElevatorToIntakeAlgae(m_elevator, m_robotDrive, m_scoringMechPivot, m_algae), new NoTwoPieces(m_intake, m_intakePivot)));
-
+ 
     m_driver.y()
     .whileTrue(new TeleopScore(m_coral, m_elevator, m_intake, m_intakePivot, m_scoringMechSensor, m_algae, m_scoringMechPivot).andThen(Commands.waitUntil((() -> m_alignToPoleX.hasReachedX))).finallyDo((() -> {m_robotDrive.isAutoYSpeed = false; m_robotDrive.isAutoXSpeed = false; m_robotDrive.isAutoRotate = RotationEnum.NONE;})));
 
@@ -117,7 +118,7 @@ public class RobotContainer {
     .whileTrue(new CoralEject(m_intake, m_coral));
 
     m_driver.a()
-    .whileTrue(Commands.runOnce(() -> m_intakePivot.intakeDown(0)));
+    .whileTrue(Commands.runOnce(() -> m_intakePivot.intakeDown(-350)).alongWith(Commands.runOnce(() -> m_intake.stopBoth())));
 
     m_driver.start()
     .whileTrue(new ResetEncoders(m_elevator, m_scoringMechPivot, m_intakePivot));
@@ -141,6 +142,9 @@ public class RobotContainer {
 
     m_driver.b()
     .whileTrue(Commands.runOnce(() -> m_robotDrive.isAutoYSpeed = false).alongWith(Commands.runOnce(() -> m_robotDrive.isAutoXSpeed = false).alongWith(Commands.runOnce(() -> m_robotDrive.isAutoRotate = RotationEnum.NONE))));
+
+    m_coDriver.a()
+    .whileTrue(new TimerTest());
 
     m_coDriver.pov(0)
     .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(.9, -200, "L4", .95, -200, "Net"))
