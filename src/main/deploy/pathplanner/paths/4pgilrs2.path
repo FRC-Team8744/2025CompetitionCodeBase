@@ -1,0 +1,73 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 2.4792380136986303,
+        "y": 4.167744006849315
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.7292380136986303,
+        "y": 4.167744006849315
+      },
+      "isLocked": false,
+      "linkedName": "4pgilrs1"
+    },
+    {
+      "anchor": {
+        "x": 2.359032534246575,
+        "y": 4.167744006849315
+      },
+      "prevControl": {
+        "x": 2.109032534246575,
+        "y": 4.167744006849315
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "4pgilrs2"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "ElevatorDown",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "ElevatorDown"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 1.7,
+    "maxAcceleration": 1.7,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -179.3772443127937
+  },
+  "reversed": false,
+  "folder": "Ground Intake Left",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 180.0
+  },
+  "useDefaultConstraints": true
+}

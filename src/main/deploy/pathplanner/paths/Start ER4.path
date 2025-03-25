@@ -1,0 +1,54 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 7.242380136986301,
+        "y": 6.136108732876712
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 6.603423987740965,
+        "y": 6.047093848794721
+      },
+      "isLocked": false,
+      "linkedName": "Start ER4"
+    },
+    {
+      "anchor": {
+        "x": 5.529452054794521,
+        "y": 5.925749143835617
+      },
+      "prevControl": {
+        "x": 5.799914383561645,
+        "y": 6.060980308219178
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "ER4-start"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 1.7,
+    "maxAcceleration": 1.7,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 59.99999999999999
+  },
+  "reversed": false,
+  "folder": "4plrs",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 0.10184026816841664
+  },
+  "useDefaultConstraints": true
+}

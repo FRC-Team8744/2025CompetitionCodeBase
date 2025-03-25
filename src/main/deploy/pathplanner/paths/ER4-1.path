@@ -1,0 +1,102 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 5.529452054794521,
+        "y": 5.925749143835617
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 4.639093856261892,
+        "y": 6.381009814557054
+      },
+      "isLocked": false,
+      "linkedName": "ER4-start"
+    },
+    {
+      "anchor": {
+        "x": 1.4424657534246574,
+        "y": 6.902418664383561
+      },
+      "prevControl": {
+        "x": 2.210687033022032,
+        "y": 7.542603064048039
+      },
+      "nextControl": {
+        "x": 0.2704623287671235,
+        "y": 5.925749143835616
+      },
+      "isLocked": false,
+      "linkedName": "ER4-1Intake"
+    },
+    {
+      "anchor": {
+        "x": 2.0572183098591537,
+        "y": 4.421830985915492
+      },
+      "prevControl": {
+        "x": 1.9266922383307703,
+        "y": 4.635051399223804
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "ER4-1"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.6753246753246752,
+      "rotationDegrees": 179.4284416614911
+    },
+    {
+      "waypointRelativePos": 1.2880562060889933,
+      "rotationDegrees": -178.8314264995819
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "ElevatorDown",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "ElevatorDown"
+        }
+      }
+    },
+    {
+      "name": "RunIntake",
+      "waypointRelativePos": 0.4967320261437909,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "RunIntake"
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 1.7,
+    "maxAcceleration": 1.7,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -179.8757292574851
+  },
+  "reversed": false,
+  "folder": "4plrs",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 59.99999999999999
+  },
+  "useDefaultConstraints": true
+}

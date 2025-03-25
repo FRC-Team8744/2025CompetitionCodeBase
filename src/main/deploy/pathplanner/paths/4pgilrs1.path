@@ -1,0 +1,112 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 5.529452054794521,
+        "y": 5.925749143835617
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 4.943450342465753,
+        "y": 5.925749143835617
+      },
+      "isLocked": false,
+      "linkedName": "ER4-start"
+    },
+    {
+      "anchor": {
+        "x": 0.8714897260273973,
+        "y": 5.820569349315068
+      },
+      "prevControl": {
+        "x": 1.634527209801643,
+        "y": 5.788776120824475
+      },
+      "nextControl": {
+        "x": 0.5108732876712327,
+        "y": 5.835595034246575
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 2.4792380136986303,
+        "y": 4.167744006849315
+      },
+      "prevControl": {
+        "x": 0.9406892123287662,
+        "y": 5.016256421232877
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "4pgilrs1"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.5974025974025974,
+      "rotationDegrees": 180.0
+    }
+  ],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0.7156862745098039,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 2.0,
+        "maxAcceleration": 3.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "ElevatorDown",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "ElevatorDown"
+        }
+      }
+    },
+    {
+      "name": "RunIntake",
+      "waypointRelativePos": 0.6078431372549017,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "RunIntake"
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 1.7,
+    "maxAcceleration": 1.7,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 180.0
+  },
+  "reversed": false,
+  "folder": "Ground Intake Left",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 59.99999999999999
+  },
+  "useDefaultConstraints": true
+}

@@ -7,13 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Angle"
+            "pathName": "Test Auto For vision alignment"
           }
         }
       ]
     }
   },
-  "resetOdom": true,
+  "resetOdom": false,
   "folder": null,
   "choreoAuto": false
 }

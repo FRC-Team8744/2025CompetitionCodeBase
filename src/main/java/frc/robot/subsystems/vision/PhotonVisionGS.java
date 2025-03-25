@@ -6,6 +6,7 @@
 package frc.robot.subsystems.vision;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.isInAreaEnum;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
@@ -17,6 +18,7 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.photonvision.PhotonCamera;
@@ -25,14 +27,14 @@ import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 public class PhotonVisionGS extends SubsystemBase {
-  private PhotonCamera camera = new PhotonCamera("Camera_Module_v1");
-  private Rotation3d rd = new Rotation3d(0, Units.degreesToRadians(15), Units.degreesToRadians(180));
-  private Transform3d td = new Transform3d(-0.345, .335, 0.36, rd);
+  private PhotonCamera camera = new PhotonCamera("Camera 1");
+  private Rotation3d rd = new Rotation3d(0, Units.degreesToRadians(4.6), Units.degreesToRadians(178));
+  private Transform3d td = new Transform3d(-0.29, .27, 0.30, rd);
   private Pose3d targetTd;
   private double apriltagTime; 
   public double distanceToApriltag = 0;
 
-  private AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField();
+  private AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2025ReefscapeWelded.loadAprilTagLayoutField();
   private PhotonPipelineResult result;
   private PhotonTrackedTarget target;
 
@@ -57,9 +59,14 @@ public class PhotonVisionGS extends SubsystemBase {
     result = camera.getLatestResult();
     apriltagTime = result.getTimestampSeconds();
     result.getTargets();
+    camera.setPipelineIndex(0);
 
     if (result.hasTargets()) {
-      PhotonTrackedTarget localTarget = result.getBestTarget();
+      PhotonTrackedTarget localTarget;
+      localTarget = result.getTargets().stream()
+        .filter(((t) -> t.getFiducialId() == isInAreaEnum.areaEnum.getAprilTag()))
+        .findAny()
+        .orElseGet((() -> result.getBestTarget()));
 
       // Start of check list
       boolean foundSpeaker = true;
@@ -73,7 +80,7 @@ public class PhotonVisionGS extends SubsystemBase {
       ID = localTarget.getFiducialId();
 
       target = localTarget;
-      SmartDashboard.putNumber("April tag local targer number", localTarget.getFiducialId());
+      // SmartDashboard.putNumber("April tag local targer number", localTarget.getFiducialId());
 
       if (foundSpeaker) {
         speakerInView = true;
@@ -89,8 +96,8 @@ public class PhotonVisionGS extends SubsystemBase {
 
   double yaw = Units.radiansToDegrees(targetTd.getRotation().getZ());
   tx_out = m_lowpass.calculate(yaw);
-  SmartDashboard.putNumber("April tag target number", target.getFiducialId());
-  SmartDashboard.putNumber("April tag targetTd number", targetTd.getX());
+  // SmartDashboard.putNumber("April tag target number", target.getFiducialId());
+  // SmartDashboard.putNumber("April tag targetTd number", targetTd.getX());
 } else {
   ID = 0;
   targetTd = null;

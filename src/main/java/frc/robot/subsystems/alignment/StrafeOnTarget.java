@@ -4,8 +4,6 @@
 
 package frc.robot.subsystems.alignment;
 
-import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -16,8 +14,6 @@ import frc.robot.Constants.ConstantsOffboard;
 import frc.robot.isInAreaEnum;
 
 public class StrafeOnTarget {
-  private AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField();
-  private Pose2d targetPose = aprilTagFieldLayout.getTagPose(7).get().toPose2d();
   private PIDController m_turnCtrl = new PIDController(0.014, 0.015, 0.0013);
   private double goalAngle;
   private double heading;
@@ -41,7 +37,7 @@ public StrafeOnTarget() {}
 
     if (goalAngle > 180) goalAngle -= 360;
     if (goalAngle < -180) goalAngle += 360;
-    SmartDashboard.putNumber("Goal Angle", goalAngle);
+    // SmartDashboard.putNumber("Goal Angle", goalAngle);
 
     m_turnCtrl.reset();
 
@@ -82,9 +78,9 @@ public StrafeOnTarget() {}
         isInAreaEnum.areaEnum = isInAreaEnum.NONE;
       }
     }
-    else if  (alliance.get() == DriverStation.Alliance.Red) {
+    else if (alliance.get() == DriverStation.Alliance.Red) {
       if (isInArea (Constants.redBorder11, estimatedPose2d)) {
-        m_turnCtrl.setSetpoint(120);
+        m_turnCtrl.setSetpoint(240);
         inZone = true;
         isInAreaEnum.areaEnum = isInAreaEnum.N11;
       }
@@ -94,12 +90,12 @@ public StrafeOnTarget() {}
         isInAreaEnum.areaEnum = isInAreaEnum.N10;
       }
       else if (isInArea (Constants.redBorder9, estimatedPose2d)) {
-        m_turnCtrl.setSetpoint(240);
+        m_turnCtrl.setSetpoint(120);
         inZone = true;
         isInAreaEnum.areaEnum = isInAreaEnum.N9;
       }
       else if (isInArea (Constants.redBorder8, estimatedPose2d)) {
-        m_turnCtrl.setSetpoint(300);
+        m_turnCtrl.setSetpoint(60);
         inZone = true;
         isInAreaEnum.areaEnum = isInAreaEnum.N8;
       }
@@ -109,7 +105,7 @@ public StrafeOnTarget() {}
         isInAreaEnum.areaEnum = isInAreaEnum.N7;
       }
       else if (isInArea (Constants.redBorder6, estimatedPose2d)) {
-        m_turnCtrl.setSetpoint(60);
+        m_turnCtrl.setSetpoint(300);
         inZone = true;
         isInAreaEnum.areaEnum = isInAreaEnum.N6;
       }

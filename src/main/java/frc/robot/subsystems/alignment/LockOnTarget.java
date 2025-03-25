@@ -59,7 +59,7 @@ public LockOnTarget() {
     }
     heading = estimatedPose2d.getRotation().getDegrees();
 
-    shooterVelocity = SmartDashboard.getNumber("Flywheel top RPM", 0.0);
+    // shooterVelocity = SmartDashboard.getNumber("Flywheel top RPM", 0.0);
 
     if (shooterVelocity <= 10) {
       shooterVelocity = 0;
@@ -77,7 +77,7 @@ public LockOnTarget() {
     }
     if (goalAngle > 180) goalAngle -= 360;
     if (goalAngle < -180) goalAngle += 360;
-    SmartDashboard.putNumber("Goal Angle", goalAngle);
+    // SmartDashboard.putNumber("Goal Angle", goalAngle);
 
     // goalAngle += Math.toDegrees(Math.atan2(ShooterVector.get(0), ShooterVector.get(1)) - Math.atan2(robotVector.get(0), robotVector.get(1)));
 
@@ -90,37 +90,37 @@ public LockOnTarget() {
     else {
       v_ry = robotVector.get(1) * CompFactor * -1; // m/s, robot velocity in y direction
     }
-    double n = SmartDashboard.getNumber("Vision velocity", 0.0) * 60;   // rotations per second
-    double C = 0.319185814;    // meters, circumference of the wheel
-    double theta_s = goalAngle; // degrees, current facing angle of the shooter
+    // double n = SmartDashboard.getNumber("Vision velocity", 0.0) * 60;   // rotations per second
+    // double C = 0.319185814;    // meters, circumference of the wheel
+    // double theta_s = goalAngle; // degrees, current facing angle of the shooter
 
-    // Calculate projectile speed
-    double v_p = n * C;
+    // // Calculate projectile speed
+    // // double v_p = n * C;
 
-    // Convert theta_s to radians for calculation
-    double theta_s_rad = Math.toRadians(theta_s);
+    // // Convert theta_s to radians for calculation
+    // double theta_s_rad = Math.toRadians(theta_s);
 
-    // Calculate projectile's initial velocity components
-    double v_px = v_p * Math.cos(theta_s_rad);
-    double v_py = v_p * Math.sin(theta_s_rad);
+    // // Calculate projectile's initial velocity components
+    // double v_px = v_p * Math.cos(theta_s_rad);
+    // double v_py = v_p * Math.sin(theta_s_rad);
 
-    // Calculate effective projectile velocity components
-    double v_px_eff = v_px + v_rx;
-    double v_py_eff = v_py + v_ry;
+    // // Calculate effective projectile velocity components
+    // double v_px_eff = v_px + v_rx;
+    // double v_py_eff = v_py + v_ry;
 
-    // Calculate the effective shooting angle
-    double theta_eff = Math.toDegrees(Math.atan2(v_py_eff, v_px_eff));
+    // // Calculate the effective shooting angle
+    // double theta_eff = Math.toDegrees(Math.atan2(v_py_eff, v_px_eff));
 
-    m_turnCtrl.reset();
-    if (n >= 100) {    
-      m_turnCtrl.setSetpoint(theta_eff);
-    }
-    else {
-      m_turnCtrl.setSetpoint(goalAngle);
-    }
-    SmartDashboard.putNumber("Tolerance", m_turnCtrl.getErrorTolerance());
-    SmartDashboard.putNumber("Error", m_turnCtrl.getError());
-    m_output = MathUtil.clamp(m_turnCtrl.calculate(heading), -1.0, 1.0);
+    // m_turnCtrl.reset();
+    // if (n >= 100) {    
+    //   m_turnCtrl.setSetpoint(theta_eff);
+    // }
+    // else {
+    //   m_turnCtrl.setSetpoint(goalAngle);
+    // }
+    // // SmartDashboard.putNumber("Tolerance", m_turnCtrl.getErrorTolerance());
+    // // SmartDashboard.putNumber("Error", m_turnCtrl.getError());
+    // m_output = MathUtil.clamp(m_turnCtrl.calculate(heading), -1.0, 1.0);
 
     // m_output = MathUtil.clamp(heading, -1.0, 1.0);
 
