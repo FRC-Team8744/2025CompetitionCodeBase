@@ -5,10 +5,8 @@
 package frc.robot.subsystems.mechanisms;
 
 import com.ctre.phoenix6.configs.Slot0Configs;
-import com.ctre.phoenix6.configs.Slot1Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.PositionVoltage;
-import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -22,12 +20,10 @@ public class IntakePivot extends SubsystemBase {
   private final TalonFX m_intakePivot;
   private final TalonFXConfiguration intakePivotConfig = new TalonFXConfiguration();
   private final Slot0Configs intakePivotConfigPID = intakePivotConfig.Slot0;
-  private final Slot1Configs intakePivotConfigResetPID = intakePivotConfig.Slot1;
   private final double startingPositionRotations = 0;
-  private final double minimumAngle = -4600;
+  private final double minimumAngle = -4000;
   private final double maximumAngle = 0;
   private final PositionVoltage goalPosition = new PositionVoltage(startingPositionRotations);
-  private final VelocityVoltage velocity = new VelocityVoltage(0);
   public IntakePivot() {
     intakePivotConfig.Voltage.PeakForwardVoltage = 12;
     intakePivotConfig.Voltage.PeakReverseVoltage = -12;
@@ -42,10 +38,6 @@ public class IntakePivot extends SubsystemBase {
     intakePivotConfigPID.kP = 1.0; // A position error of 2.5 rotations results in 12 V output
     intakePivotConfigPID.kI = 0.0; // no output for integrated error
     intakePivotConfigPID.kD = 0.0; // A velocity error of 1 rps results in 0.1 V output
-    intakePivotConfigResetPID.kS = 0.0;
-    intakePivotConfigResetPID.kP = 0.0;
-    intakePivotConfigResetPID.kI = 0.0;
-    intakePivotConfigResetPID.kD = 0.0;
     intakePivotConfig.withSlot0(intakePivotConfigPID);
 
     m_intakePivot = new TalonFX(Constants.SwerveConstants.kIntakePivotMotorPort);
@@ -58,8 +50,9 @@ public class IntakePivot extends SubsystemBase {
   /**
    * @param angle Give the angle in degrees 
    */
-  // Moves the intake to the position given  
+  // Moves the intake to the position given in angle degree(0-360) and changes it to a number(0-1)
   public void intakeDown(double angle) {
+    // Ensures the angle is between the minimum and maximum
     if (angle < minimumAngle) {angle = minimumAngle;}
     if (angle > maximumAngle) {angle = maximumAngle;}
     m_intakePivot.setControl(goalPosition.withEnableFOC(false).withSlot(0).withPosition(angle / 360));
@@ -68,15 +61,6 @@ public class IntakePivot extends SubsystemBase {
   // Returns the position of the intake
   public double getPositionAngle() {
     return m_intakePivot.getPosition().getValueAsDouble() * 360;
-  }
-
-  public void goDown() {
-    m_intakePivot.setControl(velocity.withEnableFOC(false).withVelocity(0).withFeedForward(-1).withSlot(1));
-  }
-
-  public void resetIntakePivot() {
-    m_intakePivot.stopMotor();
-    // m_intakePivot.setPosition(-9.4262695312);
   }
 
   @Override
