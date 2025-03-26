@@ -149,14 +149,17 @@ public class Elevator extends SubsystemBase {
     lastGoal = targetPosition;
   }
 
+  // Stops both the motors
   public void stopRotate() {
     m_leftElevator.stopMotor();
   }
 
+  // Gives the position of the left elevator motor
   public double getMotorPosition() {
     return m_leftElevator.getPosition().getValueAsDouble();
   }
 
+  // Gives the absolute value of the distance off from the desired point then if it is < or = to 1 it will be true otherwise its false
   public boolean isAtSetpoint() {
     return Math.abs(m_leftElevator.getClosedLoopError().getValueAsDouble()) <= 1.0;
   }

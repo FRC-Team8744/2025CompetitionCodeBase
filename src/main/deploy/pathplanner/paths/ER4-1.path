@@ -1,0 +1,102 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 5.229,
+        "y": 5.67
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 4.3386418014673716,
+        "y": 6.125260670721437
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.504489436619717,
+        "y": 6.760299295774648
+      },
+      "prevControl": {
+        "x": 2.2727107162170923,
+        "y": 7.400483695439126
+      },
+      "nextControl": {
+        "x": 0.3324860119621831,
+        "y": 5.783629775226704
+      },
+      "isLocked": false,
+      "linkedName": "ER4-1Intake"
+    },
+    {
+      "anchor": {
+        "x": 2.0572183098591537,
+        "y": 4.421830985915492
+      },
+      "prevControl": {
+        "x": 1.9266922383307703,
+        "y": 4.635051399223804
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "ER4-1"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.6753246753246752,
+      "rotationDegrees": 179.4284416614911
+    },
+    {
+      "waypointRelativePos": 1.2880562060889933,
+      "rotationDegrees": -178.8314264995819
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "ElevatorDown",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "ElevatorDown"
+        }
+      }
+    },
+    {
+      "name": "RunIntake",
+      "waypointRelativePos": 0.4967320261437909,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "RunIntake"
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -179.8757292574851
+  },
+  "reversed": false,
+  "folder": "Ryder Auto",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 58.518361746607255
+  },
+  "useDefaultConstraints": true
+}

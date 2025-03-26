@@ -24,6 +24,15 @@ public final class Constants {
   public static final int kMaxAccelerationPercent = 100;
   public static final double kDriverSpeedLimit = 1; // sets how much the max speed is modified by when you press down on the left stick basicly make go slower the default is 1 btw 
 
+  public static String scoringMode = "Coral";
+  public static String scoringLevel = "L4";
+  public static String algaeScoringLevel = "L3";
+  public static double scoringMechGoalAngle = -200;
+  public static double scoringMechGoalAngleAlgae = -200;
+  public static double percentOfElevator = 0.9;
+  public static double percentOfElevatorAlgae = 0.5;
+  public static boolean visionElevator = true;
+
   public static final TalonFXConfiguration driveConfig = new TalonFXConfiguration();
   public static final TalonFXConfiguration elevatorConfig = new TalonFXConfiguration();
   public static final TalonFXConfiguration indexerConfig = new TalonFXConfiguration();
@@ -50,8 +59,8 @@ public final class Constants {
   public static final Pose2d[] blueBorder21 = new Pose2d[]{new Pose2d(4.88, 4.0, new Rotation2d(0)), new Pose2d(10.38, 7.0, new Rotation2d(0)), new Pose2d(10.38, 1.0, new Rotation2d(0))};
   public static final Pose2d[] blueBorder22 = new Pose2d[]{new Pose2d(4.691, 3.67, new Rotation2d(0)), new Pose2d(10.191, 0.67, new Rotation2d(0)), new Pose2d(4.691, -0.33, new Rotation2d(0))};
 
-  public static final double[] rightPoint = {5.35, 4.295}; // 4.275
-  public static final double[] leftPoint = {5.35, 3.9}; // 3.9
+  public static final double[] rightPoint = {5.35, 4.2378}; // 4.2378
+  public static final double[] leftPoint = {5.35, 3.8428}; // 3.8428
   public static final double[][] rotationMatrix = {{0.5, Math.sin(Math.PI / 3.0)}, {-Math.sin(Math.PI / 3.0), 0.5}};
 
   public static final double ELEVATOR_GEARING = 5.0;
@@ -86,7 +95,8 @@ public final class Constants {
     public static final int kRearRightMagEncoderPort = 21; // 21
 
     public static final int kRightElevatorMotorPort = 2;
-    public static final int kIndexerMotorPort = 6;
+    public static final int kIndexerMotorPortL = 6;
+    public static final int kIndexerMotorPortR = 23;
     public static final int kIntakeRollerMotorPort = 11;
     public static final int kIntakePivotMotorPort = 12;
     public static final int kLeftElevatorMotorPort = 13;

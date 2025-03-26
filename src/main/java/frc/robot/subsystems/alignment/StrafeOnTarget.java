@@ -25,7 +25,7 @@ public StrafeOnTarget() {}
   // Called when the command is initially scheduled.
   public void initialize() {
     m_turnCtrl.enableContinuousInput(-180, 180);
-    m_turnCtrl.setTolerance(1.00);
+    m_turnCtrl.setTolerance(2.00);
     m_turnCtrl.reset();
   }
 
@@ -37,7 +37,7 @@ public StrafeOnTarget() {}
 
     if (goalAngle > 180) goalAngle -= 360;
     if (goalAngle < -180) goalAngle += 360;
-    SmartDashboard.putNumber("Goal Angle", goalAngle);
+    // SmartDashboard.putNumber("Goal Angle", goalAngle);
 
     m_turnCtrl.reset();
 

@@ -22,18 +22,14 @@ public class RunElevator extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     motorPosition = m_elevator.getMotorPosition();
 
-    SmartDashboard.putBoolean("Command run", true);
-    SmartDashboard.putNumber("Elevator Motor Position", motorPosition);
-
-    m_elevator.setGoal(16.35 * Constants.ELEVATOR_GEARING * m_elevator.getElevatorPreset()); // 327
+    m_elevator.rotate(16.35 * Constants.ELEVATOR_GEARING * Constants.percentOfElevator); // 327
   }
 
   // Called once the command ends or is interrupted.

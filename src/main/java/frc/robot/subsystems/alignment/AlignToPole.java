@@ -21,6 +21,7 @@ public class AlignToPole {
   private PIDController m_driveCtrl = new PIDController(0.2, 0, 0);
   // private double heading;
   private double m_output;
+  public boolean hasReachedY;
   public AlignToPole() {}
 
   public void initialize() {
@@ -35,21 +36,31 @@ public class AlignToPole {
     double robotY = translatedRobotPosition[1];
     double goalY = rightPoint ? Constants.rightPoint[1] : Constants.leftPoint[1];
 
-    SmartDashboard.putNumber("Goal Y", goalY);
-    SmartDashboard.putNumber("Robot Y", robotY);
+    if (Constants.scoringMode == "Algae") {
+      goalY = 4.0403;
+    }
+
+    // SmartDashboard.putNumber("Goal Y", goalY);
+    // SmartDashboard.putNumber("Robot Y", robotY);
 
     double yOffset = goalY - robotY;
 
-    SmartDashboard.putNumber("Y Offset", yOffset);
+    // if (Math.abs(yOffset) >= 1) {
+    //   yOffset = 0;
+    // }
+
+    // SmartDashboard.putNumber("Y Offset", yOffset);
 
     m_driveCtrl.setSetpoint(yOffset);
 
     m_output = MathUtil.clamp(m_driveCtrl.calculate(0), -1.0, 1.0);
 
     if (Math.abs(m_driveCtrl.getError()) <= m_driveCtrl.getErrorTolerance()) {
+      hasReachedY = true;
       return 0;
     }
     else {
+      hasReachedY = false;
       return m_output * SwerveConstants.kMaxSpeedTeleop;
     }
   }
@@ -58,10 +69,10 @@ public class AlignToPole {
     var alliance = DriverStation.getAlliance();
     double[] translationAmount;
     if (alliance.get() == DriverStation.Alliance.Blue) {
-      translationAmount = new double[]{4.48945, 4.0};
+      translationAmount = new double[]{4.489337, 4.05128984}; // 4.026
     }
     else {
-      translationAmount = new double[]{12.8945, 4.0};
+      translationAmount = new double[]{12.8945, 4.02588984}; // 4.026
     }
 
     double X = ((positionToRotate[0] - translationAmount[0]) * Math.cos(Math.toRadians(angle))) 

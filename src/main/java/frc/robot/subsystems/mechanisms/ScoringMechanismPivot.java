@@ -5,8 +5,10 @@
 package frc.robot.subsystems.mechanisms;
 
 import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.configs.Slot1Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.PositionVoltage;
+import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
@@ -22,11 +24,12 @@ public class ScoringMechanismPivot extends SubsystemBase {
   private final TalonFX m_scoringMechPivot;
   private final TalonFXConfiguration scoringMechPivotConfig = new TalonFXConfiguration();
   private final Slot0Configs scoringMechPivotConfigPID = scoringMechPivotConfig.Slot0;
+  private final Slot1Configs scoringMechPivotConfigResetPID = scoringMechPivotConfig.Slot1;
   private final double startingPositionRotations = 0;
   private final double minimumAngle = -260;
   private final double maximumAngle = 0;
   private final PositionVoltage goalPosition = new PositionVoltage(startingPositionRotations);
-  public double scoringMechGoalAngle = -200;
+  private final VelocityVoltage velocity = new VelocityVoltage(0);
   public ScoringMechanismPivot() {
     // Scoring Mechanism Pivot Configs
     scoringMechPivotConfig.Voltage.PeakForwardVoltage = 12;
@@ -36,13 +39,17 @@ public class ScoringMechanismPivot extends SubsystemBase {
     scoringMechPivotConfig.Feedback.FeedbackSensorSource = FeedbackSensorSourceValue.RotorSensor;
     scoringMechPivotConfig.CurrentLimits.StatorCurrentLimitEnable = true;
     scoringMechPivotConfig.CurrentLimits.StatorCurrentLimit = 40.0;
-    scoringMechPivotConfigPID.kS = 0.0; // Add 0.25 V output to overcome static friction
+    scoringMechPivotConfigPID.kS = 0.5; // Add 0.25 V output to overcome static friction
     scoringMechPivotConfigPID.kV = 0.0; // A velocity target of 1 rps results in 0.12 V output
     scoringMechPivotConfigPID.kA = 0.0; // An acceleration of 1 rps/s requires 0.01 V output
     scoringMechPivotConfigPID.kP = 2.5; // A position error of 2.5 rotations results in 12 V output
     scoringMechPivotConfigPID.kI = 0.0; // no output for integrated error
     scoringMechPivotConfigPID.kD = 0.05; // A velocity error of 1 rps results in 0.1 V output
+    scoringMechPivotConfigResetPID.kP = 0.0;
+    scoringMechPivotConfigResetPID.kI = 0.0;
+    scoringMechPivotConfigResetPID.kD = 0.0;
     scoringMechPivotConfig.withSlot0(scoringMechPivotConfigPID);
+    scoringMechPivotConfig.withSlot1(scoringMechPivotConfigResetPID);
 
     m_scoringMechPivot = new TalonFX(Constants.SwerveConstants.kScoringMechanismPivotMotorPort);
 
@@ -54,17 +61,30 @@ public class ScoringMechanismPivot extends SubsystemBase {
   public void rotatePivot(double angle) {
     if (angle < minimumAngle) {angle = minimumAngle;}
     if (angle > maximumAngle) {angle = maximumAngle;}
-    SmartDashboard.putNumber("Pivot goal angle", angle);
     m_scoringMechPivot.setControl(goalPosition.withEnableFOC(false).withSlot(0).withPosition(angle / 360));
+  }
+
+  public void goDown() {
+    m_scoringMechPivot.setControl(velocity.withEnableFOC(false).withVelocity(0).withFeedForward(1).withSlot(1));
+  }
+
+  public void resetEncoder() {
+    m_scoringMechPivot.stopMotor();
+    m_scoringMechPivot.setPosition(startingPositionRotations);
   }
 
   public double getPositionAngle() {
     return m_scoringMechPivot.getPosition().getValueAsDouble() * 360;
   }
 
+  public boolean isAtSetpoint() {
+    return Math.abs(m_scoringMechPivot.getClosedLoopError().getValueAsDouble()) <= 1/18;
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Scoring Mech Pivot Angle", getPositionAngle());
+    SmartDashboard.putBoolean("Is scoring mech pivot at setpoint", isAtSetpoint());
   }
 }
