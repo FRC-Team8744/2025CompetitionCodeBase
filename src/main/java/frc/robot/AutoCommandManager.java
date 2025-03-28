@@ -122,11 +122,24 @@ public class AutoCommandManager {
         PathPlannerAuto m_intaketest = new PathPlannerAuto("Coral Intaking Auto");
         PathPlannerAuto m_4plrs = new PathPlannerAuto("4plrs");
 
+        // Branching path test
+        // Conditional Commands: https://docs.wpilib.org/en/stable/docs/software/commandbased/command-compositions.html#selecting-compositions
+        // Reference code: https://github.com/HuskieRobotics/frc-software-2024/blob/72707154a54de2a63d741fe496ccc23587872c02/src/main/java/frc/robot/RobotContainer.java#L395
+        Command branchPathOnCoralSensor =
+        Commands.sequence(
+            new PathPlannerAuto("Test Auto"),
+            Commands.either(
+                new PathPlannerAuto("Test Path Right"),
+                new PathPlannerAuto("Test Path Left"),
+                m_scoringMechSensor::getScoringSensor)
+            );
+
         m_chooser.setDefaultOption("None", new InstantCommand());
 
         m_chooser.addOption("1 Piece Test", m_test);
         m_chooser.addOption("Intake Test", m_intaketest);
         m_chooser.addOption("4plrs", m_4plrs);
+        m_chooser.addOption("Branch On Coral", branchPathOnCoralSensor);
 
         SmartDashboard.putData(m_chooser);
     }
