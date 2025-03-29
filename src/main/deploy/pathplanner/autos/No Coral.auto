@@ -1,0 +1,49 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "4pgilrs2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ElevatorDown"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "4pgilrs3"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "RightPole"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ElevatorToScore"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ScoreCoral"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}
