@@ -13,10 +13,12 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants.AutoConstants;
@@ -130,7 +132,31 @@ public class AutoCommandManager {
         PathPlannerAuto m_test = new PathPlannerAuto("1 Piece Test");
         PathPlannerAuto m_intaketest = new PathPlannerAuto("Coral Intaking Auto");
         PathPlannerAuto m_4plrs = new PathPlannerAuto("4plrs");
-        PathPlannerAuto m_4pgilrs = new PathPlannerAuto("4pgilrs");
+
+        // Branching path test
+        // Conditional Commands: https://docs.wpilib.org/en/stable/docs/software/commandbased/command-compositions.html#selecting-compositions
+        // Reference code: https://github.com/HuskieRobotics/frc-software-2024/blob/72707154a54de2a63d741fe496ccc23587872c02/src/main/java/frc/robot/RobotContainer.java#L395
+        
+        Command branchPathOnCoralSensor =
+        Commands.sequence(
+            new PathPlannerAuto("Test Auto"),
+            Commands.either(
+                new PathPlannerAuto("Test Path Right"),
+                // .alongWith(Commands.runOnce(()->m_intakePivot.intakeDown(-4600))),
+                new PathPlannerAuto("Test Path Left"),
+                // .alongWith(Commands.runOnce(()->mintakePivot.intakeDown(-4600))),
+                m_scoringMechSensor::getScoringSensor),
+            Commands.runOnce(()->m_intakePivot.intakeDown(-4600)).unless(()-> !m_intakePivot.BooleanPositionAngle())
+                // button.onTrue(command.unless(()-> !BooleanPositionAngle())
+                // .andThen(Commands.runOnce(()->m_intakePivot.intakeDown(-4600)))
+                // .alongWith(Commands.runOnce(()-> 
+                // Commands.either(
+                //     new PathPlannerAuto("Test Path Right"),
+                //     new PathPlannerAuto("Test Path Left"),
+                //     m_scoringMechSensor::getScoringSensor)))
+                    );
+            //need to test 
+            
 
         m_chooser.setDefaultOption("None", new InstantCommand());
 

@@ -28,6 +28,7 @@ public class IntakePivot extends SubsystemBase {
   private final double maximumAngle = 0;
   private final PositionVoltage goalPosition = new PositionVoltage(startingPositionRotations);
   private final VelocityVoltage velocity = new VelocityVoltage(0);
+  public boolean IntakePivotPosition;
   public IntakePivot() {
     intakePivotConfig.Voltage.PeakForwardVoltage = 12;
     intakePivotConfig.Voltage.PeakReverseVoltage = -12;
@@ -68,7 +69,11 @@ public class IntakePivot extends SubsystemBase {
   // Returns the position of the intake
   public double getPositionAngle() {
     return m_intakePivot.getPosition().getValueAsDouble() * 360;
+    }
+  public boolean BooleanPositionAngle(){
+    return m_intakePivot.getPosition().getValueAsDouble() == 0;
   }
+  
 
   public void goDown() {
     m_intakePivot.setControl(velocity.withEnableFOC(false).withVelocity(0).withFeedForward(-1).withSlot(1));

@@ -49,6 +49,7 @@ public class Intake extends SubsystemBase {
     m_intakeMotor.getConfigurator().apply(intakeConfig);
     m_intakeMotor.setNeutralMode(NeutralModeValue.Coast);
     m_intakeMotor.setPosition(0);
+    m_intakeMotor.getPosition();
 
     m_indexMotorL.getConfigurator().apply(intakeConfig);
     m_indexMotorL.setNeutralMode(NeutralModeValue.Coast);
