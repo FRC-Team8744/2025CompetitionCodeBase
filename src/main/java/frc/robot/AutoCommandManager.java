@@ -6,6 +6,7 @@ package frc.robot;
 
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.path.PathPlannerPath;
 
 import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.controller.PIDController;
@@ -129,8 +130,8 @@ public class AutoCommandManager {
         Commands.sequence(
             new PathPlannerAuto("Test Auto"),
             Commands.either(
-                new PathPlannerAuto("Test Path Right"),
-                new PathPlannerAuto("Test Path Left"),
+                new PathPlannerAuto("Test Auto Right 2"),
+                new PathPlannerAuto("Test Auto Left 2"),
                 m_scoringMechSensor::getScoringSensor)
             );
 
