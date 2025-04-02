@@ -40,7 +40,7 @@ public class ScoringMechanismPivot extends SubsystemBase {
     scoringMechPivotConfigPID.kS = 0.5; // Add 0.25 V output to overcome static friction
     scoringMechPivotConfigPID.kV = 0.0; // A velocity target of 1 rps results in 0.12 V output
     scoringMechPivotConfigPID.kA = 0.0; // An acceleration of 1 rps/s requires 0.01 V output
-    scoringMechPivotConfigPID.kP = 2.5; // A position error of 2.5 rotations results in 12 V output
+    scoringMechPivotConfigPID.kP = 3.5; // A position error of 2.5 rotations results in 12 V output
     scoringMechPivotConfigPID.kI = 0.0; // no output for integrated error
     scoringMechPivotConfigPID.kD = 0.05; // A velocity error of 1 rps results in 0.1 V output
     scoringMechPivotConfigResetPID.kP = 0.0;
@@ -83,6 +83,6 @@ public class ScoringMechanismPivot extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Scoring Mech Pivot Angle", getPositionAngle());
-    SmartDashboard.putBoolean("Is scoring mech pivot at setpoint", isAtSetpoint());
+    // SmartDashboard.putBoolean("Is scoring mech pivot at setpoint", isAtSetpoint());
   }
 }

@@ -114,7 +114,7 @@ public class Elevator extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("ELevator Position", m_leftElevator.getPosition().getValueAsDouble());
+    // SmartDashboard.putNumber("ELevator Position", m_leftElevator.getPosition().getValueAsDouble());
     SmartDashboard.putNumber("Elevator Goal Percent", Constants.percentOfElevator);
   }
 }

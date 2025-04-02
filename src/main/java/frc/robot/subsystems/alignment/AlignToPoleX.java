@@ -18,10 +18,12 @@ import frc.robot.isInAreaEnum;
 
 public class AlignToPoleX {
   /** Creates a new AlignToPole. */
-  private PIDController m_driveCtrl = new PIDController(0.2, 0, 0);
+  private PIDController m_driveCtrl = new PIDController(0.3, 0, 0);
   // private double heading;
   private double m_output;
   public boolean hasReachedX = false;  
+  public double xOffset;
+  public double robotX;
   public AlignToPoleX() {}
 
   public void initialize() {
@@ -33,14 +35,22 @@ public class AlignToPoleX {
   public double execute(boolean rightPoint, Pose2d estimatedPose2d) {
     double[] translatedRobotPosition = calculateTransformation(new double[]{estimatedPose2d.getX(), estimatedPose2d.getY()}, isInAreaEnum.areaEnum.getAngle() * -1);
 
-    double robotX = translatedRobotPosition[0];
+    robotX = translatedRobotPosition[0];
     double goalX;
     if (Constants.scoringMode == "Coral") {
       if (DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) {
-        goalX = 3.1746; // 3.
+        if (DriverStation.isAutonomous()) {
+          goalX = 3.1446;
+        } else {
+          goalX = 3.1746; // 3.
+        }
       }
       else {
-        goalX = 11.7762;
+        if (DriverStation.isAutonomous()) {
+          goalX = 11.8062;
+        } else {
+          goalX = 11.7762;
+        }
       }
     } else if (Constants.scoringMode == "Algae") {
       if (DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) {
@@ -53,16 +63,16 @@ public class AlignToPoleX {
     }
 
     // SmartDashboard.putNumber("Goal X", goalX);
-    SmartDashboard.putNumber("Robot X", robotX);
+    // SmartDashboard.putNumber("Robot X", robotX);
 
-    double xOffset = goalX - robotX;
+    xOffset = goalX - robotX;
 
-    if (Math.abs(xOffset) >= 3.0) {
-      xOffset = 0;
-    }
+    // if (Math.abs(xOffset) >= 3.0) {
+    //   xOffset = 0;
+    // }
 
-    SmartDashboard.putNumber("X Offset", xOffset);
-    SmartDashboard.putNumber("Goal X", goalX);
+    // SmartDashboard.putNumber("X Offset", xOffset);
+    // SmartDashboard.putNumber("Goal X", goalX);
 
     m_driveCtrl.setSetpoint(xOffset);
 

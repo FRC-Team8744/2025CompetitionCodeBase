@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
+import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ScoringMechSensor;
 import frc.robot.subsystems.mechanisms.AlgaeMechanism;
 import frc.robot.subsystems.mechanisms.CoralScoring;
@@ -24,7 +25,8 @@ public class TeleopScore extends Command{
   private final ScoringMechSensor m_scoringMechSensor;
   private final AlgaeMechanism m_algae;
   private final ScoringMechanismPivot m_scoringMechPivot;
-  public TeleopScore(CoralScoring co, Elevator ele, Intake in, IntakePivot inp, ScoringMechSensor sms, AlgaeMechanism alg, ScoringMechanismPivot smp) {
+  private final DriveSubsystem m_drive;
+  public TeleopScore(CoralScoring co, Elevator ele, Intake in, IntakePivot inp, ScoringMechSensor sms, AlgaeMechanism alg, ScoringMechanismPivot smp, DriveSubsystem dr) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_coral = co;
     addRequirements(m_coral);
@@ -37,6 +39,7 @@ public class TeleopScore extends Command{
     m_algae = alg;
     addRequirements(m_algae);
     m_scoringMechPivot = smp;
+    m_drive = dr;
   }
 
   // Called when the command is initially scheduled.
@@ -64,6 +67,7 @@ public class TeleopScore extends Command{
       m_scoringMechPivot.rotatePivot(0);
       m_elevator.rotate(0);
     }
+    m_drive.isDrivingSlow = false;
     // m_intakePivot.intakeDown(0);
   }
 

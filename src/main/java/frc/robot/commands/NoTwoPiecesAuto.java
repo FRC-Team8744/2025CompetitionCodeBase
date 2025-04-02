@@ -35,7 +35,7 @@ public class NoTwoPiecesAuto extends Command {
     if (!m_scoringMechSensor.getScoringSensor()) {
       m_intake.runIndexer(-0.5, 0.5);
       m_intake.runIntake(-0.6);
-      timer.start();
+      // timer.start();
     }
   }
 
@@ -48,6 +48,7 @@ public class NoTwoPiecesAuto extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return timer.hasElapsed(2);
+    // return timer.hasElapsed(2);
+    return false;
   }
 }

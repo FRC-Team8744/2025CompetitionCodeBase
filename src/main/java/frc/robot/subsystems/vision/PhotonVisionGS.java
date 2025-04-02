@@ -23,15 +23,16 @@ import java.util.Optional;
 
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonUtils;
+import org.photonvision.targeting.MultiTargetPNPResult;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 public class PhotonVisionGS extends SubsystemBase {
   private PhotonCamera camera = new PhotonCamera("Camera 1");
-  private Rotation3d rd = new Rotation3d(0, Units.degreesToRadians(4.6), Units.degreesToRadians(178));
-  private Transform3d td = new Transform3d(-0.29, .27, 0.30, rd);
+  private Rotation3d rd = new Rotation3d(Units.degreesToRadians(5.54), Units.degreesToRadians(-9.2), Units.degreesToRadians(154.1));
+  private Transform3d td = new Transform3d(-0.22, 0.285, 0.525, rd);
   private Pose3d targetTd;
-  private double apriltagTime; 
+  private double apriltagTime;
   public double distanceToApriltag = 0;
 
   private AprilTagFieldLayout aprilTagFieldLayout = AprilTagFields.k2025ReefscapeWelded.loadAprilTagLayoutField();
@@ -49,6 +50,8 @@ public class PhotonVisionGS extends SubsystemBase {
   private double heightMatters = 1.93;
   // private double heightMatters = 2.02;
   public double m_goalAngle;
+  private Transform3d multiTagResult;
+  public boolean singleTag = true;
 
   public PhotonVisionGS() {
     ID = 0;
@@ -70,12 +73,31 @@ public class PhotonVisionGS extends SubsystemBase {
 
       // Start of check list
       boolean foundSpeaker = true;
-
-      Transform3d cameraToTarget = localTarget.getBestCameraToTarget();
+      multiTagResult = result.getMultiTagResult().map(((m) -> m.estimatedPose.best)).orElse(null);
+      if (multiTagResult == null) {
+        singleTag = true;
+      } else {
+        singleTag = false;
+      }
+      Transform3d cameraToTarget = new Transform3d();
+      if (singleTag) {
+        cameraToTarget = localTarget.getBestCameraToTarget();
+      }
+      // SmartDashboard.putNumber("cameraToTarget1 X", cameraToTarget.getX());
       var id = localTarget == null ? null : localTarget.getFiducialId();
       Pose3d aprilTagPose3d = aprilTagFieldLayout.getTagPose(id).get();
-
-      targetTd = PhotonUtils.estimateFieldToRobotAprilTag(cameraToTarget, aprilTagPose3d, td);
+      if (!singleTag) {
+        targetTd = new Pose3d().plus(multiTagResult.plus(td));
+      } else {
+        targetTd = PhotonUtils.estimateFieldToRobotAprilTag(cameraToTarget, aprilTagPose3d, td);
+      }
+      if (!singleTag) {
+        // SmartDashboard.putNumber("Multi Tag Result X", multiTagResult.getX());
+        // SmartDashboard.putNumber("Multi Tag Result Y", multiTagResult.getY());
+      } else {
+        // SmartDashboard.putNumber("Single Tag Result X", cameraToTarget.getX());
+        // SmartDashboard.putNumber("Single Tag Result Y", cameraToTarget.getY());
+      }
 
       ID = localTarget.getFiducialId();
 
@@ -98,6 +120,10 @@ public class PhotonVisionGS extends SubsystemBase {
   tx_out = m_lowpass.calculate(yaw);
   // SmartDashboard.putNumber("April tag target number", target.getFiducialId());
   // SmartDashboard.putNumber("April tag targetTd number", targetTd.getX());
+  // SmartDashboard.putNumber("Get Target Distance camera 1", getTargetDistance());
+  // SmartDashboard.putNumber("Get Target Distance camera 1 X", targetTd.toPose2d().getX());
+  // SmartDashboard.putNumber("Get Target Distance camera 1 Y", targetTd.toPose2d().getY());
+  // SmartDashboard.putNumber("Get Target Distance camera 1 Z", targetTd.getZ());
 } else {
   ID = 0;
   targetTd = null;

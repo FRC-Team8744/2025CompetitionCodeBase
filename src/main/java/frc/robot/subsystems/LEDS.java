@@ -96,7 +96,7 @@ public void SetSegmentByLevel(double length, Color ElevatorColor, Color Alliance
     m_led.setData(ledStrip);
     m_led.start();
 
-    SmartDashboard.putBoolean("Command run", true);
+    // SmartDashboard.putBoolean("Command run", true);
   }
 public void SetSegmentByIntake(Color Algae, Color Coral, Color AllianceColor, double brightness, ScoringMechSensor m_sensor) {
   LEDPattern NewPattern; 
@@ -144,12 +144,12 @@ public void allOff(){
 public void SetSegmentByVision(boolean hasReachedX, boolean hasReachedY, boolean isAutoYSpeed, boolean isAutoXSpeed, Color Aligned, Color Aligning1, Color Aligning2, Color AllianceColor, double brightness) {
   LEDPattern NewPattern;
   if (!hasReachedY && !hasReachedX && !isAutoYSpeed && !isAutoXSpeed) {
-    NewPattern = LEDPattern.solid(Aligned);
-  } else if (isAutoYSpeed && isAutoXSpeed) {
+    NewPattern = LEDPattern.solid(AllianceColor);
+  } else if ((!hasReachedX || !hasReachedY) && isAutoXSpeed && isAutoYSpeed) {
     NewPattern = LEDPattern.gradient(LEDPattern.GradientType.kDiscontinuous, Aligning1, Aligning2);
   }
   else {
-    NewPattern = LEDPattern.solid(AllianceColor);
+    NewPattern = LEDPattern.solid(Aligned);
   }
   NewPattern.atBrightness(Units.Percent.of(brightness));
   NewPattern.applyTo(LEDSegmentLeftFrontVision);

@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import com.fasterxml.jackson.databind.util.Named;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.commands.PathPlannerAuto;
 
@@ -47,6 +48,7 @@ import frc.robot.commands.RunElevator;
 import frc.robot.commands.RunIntake;
 import frc.robot.commands.RunIntakeAuto;
 import frc.robot.commands.RunIntakeAutoKickout;
+import frc.robot.commands.RunIntakeAutoSource;
 import frc.robot.commands.TeleopScore;
 import frc.robot.subsystems.LEDS;
 import frc.robot.subsystems.alignment.AlignToPoleX;
@@ -131,6 +133,8 @@ public class AutoCommandManager {
         PathPlannerAuto m_intaketest = new PathPlannerAuto("Coral Intaking Auto");
         PathPlannerAuto m_4plrs = new PathPlannerAuto("4plrs");
         PathPlannerAuto m_4pgilrs = new PathPlannerAuto("4pgilrs");
+        PathPlannerAuto m_4pfilrs = new PathPlannerAuto("4pfilrs");
+        PathPlannerAuto m_4psilrs = new PathPlannerAuto("4psilrs");
 
         m_chooser.setDefaultOption("None", new InstantCommand());
 
@@ -138,6 +142,8 @@ public class AutoCommandManager {
         m_chooser.addOption("Intake Test", m_intaketest);
         m_chooser.addOption("4plrs", m_4plrs);
         m_chooser.addOption("4pgilrs", m_4pgilrs);
+        m_chooser.addOption("4pfilrs", m_4pfilrs);
+        m_chooser.addOption("4psilrs", m_4psilrs);
 
         SmartDashboard.putData(m_chooser);
     }
@@ -196,5 +202,6 @@ public class AutoCommandManager {
         NamedCommands.registerCommand("LEDS", Commands.runOnce(() -> m_leds.SetSegmentByVision(m_robotDrive.m_alignToPoleX.hasReachedX, m_robotDrive.m_alignToPole.hasReachedY, m_robotDrive.isAutoYSpeed, m_robotDrive.isAutoXSpeed, Color.kRed, ColorInterface.L3, ColorInterface.L2, Color.kBlue, 50)));      
         NamedCommands.registerCommand("RunIntakeAutoKickout", new RunIntakeAutoKickout(m_intake, m_intakePivot, m_coralScoring, m_scoringMechSensor, m_algaMechanism, new ElevatorToScoreAuto(m_elevator, m_robotDrive, m_scoringMechPivot, m_scoringMechSensor), new NoTwoPieces(m_intake, m_intakePivot)));
         NamedCommands.registerCommand("IntakeUp", Commands.runOnce(() -> m_intakePivot.intakeDown(-350)));
+        NamedCommands.registerCommand("SourceIntake", new RunIntakeAutoSource(m_intake, m_intakePivot, m_coralScoring, m_scoringMechSensor, m_algaMechanism, null, null));
     }
 }

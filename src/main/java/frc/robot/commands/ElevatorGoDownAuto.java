@@ -31,10 +31,13 @@ public class ElevatorGoDownAuto extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    m_scoringMechPivot.rotatePivot(0);
+    SmartDashboard.putBoolean("Scoring mech pivot going down", true);
     if (Math.abs(m_scoringMechPivot.getPositionAngle()) <= 20) {
       m_elevator.rotate(0);
+      SmartDashboard.putBoolean("Elevator went down", true);
     }
-    SmartDashboard.putBoolean("Elevator go down command work", true);
+    // SmartDashboard.putBoolean("Elevator go down command work", true);
   }
 
   // Called once the command ends or is interrupted.
@@ -47,6 +50,7 @@ public class ElevatorGoDownAuto extends Command {
   @Override
   public boolean isFinished() {
     if (m_elevator.isAtSetpoint() && m_scoringMechPivot.isAtSetpoint()) {
+      SmartDashboard.putBoolean("Elevator Go Down done", true);
       return true;
     }
     else {

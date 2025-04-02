@@ -18,7 +18,7 @@ import frc.robot.isInAreaEnum;
 
 public class AlignToPole {
   /** Creates a new AlignToPole. */
-  private PIDController m_driveCtrl = new PIDController(0.2, 0, 0);
+  private PIDController m_driveCtrl = new PIDController(0.45, 0, 0);
   // private double heading;
   private double m_output;
   public boolean hasReachedY;
@@ -35,6 +35,9 @@ public class AlignToPole {
 
     double robotY = translatedRobotPosition[1];
     double goalY = rightPoint ? Constants.rightPoint[1] : Constants.leftPoint[1];
+    if (Constants.scoringLevel == "L1") {
+      goalY = rightPoint ? Constants.rightL1ScoringPoint : Constants.leftL1ScoringPoint;
+    }
 
     if (Constants.scoringMode == "Algae") {
       goalY = 4.0403;

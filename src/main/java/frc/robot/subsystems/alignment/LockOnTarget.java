@@ -118,8 +118,8 @@ public LockOnTarget() {
     // else {
     //   m_turnCtrl.setSetpoint(goalAngle);
     // }
-    // // SmartDashboard.putNumber("Tolerance", m_turnCtrl.getErrorTolerance());
-    // // SmartDashboard.putNumber("Error", m_turnCtrl.getError());
+    // SmartDashboard.putNumber("Tolerance", m_turnCtrl.getErrorTolerance());
+    // SmartDashboard.putNumber("Error", m_turnCtrl.getError());
     // m_output = MathUtil.clamp(m_turnCtrl.calculate(heading), -1.0, 1.0);
 
     // m_output = MathUtil.clamp(heading, -1.0, 1.0);

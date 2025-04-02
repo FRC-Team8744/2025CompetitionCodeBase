@@ -70,7 +70,7 @@ public class RobotContainer {
   
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    // m_leds.ledOn(0,0,255);
+    m_leds.ledOn(0,0,255);
     // Configure the button bindings
     configureButtonBindings();
 
@@ -112,13 +112,17 @@ public class RobotContainer {
     .whileTrue(new RunIntake(m_leds, m_intake, m_intakePivot, m_coral, m_scoringMechSensor, m_algae, new ElevatorToIntakeAlgae(m_elevator, m_robotDrive, m_scoringMechPivot, m_algae), new NoTwoPieces(m_intake, m_intakePivot)));
  
     m_driver.y()
-    .whileTrue(new TeleopScore(m_coral, m_elevator, m_intake, m_intakePivot, m_scoringMechSensor, m_algae, m_scoringMechPivot).andThen(Commands.waitUntil((() -> m_alignToPoleX.hasReachedX))).finallyDo((() -> {m_robotDrive.isAutoYSpeed = false; m_robotDrive.isAutoXSpeed = false; m_robotDrive.isAutoRotate = RotationEnum.NONE;})));
+    .whileTrue(new TeleopScore(m_coral, m_elevator, m_intake, m_intakePivot, m_scoringMechSensor, m_algae, m_scoringMechPivot, m_robotDrive).andThen(Commands.waitUntil((() -> m_alignToPoleX.hasReachedX))).finallyDo((() -> {m_robotDrive.isAutoYSpeed = false; m_robotDrive.isAutoXSpeed = false; m_robotDrive.isAutoRotate = RotationEnum.NONE;})));
 
     m_driver.x()
     .whileTrue(new CoralEject(m_intake, m_coral));
 
     m_driver.a()
     .whileTrue(Commands.runOnce(() -> m_intakePivot.intakeDown(-350)).alongWith(Commands.runOnce(() -> m_intake.stopBoth())));
+
+    m_driver.leftBumper()
+    .whileTrue(Commands.runOnce(() -> m_intake.runIntake(0.3)))
+    .whileFalse(Commands.runOnce(() -> m_intake.stopBoth()));
 
     m_driver.start()
     .whileTrue(new ResetEncoders(m_elevator, m_scoringMechPivot, m_intakePivot));
@@ -147,16 +151,16 @@ public class RobotContainer {
     .whileTrue(new TimerTest());
 
     m_coDriver.pov(0)
-    .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(.9, -200, "L4", .95, -200, "Net"))
+    .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(.9, -136, "L4", .95, -200, "Net"))
     .alongWith(Commands.runOnce(() -> m_leds.SetSegmentByLevel(1.0, ColorInterface.L3, Color.kBlue, 50))));
     m_coDriver.pov(90)
-    .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(.53, -60, "L3", .49, -260, "L3"))
+    .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(.53, 0, "L3", .49, -260, "L3"))
     .alongWith(Commands.runOnce(() -> m_leds.SetSegmentByLevel(.75, ColorInterface.L3, Color.kBlue, 50))));
     m_coDriver.pov(180)
-    .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(.20, -60, "L1", .15, -250, "Processor"))
+    .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(.20, 0, "L1", .15, -250, "Processor"))
     .alongWith(Commands.runOnce(() -> m_leds.SetSegmentByLevel(.25, ColorInterface.L3, Color.kBlue, 50))));
     m_coDriver.pov(270)
-    .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(.33, -60, "L2", .30, -250, "L2"))
+    .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(.33, 0, "L2", .30, -250, "L2"))
     .alongWith(Commands.runOnce(() -> m_leds.SetSegmentByLevel(.5, ColorInterface.L3, Color.kBlue, 50))));
 
     m_coDriver.back()

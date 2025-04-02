@@ -3,41 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 10.191,
-        "y": 0.67
+        "x": 1.4903169014084494,
+        "y": 7.0012323943661965
       },
       "prevControl": null,
       "nextControl": {
-        "x": 9.66786971830986,
-        "y": 1.0345950704225333
+        "x": 2.136421353463244,
+        "y": 6.610564586147019
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "4pfilrs4"
     },
     {
       "anchor": {
-        "x": 4.691,
-        "y": 3.67
+        "x": 2.689597602739726,
+        "y": 6.060980308219177
       },
       "prevControl": {
-        "x": 4.69606147198903,
-        "y": 3.9199487577510723
-      },
-      "nextControl": {
-        "x": 4.685938528010969,
-        "y": 3.4200512422489275
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 4.691,
-        "y": -0.33
-      },
-      "prevControl": {
-        "x": 4.721654929577465,
-        "y": 0.7227992957746459
+        "x": 2.404109589041096,
+        "y": 6.286365582191781
       },
       "nextControl": null,
       "isLocked": false,
@@ -47,7 +31,19 @@
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "NoTwoPieces",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "NoTwoPieces"
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.5,
     "maxAcceleration": 3.0,
@@ -57,14 +53,14 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
-    "rotation": 0.0
+    "velocity": 1.0,
+    "rotation": 119.99999999999999
   },
   "reversed": false,
-  "folder": "Fake Autos",
+  "folder": "4pfilrs",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 132.0
   },
   "useDefaultConstraints": true
 }

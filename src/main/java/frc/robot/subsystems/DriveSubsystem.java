@@ -14,17 +14,25 @@ import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 import com.pathplanner.lib.util.PathPlannerLogging;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.Nat;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.estimator.ExtendedKalmanFilter;
+import edu.wpi.first.math.estimator.KalmanFilter;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.numbers.N2;
+import edu.wpi.first.math.system.LinearSystem;
+import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
@@ -105,6 +113,7 @@ public class DriveSubsystem extends SubsystemBase {
   public boolean isAutoRotateToggle = true;
   public boolean isAutoYSpeedToggle = true;
   public boolean isAutoXSpeedToggle = true;
+  public boolean isDrivingSlow = false;
   
   // public boolean hasYFinished = false;
   
@@ -236,27 +245,25 @@ public class DriveSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // Update the odometry in the periodic block
-    // if (isAutoRotate == RotationEnum.STRAFEONTARGET) {
-    // if (!DriverStation.isAutonomous()) {
-      if (m_vision.getTarget().map((t) -> t.getPoseAmbiguity()).orElse(1.0) <= .2 && m_vision.getTargetDistance() >= .7) {
+    if (m_vision.getTarget().isPresent()) {
+      if (m_vision.singleTag) {
+        if (m_vision.getTarget().map((t) -> t.getPoseAmbiguity()).orElse(1.0) <= .2) {
+          m_poseEstimator.addVisionMeasurement(m_vision.getRobotPose().get(), m_vision.getApriltagTime());
+        }
+      } else {
         m_vision.getRobotPose().ifPresent((robotPose) -> m_poseEstimator.addVisionMeasurement(robotPose, m_vision.getApriltagTime()));
       }
-    // }
-    // }
-    // else {
-    //   if ((m_vision.getTarget().map((t) -> t.getPoseAmbiguity()).orElse(1.0) <= 0.2 && m_vision.getTargetDistance() >= 0.7) || (m_vision2.getTarget().map((t) -> t.getPoseAmbiguity()).orElse(1.0) <= 0.2) && m_vision2.getTargetDistance() >= 0.7) {
-    //     if (m_vision.getTarget().map((t) -> t.getPoseAmbiguity()).orElse(1.0) <= m_vision2.getTarget().map((t) -> t.getPoseAmbiguity()).orElse(1.0) && m_vision.getTargetDistance() >= 0.7) {
-    //       m_vision.getRobotPose().ifPresent((robotPose) -> m_poseEstimator.addVisionMeasurement(robotPose, m_vision.getApriltagTime()));
-    //     }
-    //     else if (m_vision2.getTarget().map((t) -> t.getPoseAmbiguity()).orElse(1.0) <= m_vision.getTarget().map((t) -> t.getPoseAmbiguity()).orElse(1.0) && m_vision2.getTargetDistance() >= 0.7) {
-    //       m_vision2.getRobotPose().ifPresent((robotPose) -> m_poseEstimator.addVisionMeasurement(robotPose, m_vision.getApriltagTime()));
-    //     }
-    //   }
-    // }
+    }
 
-    // if (m_vision.getTarget().map((t) -> t.getPoseAmbiguity()).orElse(1.0) <= .2 && m_vision.getTargetDistance() >= .7) {
-    //   m_vision.getRobotPose().ifPresent((robotPose) -> m_poseEstimator.addVisionMeasurement(robotPose, m_vision.getApriltagTime()));
-    // }
+    if (m_vision2.getTarget().isPresent()) {
+      if (m_vision2.singleTag) {
+        if (m_vision2.getTarget().map((t) -> t.getPoseAmbiguity()).orElse(1.0) <= .2) {
+          m_poseEstimator.addVisionMeasurement(m_vision2.getRobotPose().get(), m_vision2.getApriltagTime());
+        }
+      } else {
+        m_vision2.getRobotPose().ifPresent((robotPose) -> m_poseEstimator.addVisionMeasurement(robotPose, m_vision2.getApriltagTime()));
+      }
+    }
 
     m_poseEstimator.update(m_imu.getRotation2d(), getModulePositions());
 
@@ -395,8 +402,9 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putString("Scoring mode", Constants.scoringMode);
     SmartDashboard.putString("Scoring level", Constants.scoringLevel);
     SmartDashboard.putBoolean("Vision elevator", Constants.visionElevator);
-    SmartDashboard.putNumber("X Speed", autoXSpeed);
-    SmartDashboard.putNumber("Y Speed", autoYSpeed);
+    // SmartDashboard.putNumber("X Speed", autoXSpeed);
+    // SmartDashboard.putNumber("Y Speed", autoYSpeed);
+    // SmartDashboard.putNumber("Goal Rotation Speed", autoRotateSpeed);
   }
 
   /**
@@ -440,9 +448,13 @@ public class DriveSubsystem extends SubsystemBase {
    * @param fieldRelative Whether the provided x and y speeds are relative to the field.
    */
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
-    
     m_leds.SetSegmentByVision(m_alignToPoleX.hasReachedX, m_alignToPole.hasReachedY, isAutoYSpeed, isAutoXSpeed, Color.kRed, ColorInterface.L3, ColorInterface.L2, Color.kBlue, 50);
     rot = isAutoRotate != RotationEnum.NONE ? autoRotateSpeed : rot;
+
+    if (isDrivingSlow) {
+      ySpeed *= 0.1;
+      xSpeed *= 0.1;
+    }
 
     if (isAutoYSpeed && isAutoRotate == RotationEnum.STRAFEONTARGET) {
       ySpeed = autoYSpeed;
@@ -451,6 +463,8 @@ public class DriveSubsystem extends SubsystemBase {
     if (isAutoXSpeed && isAutoRotate == RotationEnum.STRAFEONTARGET) {
       xSpeed = autoXSpeed;
     }
+
+    SmartDashboard.putBoolean("Is Driving Slow", isDrivingSlow);
 
     // Apply joystick deadband
     xSpeed = isAutoXSpeed ? xSpeed : MathUtil.applyDeadband(xSpeed, OIConstants.kDeadband, 1.0);

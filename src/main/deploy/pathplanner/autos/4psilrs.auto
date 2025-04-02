@@ -1,0 +1,91 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Start ER4"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "RightPole"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "L4"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ElevatorToScore"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ScoreCoral"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "4psilrs2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "LeftPole"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ElevatorToScore"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ScoreCoral"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "4psilrs4"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "RightPole"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ElevatorToScore"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ScoreCoral"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}

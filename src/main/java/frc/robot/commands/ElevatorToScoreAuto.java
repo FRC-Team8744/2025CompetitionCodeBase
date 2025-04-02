@@ -23,9 +23,9 @@ public class ElevatorToScoreAuto extends Command {
   private double motorPosition;
   private ScoringMechanismPivot m_scoringMechPivot;
   private ScoringMechSensor m_scoringMechSensor;
-  private boolean toggle = true;
-  private boolean rotateToggle = true;
-  private Timer m_timer = new Timer();
+  // private boolean toggle = true;
+  // private boolean rotateToggle = true;
+  // private Timer m_timer = new Timer();
   public ElevatorToScoreAuto(Elevator ele, DriveSubsystem dr, ScoringMechanismPivot scp, ScoringMechSensor sms) {
     m_elevator = ele;
     addRequirements(m_elevator);
@@ -38,37 +38,29 @@ public class ElevatorToScoreAuto extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    // toggle = true;
-    // m_timer.restart();
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // if (m_scoringMechSensor.getScoringSensor()) {
-    //   toggle = true;
-    // } else if (!m_scoringMechSensor.getScoringSensor()) {
-    //   toggle = false;
-    // }
-    m_timer.start();
+    // m_timer.start();
     m_robotDrive.isAutoRotate = RotationEnum.STRAFEONTARGET;
 
     motorPosition = m_elevator.getMotorPosition();
-    SmartDashboard.putBoolean("Has reached X", m_robotDrive.m_alignToPoleX.hasReachedX);
-    SmartDashboard.putBoolean("Has reached Y", m_robotDrive.m_alignToPole.hasReachedY);
-    SmartDashboard.putNumber("Timer time", m_timer.get());
 
     if (Constants.scoringMode == "Coral") {
-      // if (toggle == false) {
-        if (!m_scoringMechSensor.getScoringSensor()) {
+        // if (!m_scoringMechSensor.getScoringSensor()) {
           m_elevator.rotate(16.35 * Constants.ELEVATOR_GEARING * Constants.percentOfElevator); // 327
           if (m_elevator.getMotorPosition() >= ((16.35 * Constants.ELEVATOR_GEARING * Constants.percentOfElevator) * .50)) {
             m_robotDrive.isAutoYSpeed = true;
             m_robotDrive.isAutoXSpeed = true;
-            m_scoringMechPivot.rotatePivot(Constants.scoringMechGoalAngle);
-          }
-        // }
+            if (Constants.scoringLevel == "L4") {
+              double movingScoringMechPivotAngle = 1681.52953862 - 1613.42103817 * Math.log(m_robotDrive.m_alignToPoleX.robotX);
+              m_scoringMechPivot.rotatePivot(movingScoringMechPivotAngle);
+            } else {
+              m_scoringMechPivot.rotatePivot(Constants.scoringMechGoalAngle);
+            }
+          // }
         m_robotDrive.driveRobotRelative(new ChassisSpeeds());
       }
     }
@@ -88,28 +80,29 @@ public class ElevatorToScoreAuto extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    // m_scoringMechPivot.rotatePivot(0);
-    // m_elevator.rotate(0);
-    m_timer.reset();
+    // m_timer.reset();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    SmartDashboard.putBoolean("Elevator at setpoint", m_elevator.isAtSetpoint());
+    SmartDashboard.putBoolean("X at setpoint", m_robotDrive.m_alignToPoleX.hasReachedX);
+    SmartDashboard.putBoolean("Y at setpoint", m_robotDrive.m_alignToPole.hasReachedY);
     if (m_elevator.isAtSetpoint() && m_robotDrive.m_alignToPoleX.hasReachedX && m_robotDrive.m_alignToPole.hasReachedY) {
-    // if (false) {  
-      m_timer.stop();
+      // m_timer.stop();
       return true;
     }
-    // else if (toggle) {
+    // else if (m_scoringMechSensor.getScoringSensor()){
+    //   // m_timer.stop();
     //   return true;
     // }
-    else if (m_timer.hasElapsed(0.3)) {
-      m_timer.stop();
-      return true;
-    }
+    // else if (m_timer.hasElapsed(0.3)) {
+    //   m_timer.stop();
+    //   return true;
+    // }
     else {
-      m_timer.stop();
+      // m_timer.stop();
       return false;
     }
   }

@@ -15,7 +15,7 @@ import frc.robot.subsystems.mechanisms.Intake;
 import frc.robot.subsystems.mechanisms.IntakePivot;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class RunIntakeAutoKickout extends Command {
+public class RunIntakeAutoSource extends Command {
   /** Creates a new TeleopIntake. */
   private final Intake m_intake;
   private final IntakePivot m_intakePivot;
@@ -25,10 +25,9 @@ public class RunIntakeAutoKickout extends Command {
   private final ElevatorToScoreAuto m_elevatorToScore;
   private final Timer m_timer = new Timer();
   private final Timer m_stopTimer = new Timer();
-  private final Timer m_newTimer = new Timer();
   private final NoTwoPieces m_noTwoPieces;
   private boolean toggle = true;
-  public RunIntakeAutoKickout(Intake in, IntakePivot inp, CoralScoring co, ScoringMechSensor scp, AlgaeMechanism alg, ElevatorToScoreAuto ets, NoTwoPieces ntp) {
+  public RunIntakeAutoSource(Intake in, IntakePivot inp, CoralScoring co, ScoringMechSensor scp, AlgaeMechanism alg, ElevatorToScoreAuto ets, NoTwoPieces ntp) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_intake = in;
     addRequirements(m_intake);
@@ -53,26 +52,25 @@ public class RunIntakeAutoKickout extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_newTimer.start();
     if (Constants.scoringMode == "Coral") {
-      if (!m_timer.hasElapsed(2)) {
+      // if (!m_timer.hasElapsed(2)) {
         if (m_sensor.getScoringSensor()) {
-          m_intake.runIndexer(.5, -0.5);
-          m_intake.runIntake(.6);
-          m_coral.runCoralMotor(-.075);
+          m_intake.runIndexer(.6, -0.6);
+          m_intake.runIntake(-.1);
+          m_coral.runCoralMotor(-.2);
           m_intakePivot.intakeDown(-3393);
           m_stopTimer.reset();
         }
-      }
-      else {
-        m_intake.stopBoth();
-        m_intake.stopIndexer();
-        m_coral.stopMotor();
-        m_stopTimer.start();
-        if (m_stopTimer.hasElapsed(0.2)) {
-          m_timer.restart();
-        }
-      }
+      // }
+      // else {
+        // m_intake.stopBoth();
+        // m_intake.stopIndexer();
+        // m_coral.stopMotor();
+        // m_stopTimer.start();
+        // if (m_stopTimer.hasElapsed(0.2)) {
+        //   m_timer.restart();
+        // }
+      // }
     }
     else if (Constants.scoringMode == "Algae") {
       if (Constants.algaeScoringLevel == "L2" || Constants.algaeScoringLevel == "L3") {
@@ -87,15 +85,11 @@ public class RunIntakeAutoKickout extends Command {
   public void end(boolean interrupted) {
     m_coral.stopMotor();
     m_intake.stopBoth();
-    m_newTimer.reset();
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (m_newTimer.hasElapsed(0.15)) {
-      return true;
-    }
     return !m_sensor.getScoringSensor();
   }
 }

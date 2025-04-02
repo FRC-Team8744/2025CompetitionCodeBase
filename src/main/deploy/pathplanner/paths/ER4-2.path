@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.0572183098591537,
-        "y": 4.421830985915492
+        "x": 2.6294948630136985,
+        "y": 4.227846746575342
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.6898809810920306,
-        "y": 5.067935437970287
+        "x": 1.262157534246575,
+        "y": 4.873951198630137
       },
       "isLocked": false,
       "linkedName": "ER4-1"
@@ -20,7 +20,7 @@
         "y": 6.902418664383561
       },
       "prevControl": {
-        "x": 0.655612336068754,
+        "x": 0.6556123360687539,
         "y": 6.285278729202459
       },
       "nextControl": {
@@ -77,8 +77,8 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 1.7,
-    "maxAcceleration": 1.7,
+    "maxVelocity": 3.5,
+    "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -92,7 +92,7 @@
   "folder": "4plrs",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -179.8757292574851
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }

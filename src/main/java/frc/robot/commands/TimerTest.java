@@ -24,7 +24,7 @@ public class TimerTest extends Command {
   @Override
   public void execute() {
     m_timer.start();
-    SmartDashboard.putNumber("Timer time", m_timer.get());
+    // SmartDashboard.putNumber("Timer time", m_timer.get());
   }
 
   // Called once the command ends or is interrupted.
@@ -37,7 +37,7 @@ public class TimerTest extends Command {
     if (m_timer.hasElapsed(3.0)) {
       m_timer.stop();
       m_timer.reset();
-      SmartDashboard.putBoolean("True", true);
+      // SmartDashboard.putBoolean("True", true);
       return true;
     }
     return false;
