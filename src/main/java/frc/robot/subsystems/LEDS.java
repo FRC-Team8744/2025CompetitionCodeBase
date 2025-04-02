@@ -8,16 +8,22 @@ import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.AddressableLEDBufferView;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.LEDPattern;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Color;
 // import frc.robot.Constants.LEDConstants;
 
 import java.util.Map;
+import java.util.Optional;
 
 import edu.wpi.first.units.Units;
 
 public class LEDS extends SubsystemBase {
+  
+  public Color AllianceColor;
+  public Optional<Alliance> alliance  = DriverStation.getAlliance();
 
   private AddressableLED m_led;
   int totalBufferLength = 179; 
@@ -56,8 +62,9 @@ public class LEDS extends SubsystemBase {
   LEDPattern black = LEDPattern.solid(Color.kBlack);
 
 
+  //Alliance color get and apply
   public LEDS() {
-
+    
   // Must be a PWM header, not MXP or DIO
     m_led = new AddressableLED(0);
     // Reuse buffer
@@ -72,21 +79,30 @@ public class LEDS extends SubsystemBase {
 
   @Override
   public void periodic() {
+    
     // Set the LEDs
     m_led.setData(ledStrip);
+    if (alliance.isPresent()){
+  if (alliance.get() == Alliance.Red) {
+        AllianceColor = Color.kRed;
+    }
+    if (alliance.get() == Alliance.Blue) {
+        AllianceColor = Color.kBlue;
+    }
+}
+else {
+    AllianceColor = Color.kBlack;
+}
+this.AllianceColor = AllianceColor;
   }
 
   /**
    * @param start The start point of the rainbow
    * @param end The end point of the rainbow
    */
-  
-
-  
-
-public void SetSegmentByLevel(double length, Color ElevatorColor, Color AllianceColor, double brightness) {
+public void SetSegmentByLevel(double length, Color ElevatorColor, double brightness) {
   LEDPattern NewPattern;
-  NewPattern = LEDPattern.steps(Map.of(0, ElevatorColor, length, AllianceColor));
+  NewPattern = LEDPattern.steps(Map.of(0, ElevatorColor, length, this.AllianceColor));
     NewPattern.atBrightness(Units.Percent.of(brightness));
     NewPattern.applyTo(LEDSegmentLeftFrontTop); 
     NewPattern.applyTo(LEDSegmentLeftRearTop); 
@@ -159,8 +175,9 @@ public void SetSegmentByVision(boolean hasReachedX, boolean hasReachedY, boolean
   m_led.setData(ledStrip);
   m_led.start();
 }
-  public void SetSegment(int r, int g, int b) {
-    }
+
+
+
   private void setRainbow(int r, int g, int b) {
     for (var i = 0; i < ledStrip.getLength(); i++) {
       if (i < ledStrip.getLength()) {

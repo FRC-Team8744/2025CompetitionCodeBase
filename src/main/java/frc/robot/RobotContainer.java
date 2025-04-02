@@ -40,6 +40,7 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.RunIntake;
 
+
 /*
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -152,16 +153,16 @@ public class RobotContainer {
 
     m_coDriver.pov(0)
     .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(.9, -136, "L4", .95, -200, "Net"))
-    .alongWith(Commands.runOnce(() -> m_leds.SetSegmentByLevel(1.0, ColorInterface.L3, Color.kBlue, 50))));
+    .alongWith(Commands.runOnce(() -> m_leds.SetSegmentByLevel(1.0, ColorInterface.L1, 50))));
     m_coDriver.pov(90)
     .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(.53, 0, "L3", .49, -260, "L3"))
-    .alongWith(Commands.runOnce(() -> m_leds.SetSegmentByLevel(.75, ColorInterface.L3, Color.kBlue, 50))));
+    .alongWith(Commands.runOnce(() -> m_leds.SetSegmentByLevel(.75, ColorInterface.L1, 50))));
     m_coDriver.pov(180)
     .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(.20, 0, "L1", .15, -250, "Processor"))
-    .alongWith(Commands.runOnce(() -> m_leds.SetSegmentByLevel(.25, ColorInterface.L3, Color.kBlue, 50))));
+    .alongWith(Commands.runOnce(() -> m_leds.SetSegmentByLevel(.25, ColorInterface.L1, 50))));
     m_coDriver.pov(270)
     .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(.33, 0, "L2", .30, -250, "L2"))
-    .alongWith(Commands.runOnce(() -> m_leds.SetSegmentByLevel(.5, ColorInterface.L3, Color.kBlue, 50))));
+    .alongWith(Commands.runOnce(() -> m_leds.SetSegmentByLevel(.5, ColorInterface.L1, 50))));
 
     m_coDriver.back()
     .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(.99, -200, "100%", .99, -200, "100%")));
