@@ -39,6 +39,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.RunIntake;
+import frc.robot.commands.RunIntakeAutoSource;
 
 
 /*
@@ -125,6 +126,9 @@ public class RobotContainer {
     .whileTrue(Commands.runOnce(() -> m_intake.runIntake(0.3)))
     .whileFalse(Commands.runOnce(() -> m_intake.stopBoth()));
 
+    m_driver.rightBumper()
+    .whileTrue(new RunIntakeAutoSource(m_intake, m_intakePivot, m_coral, m_scoringMechSensor, m_algae, null, null));
+
     m_driver.start()
     .whileTrue(new ResetEncoders(m_elevator, m_scoringMechPivot, m_intakePivot));
 
@@ -152,16 +156,16 @@ public class RobotContainer {
     .whileTrue(new TimerTest());
 
     m_coDriver.pov(0)
-    .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(.9, -136, "L4", .95, -200, "Net"))
+    .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(.9, -136, "L4", .49, -260, "Net"))
     .alongWith(Commands.runOnce(() -> m_leds.SetSegmentByLevel(1.0, ColorInterface.L1, 50))));
     m_coDriver.pov(90)
     .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(.53, 0, "L3", .49, -260, "L3"))
     .alongWith(Commands.runOnce(() -> m_leds.SetSegmentByLevel(.75, ColorInterface.L1, 50))));
     m_coDriver.pov(180)
-    .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(.20, 0, "L1", .15, -250, "Processor"))
+    .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(.20, 0, "L1", .30, -260, "Processor"))
     .alongWith(Commands.runOnce(() -> m_leds.SetSegmentByLevel(.25, ColorInterface.L1, 50))));
     m_coDriver.pov(270)
-    .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(.33, 0, "L2", .30, -250, "L2"))
+    .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(.33, 0, "L2", .30, -260, "L2"))
     .alongWith(Commands.runOnce(() -> m_leds.SetSegmentByLevel(.5, ColorInterface.L1, 50))));
 
     m_coDriver.back()

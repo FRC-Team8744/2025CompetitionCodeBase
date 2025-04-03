@@ -94,6 +94,9 @@ public class RunIntake extends Command {
       m_leds.SetSegmentByIntakeMech(Color.kGreen, 50);
     }
    
+    if (Constants.scoringMode == "Algae") {
+      m_elevatorToIntakeAlgae.end(false);
+    }
   }
 
   // Returns true when the command should end.

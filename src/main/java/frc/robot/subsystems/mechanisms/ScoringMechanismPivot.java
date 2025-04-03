@@ -66,6 +66,10 @@ public class ScoringMechanismPivot extends SubsystemBase {
     m_scoringMechPivot.setControl(velocity.withEnableFOC(false).withVelocity(0).withFeedForward(1).withSlot(1));
   }
 
+  public void stall() {
+    m_scoringMechPivot.setControl(velocity.withEnableFOC(false).withVelocity(0).withFeedForward(-1).withSlot(1));
+  }
+
   public void resetEncoder() {
     m_scoringMechPivot.stopMotor();
     m_scoringMechPivot.setPosition(startingPositionRotations);

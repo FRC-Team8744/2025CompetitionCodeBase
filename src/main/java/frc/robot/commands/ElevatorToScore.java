@@ -110,9 +110,12 @@ public class ElevatorToScore extends Command {
     if (Constants.scoringMode == "Coral") {
       m_elevator.rotate(0);
       m_scoringMechPivot.rotatePivot(0);
+      m_robotDrive.isDrivingSlow = false;
     }
     if (Constants.scoringMode == "Algae") {
       m_algae.intakeAlgae(0.2);
+      m_scoringMechPivot.rotatePivot(0);
+      m_elevator.rotate(0);
       m_robotDrive.isAutoYSpeed = false;
       m_robotDrive.isAutoXSpeed = false;
       m_robotDrive.isAutoRotate = RotationEnum.NONE;
