@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.603423987740965,
-        "y": 6.047093848794721
+        "x": 6.53617294520548,
+        "y": 6.466673801369862
       },
       "isLocked": false,
       "linkedName": "Start ER4"
     },
     {
       "anchor": {
-        "x": 5.770422535211268,
-        "y": 5.754049295774647
+        "x": 5.394220890410959,
+        "y": 5.865646404109588
       },
       "prevControl": {
-        "x": 6.040884863978392,
-        "y": 5.889280460158208
+        "x": 5.513866848350376,
+        "y": 6.352885635732202
       },
       "nextControl": null,
       "isLocked": false,
@@ -29,7 +29,21 @@
     }
   ],
   "rotationTargets": [],
-  "constraintZones": [],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 1.5,
+        "maxAcceleration": 1.5,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {

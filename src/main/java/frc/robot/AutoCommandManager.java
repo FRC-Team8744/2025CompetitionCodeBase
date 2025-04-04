@@ -140,10 +140,10 @@ public class AutoCommandManager {
 
         // m_chooser.addOption("1 Piece Test", m_test);
         // m_chooser.addOption("Intake Test", m_intaketest);
-        // m_chooser.addOption("4plrs", m_4plrs);
-        // m_chooser.addOption("4pgilrs", m_4pgilrs);
+        m_chooser.addOption("4plrs", m_4plrs);
+        m_chooser.addOption("4pgilrs", m_4pgilrs);
         m_chooser.addOption("4pfilrs", m_4pfilrs);
-        // m_chooser.addOption("4psilrs", m_4psilrs);
+        m_chooser.addOption("4psilrs", m_4psilrs);
 
         SmartDashboard.putData(m_chooser);
     }

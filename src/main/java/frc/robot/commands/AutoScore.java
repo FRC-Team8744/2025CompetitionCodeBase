@@ -61,7 +61,7 @@ public class AutoScore extends Command{
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (m_timer.hasElapsed(0.15)) {
+    if (m_timer.hasElapsed(0.3)) {
       m_timer.stop();
       return true;
     }

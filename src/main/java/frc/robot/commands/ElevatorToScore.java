@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants;
@@ -35,16 +36,13 @@ public class ElevatorToScore extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if (Constants.visionElevator) {
-      if (Constants.scoringMode == "Algae" && Constants.algaeScoringLevel == "Net") {
-        m_robotDrive.isAutoRotate = RotationEnum.NONE;
-      }
-      else {
-        m_robotDrive.isAutoRotate = RotationEnum.STRAFEONTARGET;
-      }
+    if (Constants.visionElevator && Constants.scoringMode == "Coral") {
+      m_robotDrive.isAutoRotate = RotationEnum.STRAFEONTARGET;
     }
     toggle = true;
-    m_robotDrive.isDrivingSlow = true;
+    if (Constants.scoringMode == "Coral") {
+      m_robotDrive.isDrivingSlow = true;
+    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -74,10 +72,15 @@ public class ElevatorToScore extends Command {
           if (Math.abs(m_robotDrive.m_alignToPoleX.xOffset) <= 1.5 ) {
             m_elevator.rotate(16.35 * Constants.ELEVATOR_GEARING * Constants.percentOfElevator); // 327
             if (Constants.scoringLevel == "L4") {
-              double movingScoringMechPivotAngle = 1681.52953862 - 1613.42103817 * Math.log(m_robotDrive.m_alignToPoleX.robotX);
+              double movingScoringMechPivotAngle;
+              if (DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) {
+                movingScoringMechPivotAngle = 1681.52953862 - 1613.42103817 * Math.log(m_robotDrive.m_alignToPoleX.robotX);
               // SmartDashboard.putNumber("GoalScoringMechAngle", movingScoringMechPivotAngle);
-              m_scoringMechPivot.rotatePivot(movingScoringMechPivotAngle);
               // m_scoringMechPivot.rotatePivot(Constants.scoringMechGoalAngle);
+              } else {
+                movingScoringMechPivotAngle = 15241.848 - 6241.474 * Math.log(m_robotDrive.m_alignToPoleX.robotX);
+              }
+              m_scoringMechPivot.rotatePivot(movingScoringMechPivotAngle);
             } else {
               m_scoringMechPivot.rotatePivot(Constants.scoringMechGoalAngle);
             }
