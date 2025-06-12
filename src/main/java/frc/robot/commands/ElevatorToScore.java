@@ -78,7 +78,8 @@ public class ElevatorToScore extends Command {
               // SmartDashboard.putNumber("GoalScoringMechAngle", movingScoringMechPivotAngle);
               // m_scoringMechPivot.rotatePivot(Constants.scoringMechGoalAngle);
               } else {
-                movingScoringMechPivotAngle = 15241.848 - 6241.474 * Math.log(m_robotDrive.m_alignToPoleX.robotX);
+                // movingScoringMechPivotAngle = 15241.848 - 6241.474 * Math.log(m_robotDrive.m_alignToPoleX.robotX);
+                movingScoringMechPivotAngle = 1681.52953862 - 1613.42103817 * Math.log(m_robotDrive.m_alignToPoleX.robotX - 8.57);
               }
               m_scoringMechPivot.rotatePivot(movingScoringMechPivotAngle);
             } else {
@@ -87,23 +88,26 @@ public class ElevatorToScore extends Command {
             }
           } else {
             m_elevator.rotate(16.35 * Constants.ELEVATOR_GEARING * Constants.percentOfElevator); // 327
+            // double movingScoringMechPivotAngle = 1681.52953862 - 1613.42103817 * Math.log(m_robotDrive.m_alignToPoleX.robotX - 8.57);
             m_scoringMechPivot.rotatePivot(Constants.scoringMechGoalAngle);
           // }
         }
       }
     else if (Constants.scoringMode == "Algae") {
-      if (m_robotDrive.autoRotateSpeed == 0) {
-        m_algae.intakeAlgae(0.2);
-        m_elevator.rotate(16.35 * Constants.ELEVATOR_GEARING * Constants.percentOfElevatorAlgae);
-        if (m_elevator.getMotorPosition() >= ((16.35 * Constants.ELEVATOR_GEARING * Constants.percentOfElevatorAlgae) * 0.50) && toggle) {
-          if (Constants.visionElevator && (Constants.algaeScoringLevel == "L2" || Constants.algaeScoringLevel == "L3")) {
-            m_robotDrive.isAutoYSpeed = true;
-            m_robotDrive.isAutoXSpeed = true;
+      // if (m_robotDrive.autoRotateSpeed == 0) {
+        // m_algae.intakeAlgae(0.2);
+        // m_robotDrive.isAutoYSpeed = true;
+        // m_robotDrive.isAutoXSpeed = true;
+      // if (Math.abs(m_robotDrive.autoXSpeed) == 0 && Math.abs(m_robotDrive.autoYSpeed) == 0) {
+          m_elevator.rotate(16.35 * Constants.ELEVATOR_GEARING * Constants.percentOfElevatorAlgae);
+          if (m_elevator.getMotorPosition() >= ((16.35 * Constants.ELEVATOR_GEARING * Constants.percentOfElevatorAlgae) * 0.50)) {
+            // if (Constants.visionElevator && (Constants.algaeScoringLevel == "L2" || Constants.algaeScoringLevel == "L3")) {
+            // }
+            m_scoringMechPivot.rotatePivot(Constants.scoringMechGoalAngleAlgae);
+            // toggle = false;
           }
-          m_scoringMechPivot.rotatePivot(Constants.scoringMechGoalAngleAlgae);
-          toggle = false;
-        }
-      }
+        // }//
+      // }
     }
   }
 
@@ -119,6 +123,7 @@ public class ElevatorToScore extends Command {
       m_algae.intakeAlgae(0.2);
       m_scoringMechPivot.rotatePivot(0);
       m_elevator.rotate(0);
+      m_robotDrive.isDrivingSlow = false;
       m_robotDrive.isAutoYSpeed = false;
       m_robotDrive.isAutoXSpeed = false;
       m_robotDrive.isAutoRotate = RotationEnum.NONE;

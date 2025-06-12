@@ -40,14 +40,14 @@ public class AlignToPoleX {
     if (Constants.scoringMode == "Coral") {
       if (DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) {
         if (DriverStation.isAutonomous()) {
-          goalX = 3.1446;
+          goalX = 3.17;
         } else {
           goalX = 3.1746; // 3.
         }
       }
       else {
         if (DriverStation.isAutonomous()) {
-          goalX = 11.8062;
+          goalX = 11.7808;
         } else {
           goalX = 11.7762;
         }
@@ -56,14 +56,14 @@ public class AlignToPoleX {
       if (DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) {
         goalX = 3.0746;
       } else {
-        goalX = 11.7762;
+        goalX = 11.8143;
       }
     } else {
       goalX = 3;
     }
 
     // SmartDashboard.putNumber("Goal X", goalX);
-    // SmartDashboard.putNumber("Robot X", robotX);
+    SmartDashboard.putNumber("Robot X", robotX);
 
     xOffset = goalX - robotX;
 

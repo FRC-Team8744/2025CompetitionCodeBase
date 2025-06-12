@@ -152,21 +152,31 @@ public class RobotContainer {
     m_driver.b()
     .whileTrue(Commands.runOnce(() -> m_robotDrive.isAutoYSpeed = false).alongWith(Commands.runOnce(() -> m_robotDrive.isAutoXSpeed = false).alongWith(Commands.runOnce(() -> m_robotDrive.isAutoRotate = RotationEnum.NONE))));
 
-    m_coDriver.a()
-    .whileTrue(new TimerTest());
+    // m_coDriver.a()
+    // .whileTrue(new TimerTest());
 
     m_coDriver.pov(0)
     .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(.9, -136, "L4", .49, -260, "Net"))
-    .alongWith(Commands.runOnce(() -> m_leds.SetSegmentByLevel(1.0, ColorInterface.L1, 50))));
+    .alongWith(Commands.runOnce(() -> Constants.scoringMode = "Coral")
+    .alongWith(Commands.runOnce(() -> m_leds.SetSegmentByLevel(1.0, ColorInterface.L1, 50)))));
     m_coDriver.pov(90)
     .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(.53, 0, "L3", .49, -260, "L3"))
-    .alongWith(Commands.runOnce(() -> m_leds.SetSegmentByLevel(.75, ColorInterface.L1, 50))));
+    .alongWith(Commands.runOnce(() -> Constants.scoringMode = "Coral")
+    .alongWith(Commands.runOnce(() -> m_leds.SetSegmentByLevel(.75, ColorInterface.L1, 50)))));
     m_coDriver.pov(180)
     .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(.20, 0, "L1", .30, -260, "Processor"))
-    .alongWith(Commands.runOnce(() -> m_leds.SetSegmentByLevel(.25, ColorInterface.L1, 50))));
+    .alongWith(Commands.runOnce(() -> Constants.scoringMode = "Coral")
+    .alongWith(Commands.runOnce(() -> m_leds.SetSegmentByLevel(.25, ColorInterface.L1, 50)))));
     m_coDriver.pov(270)
     .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(.33, 0, "L2", .30, -260, "L2"))
-    .alongWith(Commands.runOnce(() -> m_leds.SetSegmentByLevel(.5, ColorInterface.L1, 50))));
+    .alongWith(Commands.runOnce(() -> Constants.scoringMode = "Coral")
+    .alongWith(Commands.runOnce(() -> m_leds.SetSegmentByLevel(.5, ColorInterface.L1, 50)))));
+    m_coDriver.b()
+    .whileTrue(Commands.runOnce(() -> Constants.scoringMode = "Algae")
+    .alongWith(Commands.runOnce(() -> m_elevator.setScoringPreset(0.49, -260, "Dealgify", 0.49, -260, "L3"))));
+    m_coDriver.x()
+    .whileTrue(Commands.runOnce(() -> Constants.scoringMode = "Algae")
+    .alongWith(Commands.runOnce(() -> m_elevator.setScoringPreset(0.3, -260, "Dealgify", 0.3, -260, "L3"))));
 
     m_coDriver.back()
     .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(.99, -200, "100%", .99, -200, "100%")));

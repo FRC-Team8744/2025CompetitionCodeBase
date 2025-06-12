@@ -1,0 +1,96 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 5.394220890410959,
+        "y": 2.184
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 4.43257786270752,
+        "y": 1.8985092649243271
+      },
+      "isLocked": false,
+      "linkedName": "ER4-startRight"
+    },
+    {
+      "anchor": {
+        "x": 1.4477992957746466,
+        "y": 1.049
+      },
+      "prevControl": {
+        "x": 2.4244673088693167,
+        "y": 1.2743918061704285
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "4pfirrs2Right"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.5532467532467532,
+      "rotationDegrees": -126.0
+    }
+  ],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0.6609195402298845,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 1.75,
+        "maxAcceleration": 3.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "ElevatorDown",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "ElevatorDown"
+        }
+      }
+    },
+    {
+      "name": "RunIntake",
+      "waypointRelativePos": 0.0,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "SourceIntake"
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 3.5,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -132.0
+  },
+  "reversed": false,
+  "folder": "4pfirrsRight",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -59.99999999999999
+  },
+  "useDefaultConstraints": true
+}

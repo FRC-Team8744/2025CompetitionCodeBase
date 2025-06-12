@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 6.310787671232877,
-        "y": 3.8974471830985906
+        "x": 1.4477992957746466,
+        "y": 1.049
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.611301369863014,
-        "y": 3.867230308219178
+        "x": 2.09390582409205,
+        "y": 1.439664374379639
       },
       "isLocked": false,
-      "linkedName": "TestFor1Score1"
+      "linkedName": "4pfirrs2Right"
     },
     {
       "anchor": {
-        "x": 7.0470462328767125,
-        "y": 3.8974471830985906
+        "x": 2.689597602739726,
+        "y": 1.989
       },
       "prevControl": {
-        "x": 6.3525920075246,
-        "y": 3.8974471830985906
+        "x": 2.40410894709046,
+        "y": 1.7636155391672497
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,34 +33,34 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "ElevatorDown",
+      "name": "NoTwoPieces",
       "waypointRelativePos": 0,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
         "data": {
-          "name": "ElevatorDown"
+          "name": "NoTwoPieces"
         }
       }
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 2.0,
-    "maxAcceleration": 2.0,
+    "maxVelocity": 3.5,
+    "maxAcceleration": 3.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0.0,
-    "rotation": 0.0
+    "velocity": 1.0,
+    "rotation": -119.99999999999999
   },
   "reversed": false,
-  "folder": "Test for 1 score",
+  "folder": "4pfirrsRight",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": -132.0
   },
-  "useDefaultConstraints": false
+  "useDefaultConstraints": true
 }

@@ -56,7 +56,7 @@ public class RunIntakeAutoSource extends Command {
       // if (!m_timer.hasElapsed(2)) {
         if (m_sensor.getScoringSensor()) {
           m_intake.runIndexer(.6, -0.6);
-          m_intake.runIntake(-.1);
+          m_intake.runIntake(.6);
           m_coral.runCoralMotor(-.2);
           m_intakePivot.intakeDown(-3393);
           m_stopTimer.reset();

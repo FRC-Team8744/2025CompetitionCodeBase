@@ -135,15 +135,17 @@ public class AutoCommandManager {
         PathPlannerAuto m_4pgilrs = new PathPlannerAuto("4pgilrs");
         PathPlannerAuto m_4pfilrs = new PathPlannerAuto("4pfilrs");
         PathPlannerAuto m_4psilrs = new PathPlannerAuto("4psilrs");
+        PathPlannerAuto m_4pfirrsRight = new PathPlannerAuto("4pfirrsRight");
 
         m_chooser.setDefaultOption("None", new InstantCommand());
 
-        // m_chooser.addOption("1 Piece Test", m_test);
+        m_chooser.addOption("1 Piece Test", m_test);
         // m_chooser.addOption("Intake Test", m_intaketest);
         m_chooser.addOption("4plrs", m_4plrs);
         m_chooser.addOption("4pgilrs", m_4pgilrs);
         m_chooser.addOption("4pfilrs", m_4pfilrs);
         m_chooser.addOption("4psilrs", m_4psilrs);
+        m_chooser.addOption("4pfirrsRight", m_4pfirrsRight);
 
         SmartDashboard.putData(m_chooser);
     }

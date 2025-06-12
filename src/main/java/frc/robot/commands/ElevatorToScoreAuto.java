@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -55,7 +56,15 @@ public class ElevatorToScoreAuto extends Command {
             m_robotDrive.isAutoYSpeed = true;
             m_robotDrive.isAutoXSpeed = true;
             if (Constants.scoringLevel == "L4") {
-              double movingScoringMechPivotAngle = 1681.52953862 - 1613.42103817 * Math.log(m_robotDrive.m_alignToPoleX.robotX);
+              double movingScoringMechPivotAngle;
+              if (DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) {
+                movingScoringMechPivotAngle = 1681.52953862 - 1613.42103817 * Math.log(m_robotDrive.m_alignToPoleX.robotX);
+              // SmartDashboard.putNumber("GoalScoringMechAngle", movingScoringMechPivotAngle);
+              // m_scoringMechPivot.rotatePivot(Constants.scoringMechGoalAngle);
+              } else {
+                // movingScoringMechPivotAngle = 15241.848 - 6241.474 * Math.log(m_robotDrive.m_alignToPoleX.robotX);
+                movingScoringMechPivotAngle = 1681.52953862 - 1613.42103817 * Math.log(m_robotDrive.m_alignToPoleX.robotX - 8.57);
+              }
               m_scoringMechPivot.rotatePivot(movingScoringMechPivotAngle);
             } else {
               m_scoringMechPivot.rotatePivot(Constants.scoringMechGoalAngle);

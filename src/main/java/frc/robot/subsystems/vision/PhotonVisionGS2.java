@@ -28,7 +28,7 @@ import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 public class PhotonVisionGS2 extends SubsystemBase {
-  private PhotonCamera camera = new PhotonCamera("Camera 2");
+  private PhotonCamera camera = new PhotonCamera("Camera 2.0");
   private Rotation3d rd = new Rotation3d(Units.degreesToRadians(-4.15), Units.degreesToRadians(-9.7), Units.degreesToRadians(207.1)); // 205.8
   private Transform3d td = new Transform3d(-0.22, -0.285, 0.525, rd);
   private Pose3d targetTd;

@@ -59,7 +59,7 @@ public final class Constants {
   public static final Pose2d[] blueBorder21 = new Pose2d[]{new Pose2d(4.88, 4.0, new Rotation2d(0)), new Pose2d(10.38, 7.0, new Rotation2d(0)), new Pose2d(10.38, 1.0, new Rotation2d(0))};
   public static final Pose2d[] blueBorder22 = new Pose2d[]{new Pose2d(4.691, 3.67, new Rotation2d(0)), new Pose2d(10.191, 0.67, new Rotation2d(0)), new Pose2d(4.691, -0.33, new Rotation2d(0))};
 
-  public static final double[] rightPoint = {5.35, 4.2396}; // 4.25128984 4.2378 4.23 4.2492 Seven rivers: 4.2396
+  public static final double[] rightPoint = {5.35, 4.2492}; // 4.25128984 4.2378 4.23 4.2492 Seven rivers: 4.2396
   public static final double[] leftPoint = {5.35, 3.8428}; // 3.85128984 Seven rivers: 3.8428 3.83 3.8028 3.8028
   public static double rightL1ScoringPoint = 4.52;
   public static double leftL1ScoringPoint = 3.58;

@@ -22,6 +22,7 @@ public class AlignToPole {
   // private double heading;
   private double m_output;
   public boolean hasReachedY;
+  public double yOffset;
   public AlignToPole() {}
 
   public void initialize() {
@@ -39,14 +40,14 @@ public class AlignToPole {
       goalY = rightPoint ? Constants.rightL1ScoringPoint : Constants.leftL1ScoringPoint;
     }
 
-    if (Constants.scoringMode == "Algae") {
-      goalY = 4.0403;
-    }
+    // if (Constants.scoringMode == "Algae") {
+    //   goalY = 4.0403;
+    // }
 
     // SmartDashboard.putNumber("Goal Y", goalY);
     // SmartDashboard.putNumber("Robot Y", robotY);
 
-    double yOffset = goalY - robotY;
+    yOffset = goalY - robotY;
 
     if (Math.abs(yOffset) >= 1.5) {
       yOffset = 0;

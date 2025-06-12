@@ -46,7 +46,11 @@ public class TeleopScore extends Command{
   @Override
   public void initialize() {
     if (Constants.scoringMode == "Coral") {
-      m_coral.runCoralMotor(-.4);  
+      if (Constants.scoringLevel == "L2" || Constants.scoringLevel == "L3") {
+        m_coral.runCoralMotor(-0.3);
+      } else {
+        m_coral.runCoralMotor(-.4);
+      }
     }
     else if (Constants.scoringMode == "Algae") {
       m_algae.scoreAlgae(0.4);

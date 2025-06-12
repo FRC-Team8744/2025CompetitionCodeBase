@@ -4,28 +4,28 @@
     {
       "anchor": {
         "x": 7.242380136986301,
-        "y": 6.136108732876712
+        "y": 1.914
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.53617294520548,
-        "y": 6.466673801369862
+        "x": 6.53617528758372,
+        "y": 1.5834299273813321
       },
       "isLocked": false,
-      "linkedName": "Start ER4"
+      "linkedName": null
     },
     {
       "anchor": {
         "x": 5.394220890410959,
-        "y": 5.865646404109588
+        "y": 2.184
       },
       "prevControl": {
-        "x": 5.513866848350376,
-        "y": 6.352885635732202
+        "x": 5.513871022033535,
+        "y": 1.6967617932816277
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "ER4-start"
+      "linkedName": "ER4-startRight"
     }
   ],
   "rotationTargets": [],
@@ -55,11 +55,11 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0.5,
-    "rotation": 59.99999999999999
+    "velocity": 0.0,
+    "rotation": -59.99999999999999
   },
   "reversed": false,
-  "folder": "4plrs",
+  "folder": "4pfirrsRight",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 0.0
