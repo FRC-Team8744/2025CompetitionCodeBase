@@ -4,9 +4,8 @@
 
 package frc.robot;
 
-import com.fasterxml.jackson.databind.util.Named;
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.commands.PathPlannerAuto;
 
 import edu.wpi.first.math.controller.HolonomicDriveController;
 import edu.wpi.first.math.controller.PIDController;
@@ -38,28 +37,19 @@ import frc.robot.subsystems.vision.PhotonVisionGS;
 import frc.robot.subsystems.vision.PhotonVisionGS2;
 import frc.robot.commands.AutoScore;
 import frc.robot.commands.ElevatorGoDownAuto;
-import frc.robot.commands.ElevatorToScore;
 import frc.robot.commands.ElevatorToScoreAuto;
 import frc.robot.commands.NoTwoPieces;
 import frc.robot.commands.NoTwoPiecesAuto;
-// import frc.robot.commands.AutoLineUp;
-import frc.robot.commands.RunElevator;
-// import frc.robot.commands.DropCoral;
-import frc.robot.commands.RunIntake;
 import frc.robot.commands.RunIntakeAuto;
 import frc.robot.commands.RunIntakeAutoKickout;
 import frc.robot.commands.RunIntakeAutoSource;
-import frc.robot.commands.TeleopScore;
 import frc.robot.subsystems.LEDS;
-import frc.robot.subsystems.alignment.AlignToPoleX;
 import edu.wpi.first.wpilibj.util.Color;
 import frc.robot.subsystems.ColorInterface;
 
-
-
 /** Add your docs here. */
 public class AutoCommandManager {
-    SendableChooser<Command> m_chooser = new SendableChooser<>();
+    SendableChooser<Command> m_chooser = AutoBuilder.buildAutoChooserWithOptionsModifier(((p) -> p.filter((a) -> a.getName().startsWith("!"))));
 
     public HolonomicDriveController holonomicDriveController;
     
@@ -129,23 +119,7 @@ public class AutoCommandManager {
 
         isSim = true;
 
-        PathPlannerAuto m_test = new PathPlannerAuto("1 Piece Test");
-        PathPlannerAuto m_intaketest = new PathPlannerAuto("Coral Intaking Auto");
-        PathPlannerAuto m_4plrs = new PathPlannerAuto("4plrs");
-        PathPlannerAuto m_4pgilrs = new PathPlannerAuto("4pgilrs");
-        PathPlannerAuto m_4pfilrs = new PathPlannerAuto("4pfilrs");
-        PathPlannerAuto m_4psilrs = new PathPlannerAuto("4psilrs");
-        PathPlannerAuto m_4pfirrsRight = new PathPlannerAuto("4pfirrsRight");
-
         m_chooser.setDefaultOption("None", new InstantCommand());
-
-        m_chooser.addOption("1 Piece Test", m_test);
-        // m_chooser.addOption("Intake Test", m_intaketest);
-        m_chooser.addOption("4plrs", m_4plrs);
-        m_chooser.addOption("4pgilrs", m_4pgilrs);
-        m_chooser.addOption("4pfilrs", m_4pfilrs);
-        m_chooser.addOption("4psilrs", m_4psilrs);
-        m_chooser.addOption("4pfirrsRight", m_4pfirrsRight);
 
         SmartDashboard.putData(m_chooser);
     }
@@ -186,8 +160,7 @@ public class AutoCommandManager {
         ScoringMechSensor m_scoringMechSensor,
         LEDS m_leds
         
-        ) { 
-            
+    ) {
         NamedCommands.registerCommand("AutoLineUp", Commands.runOnce(() -> m_robotDrive.isAutoRotate = RotationEnum.STRAFEONTARGET));
         NamedCommands.registerCommand("L1", Commands.runOnce(() -> m_elevator.setScoringPreset(.25, -60, "L1", .25, -60, "Processor")));
         NamedCommands.registerCommand("L2", Commands.runOnce(() -> m_elevator.setScoringPreset(.33, -60, "L2", .33, -60, "L2")));
@@ -195,7 +168,6 @@ public class AutoCommandManager {
         NamedCommands.registerCommand("L4", Commands.runOnce(() -> m_elevator.setScoringPreset(.9, -210, "L4", .9, -200, "Net")));
         NamedCommands.registerCommand("LeftPole", Commands.runOnce(() -> m_robotDrive.leftPoint = true));
         NamedCommands.registerCommand("RightPole", Commands.runOnce(() -> m_robotDrive.leftPoint = false));
-        // NamedCommands.registerCommand("Auto rotate", Commands.runOnce(() -> m_robotDrive.isAutoRotate = m_robotDrive.isAutoRotate == RotationEnum.STRAFEONTARGET ? RotationEnum.NONE : RotationEnum.STRAFEONTARGET));
         NamedCommands.registerCommand("RunIntake", new RunIntakeAuto(m_intake, m_intakePivot, m_coralScoring, m_scoringMechSensor, m_algaMechanism, new ElevatorToScoreAuto(m_elevator, m_robotDrive, m_scoringMechPivot, m_scoringMechSensor), new NoTwoPieces(m_intake, m_intakePivot)));
         NamedCommands.registerCommand("NoTwoPieces", new NoTwoPiecesAuto(m_intake, m_intakePivot, m_scoringMechSensor));
         NamedCommands.registerCommand("ElevatorToScore", new ElevatorToScoreAuto(m_elevator, m_robotDrive, m_scoringMechPivot, m_scoringMechSensor));
