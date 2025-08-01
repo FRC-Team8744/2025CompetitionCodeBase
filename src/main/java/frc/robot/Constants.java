@@ -17,10 +17,10 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 
 public final class Constants {
-  public static final int kDebugLevel = 0; // 0 = None, 1 = Errors, 2 = Info, 3 = Debug and USB data log
+  public static final int kDebugLevel = 3; // 0 = None, 1 = Errors, 2 = Info, 3 = Debug and USB data log
   
   public static final int kMaxSpeedPercentAuto = 100; //This effects Drive speed in telop DONT ASK ME WHY
-  public static final int kMaxSpeedPercentTeleop = 65;
+  public static final int kMaxSpeedPercentTeleop = 65; // 65
   public static final int kMaxAccelerationPercent = 100;
   public static final double kDriverSpeedLimit = 1; // sets how much the max speed is modified by when you press down on the left stick basicly make go slower the default is 1 btw 
 
@@ -32,6 +32,8 @@ public final class Constants {
   public static double percentOfElevator = 0.9;
   public static double percentOfElevatorAlgae = 0.5;
   public static boolean visionElevator = true;
+  public static boolean sensorMode = true;
+  public static boolean stopNoTwoPieces = false;
 
   public static final TalonFXConfiguration driveConfig = new TalonFXConfiguration();
   public static final TalonFXConfiguration elevatorConfig = new TalonFXConfiguration();
@@ -111,7 +113,7 @@ public final class Constants {
 
     // Note: Zeroing the CanCoder in Tuner X doesn't seem to affect the reported absolute position.
     public static final double kFrontLeftMagEncoderOffsetDegrees_NoNo = 0.685547 * 360; // 10
-    public static final double kFrontRightMagEncoderOffsetDegrees_NoNo = 0.369629 * 360; // 9
+    public static final double kFrontRightMagEncoderOffsetDegrees_NoNo = 0.190918 * 360; // 9
     public static final double kRearLeftMagEncoderOffsetDegrees_NoNo = 0.030273 * 360; // 11
     public static final double kRearRightMagEncoderOffsetDegrees_NoNo = 0.723896 * 360; // 12
 

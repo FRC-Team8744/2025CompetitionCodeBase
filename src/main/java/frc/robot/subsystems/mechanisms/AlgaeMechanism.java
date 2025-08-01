@@ -23,6 +23,7 @@ public class AlgaeMechanism extends SubsystemBase {
   private final SparkMax m_algaeMotor;
   private final SparkBaseConfig algaeConfig = new SparkMaxConfig().smartCurrentLimit(20).idleMode(IdleMode.kBrake);
   public boolean intakingAlgae = false;
+  private boolean algaeAlreadyColored = false;
   /** Creates a new AlgaeMechanism. */
   public AlgaeMechanism(LEDS m_leds) {
     this.m_leds = m_leds;
@@ -50,11 +51,13 @@ public class AlgaeMechanism extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    if (!intakingAlgae && Constants.scoringMode == "Algae") {
+    if (!intakingAlgae && Constants.scoringMode == "Algae" && !algaeAlreadyColored) {
         // passiveAlgae();
-        m_leds.SetSegmentByIntakeMech(ColorInterface.Algae, 50);
+      m_leds.SetSegmentByIntakeMech(ColorInterface.Algae, 50);
+      algaeAlreadyColored = true;
     } else if(intakingAlgae && Constants.scoringMode == "Algae"){
         m_leds.SetSegmentByIntakeMech(Color.kBlue, 50);
+        algaeAlreadyColored = false;
     }
   }
 }

@@ -35,7 +35,9 @@ import frc.robot.subsystems.vision.PhotonVisionGS;
 import frc.robot.subsystems.vision.PhotonVisionGS2;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.commands.RunIntake;
@@ -111,7 +113,7 @@ public class RobotContainer {
     .whileTrue(new ElevatorToScore(m_elevator, m_robotDrive, m_scoringMechPivot, m_algae));
 
     m_driver.leftTrigger()
-    .whileTrue(new RunIntake(m_leds, m_intake, m_intakePivot, m_coral, m_scoringMechSensor, m_algae, new ElevatorToIntakeAlgae(m_elevator, m_robotDrive, m_scoringMechPivot, m_algae), new NoTwoPieces(m_intake, m_intakePivot)));
+    .whileTrue(new SequentialCommandGroup(Commands.runOnce(() -> Constants.stopNoTwoPieces = true), new RunIntake(m_leds, m_intake, m_intakePivot, m_coral, m_scoringMechSensor, m_algae, new ElevatorToIntakeAlgae(m_elevator, m_robotDrive, m_scoringMechPivot, m_algae), new NoTwoPieces(m_intake, m_intakePivot))) );
  
     m_driver.y()
     .whileTrue(new TeleopScore(m_coral, m_elevator, m_intake, m_intakePivot, m_scoringMechSensor, m_algae, m_scoringMechPivot, m_robotDrive).andThen(Commands.waitUntil((() -> m_alignToPoleX.hasReachedX))).finallyDo((() -> {m_robotDrive.isAutoYSpeed = false; m_robotDrive.isAutoXSpeed = false; m_robotDrive.isAutoRotate = RotationEnum.NONE;})));
@@ -126,7 +128,7 @@ public class RobotContainer {
     .whileTrue(Commands.runOnce(() -> m_intake.runIntake(0.3)))
     .whileFalse(Commands.runOnce(() -> m_intake.stopBoth()));
 
-    m_driver.rightBumper()
+    m_driver.pov(90)
     .whileTrue(new RunIntakeAutoSource(m_intake, m_intakePivot, m_coral, m_scoringMechSensor, m_algae, null, null));
 
     m_driver.start()
@@ -134,20 +136,33 @@ public class RobotContainer {
 
     m_driver.pov(0)
     .whileTrue(Commands.runOnce(() -> Constants.visionElevator = !Constants.visionElevator));
+
+    m_driver.pov(180)
+    .whileTrue(Commands.runOnce(() -> Constants.sensorMode = !Constants.sensorMode));
+
+    m_driver.rightBumper()
+    .whileTrue(Commands.runOnce(() -> Constants.stopNoTwoPieces = true))
+    .whileFalse(Commands.runOnce(() -> Constants.stopNoTwoPieces = false));
     
     m_coDriver.rightBumper()
+    .toggleOnTrue(Commands.runOnce(() -> m_robotDrive.leftPoint = false));
+
+    m_coDriver.rightTrigger()
     .toggleOnTrue(Commands.runOnce(() -> m_robotDrive.leftPoint = false));
     
     m_coDriver.leftBumper()
     .toggleOnTrue(Commands.runOnce(() -> m_robotDrive.leftPoint = true));
 
-    m_coDriver.rightTrigger()
-    .toggleOnTrue(Commands.runOnce(() -> Constants.scoringMode = "Coral")
-    .alongWith(Commands.runOnce(() -> m_leds.SetSegmentByIntakeMech(Color.kWhite, 50))));
-
     m_coDriver.leftTrigger()
-    .toggleOnTrue(Commands.runOnce(() -> Constants.scoringMode = "Algae")
-    .alongWith(Commands.runOnce(() -> m_leds.SetSegmentByIntakeMech(ColorInterface.Algae, 50))));
+    .toggleOnTrue(Commands.runOnce(() -> m_robotDrive.leftPoint = true));
+
+    // m_coDriver.rightTrigger()
+    // .toggleOnTrue(Commands.runOnce(() -> Constants.scoringMode = "Coral")
+    // .alongWith(Commands.runOnce(() -> m_leds.SetSegmentByIntakeMech(Color.kWhite, 50))));
+
+    // m_coDriver.leftTrigger()
+    // .toggleOnTrue(Commands.runOnce(() -> Constants.scoringMode = "Algae")
+    // .alongWith(Commands.runOnce(() -> m_leds.SetSegmentByIntakeMech(ColorInterface.Algae, 50))));
 
     m_driver.b()
     .whileTrue(Commands.runOnce(() -> m_robotDrive.isAutoYSpeed = false).alongWith(Commands.runOnce(() -> m_robotDrive.isAutoXSpeed = false).alongWith(Commands.runOnce(() -> m_robotDrive.isAutoRotate = RotationEnum.NONE))));

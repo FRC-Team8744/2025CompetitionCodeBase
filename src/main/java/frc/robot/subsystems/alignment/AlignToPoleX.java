@@ -40,9 +40,9 @@ public class AlignToPoleX {
     if (Constants.scoringMode == "Coral") {
       if (DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) {
         if (DriverStation.isAutonomous()) {
-          goalX = 3.17;
+          goalX = 3.1723; // 3.17
         } else {
-          goalX = 3.1746; // 3.
+          goalX = 3.1746;
         }
       }
       else {

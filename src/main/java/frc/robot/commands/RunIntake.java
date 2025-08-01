@@ -48,32 +48,31 @@ public class RunIntake extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    
-    if (Constants.scoringMode == "Coral") {
+    // if (Constants.scoringMode == "Coral") {
       m_intake.runIndexer(.5, -0.5);
       m_intake.runIntake(.6);
-      m_coral.runCoralMotor(-.35);
+      m_coral.runCoralMotor(-.5);
       m_intakePivot.intakeDown(-3393);
-    }
-    else if (Constants.scoringMode == "Algae") {
-      m_leds.SetSegmentByIntakeMech(ColorInterface.Algae, 50);
-      if (Constants.algaeScoringLevel == "L2" || Constants.algaeScoringLevel == "L3") {
-        m_algae.intakeAlgae(0.2);
-        m_elevatorToIntakeAlgae.schedule();
-        m_algae.intakingAlgae = true;
-      }
-    }
+    // }
+    // else if (Constants.scoringMode == "Algae") {
+    //   m_leds.SetSegmentByIntakeMech(ColorInterface.Algae, 50);
+    //   if (Constants.algaeScoringLevel == "L2" || Constants.algaeScoringLevel == "L3") {
+    //     m_algae.intakeAlgae(0.2);
+    //     m_elevatorToIntakeAlgae.schedule();
+    //     m_algae.intakingAlgae = true;
+    //   }
+    // }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     // m_timer
-    if(Constants.scoringMode == "Algae"){
+    // if(Constants.scoringMode == "Algae"){
       
-    } else if (Constants.scoringMode == "Coral"){
+    // } else if (Constants.scoringMode == "Coral"){
       m_leds.SetSegmentByIntakeMech(Color.kRed, 50);
-    }
+    // }
   }
 
   // Called once the command ends or is interrupted.
@@ -81,10 +80,10 @@ public class RunIntake extends Command {
   public void end(boolean interrupted) {
     m_coral.stopMotor();
     m_intake.stopBoth();
-    if (Constants.scoringMode == "Coral") {
+    // if (Constants.scoringMode == "Coral") {
       // m_intakePivot.intakeDown(0);
       m_noTwoPieces.schedule();
-    }
+    // }
     m_algae.intakingAlgae = false;
     
     boolean m_return = m_sensor.getScoringSensor();
@@ -94,14 +93,18 @@ public class RunIntake extends Command {
       m_leds.SetSegmentByIntakeMech(Color.kGreen, 50);
     }
    
-    if (Constants.scoringMode == "Algae") {
-      m_elevatorToIntakeAlgae.end(false);
-    }
+    // if (Constants.scoringMode == "Algae") {
+    //   m_elevatorToIntakeAlgae.end(false);
+    // }
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return !m_sensor.getScoringSensor();
+    if (Constants.sensorMode) {
+      return !m_sensor.getScoringSensor();
+    } else {
+      return false;
+    }
   }
 }

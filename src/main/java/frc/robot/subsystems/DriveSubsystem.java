@@ -291,6 +291,9 @@ public class DriveSubsystem extends SubsystemBase {
 
     SmartDashboard.putNumber("Estimated Pose Rotation", m_poseEstimator.getEstimatedPosition().getRotation().getDegrees());
 
+    double[] poseArray = {getEstimatedPose().getX(), getEstimatedPose().getY(), getEstimatedPose().getRotation().getRadians()};
+    SmartDashboard.putNumberArray("Estimated Pose", poseArray);
+
     // SmartDashboard.putNumber("Yep", m_frontLeft.getVelocity());
 
     pose_publisher.set(getPose());
@@ -597,6 +600,10 @@ public class DriveSubsystem extends SubsystemBase {
 
   public Pose2d getEstimatedPose() {
     return m_poseEstimator.getEstimatedPosition();
+  }
+
+  public Pose2d getEstimatedPoseAsRadians() {
+    return new Pose2d(m_poseEstimator.getEstimatedPosition().getX(), m_poseEstimator.getEstimatedPosition().getY(), new Rotation2d(m_poseEstimator.getEstimatedPosition().getRotation().getRadians()));
   }
 
   public void getRobotVelocityX() {

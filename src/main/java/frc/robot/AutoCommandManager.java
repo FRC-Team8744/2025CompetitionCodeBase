@@ -49,10 +49,9 @@ import frc.robot.subsystems.ColorInterface;
 
 /** Add your docs here. */
 public class AutoCommandManager {
-    SendableChooser<Command> m_chooser = AutoBuilder.buildAutoChooserWithOptionsModifier(((p) -> p.filter((a) -> a.getName().startsWith("!"))));
-
     public HolonomicDriveController holonomicDriveController;
-    
+    SendableChooser<Command> m_chooser;
+
     public static boolean isSim;
 
     public TrajectoryConfig forwardConfig;
@@ -93,6 +92,8 @@ public class AutoCommandManager {
             m_scoringMechSensor, 
             m_leds
       );
+
+      m_chooser = AutoBuilder.buildAutoChooserWithOptionsModifier(((p) -> p.filter((a) -> a.getName().startsWith("!"))));
 
         var thetaController = new ProfiledPIDController(
             AutoConstants.kPThetaController, 0, 0,
