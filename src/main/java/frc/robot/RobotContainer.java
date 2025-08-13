@@ -140,6 +140,9 @@ public class RobotContainer {
     m_driver.pov(180)
     .whileTrue(Commands.runOnce(() -> Constants.sensorMode = !Constants.sensorMode));
 
+    m_driver.pov(270)
+    .whileTrue(Commands.runOnce(() -> Constants.newAlgae = !Constants.newAlgae));
+
     m_driver.rightBumper()
     .whileTrue(Commands.runOnce(() -> Constants.stopNoTwoPieces = true))
     .whileFalse(Commands.runOnce(() -> Constants.stopNoTwoPieces = false));
@@ -188,10 +191,10 @@ public class RobotContainer {
     .alongWith(Commands.runOnce(() -> m_leds.SetSegmentByLevel(.5, ColorInterface.L1, 50)))));
     m_coDriver.b()
     .whileTrue(Commands.runOnce(() -> Constants.scoringMode = "Algae")
-    .alongWith(Commands.runOnce(() -> m_elevator.setScoringPreset(0.49, -260, "Dealgify", 0.49, -260, "L3"))));
+    .alongWith(Commands.runOnce(() -> m_elevator.setScoringPreset(0.49, -260, "L1", 0.49, -260, "L3"))));
     m_coDriver.x()
     .whileTrue(Commands.runOnce(() -> Constants.scoringMode = "Algae")
-    .alongWith(Commands.runOnce(() -> m_elevator.setScoringPreset(0.3, -260, "Dealgify", 0.3, -260, "L3"))));
+    .alongWith(Commands.runOnce(() -> m_elevator.setScoringPreset(0.3, -260, "L1", 0.3, -260, "L2"))));
 
     m_coDriver.back()
     .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(.99, -200, "100%", .99, -200, "100%")));

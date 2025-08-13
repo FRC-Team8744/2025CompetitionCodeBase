@@ -405,6 +405,7 @@ public class DriveSubsystem extends SubsystemBase {
     SmartDashboard.putString("Scoring mode", Constants.scoringMode);
     SmartDashboard.putString("Scoring level", Constants.scoringLevel);
     SmartDashboard.putBoolean("Vision elevator", Constants.visionElevator);
+    SmartDashboard.putBoolean("New algae", Constants.newAlgae);
     // SmartDashboard.putNumber("X Speed", autoXSpeed);
     // SmartDashboard.putNumber("Y Speed", autoYSpeed);
     // SmartDashboard.putNumber("Goal Rotation Speed", autoRotateSpeed);

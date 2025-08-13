@@ -34,6 +34,7 @@ public final class Constants {
   public static boolean visionElevator = true;
   public static boolean sensorMode = true;
   public static boolean stopNoTwoPieces = false;
+  public static boolean newAlgae = true;
 
   public static final TalonFXConfiguration driveConfig = new TalonFXConfiguration();
   public static final TalonFXConfiguration elevatorConfig = new TalonFXConfiguration();

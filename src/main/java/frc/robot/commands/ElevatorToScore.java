@@ -36,8 +36,15 @@ public class ElevatorToScore extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if (Constants.visionElevator && Constants.scoringMode == "Coral") {
+    // if (Constants.visionElevator && Constants.scoringMode == "Coral") {
+    //   m_robotDrive.isAutoRotate = RotationEnum.STRAFEONTARGET;
+    // }
+
+    if (Constants.visionElevator) {
       m_robotDrive.isAutoRotate = RotationEnum.STRAFEONTARGET;
+    }
+    if (Constants.scoringMode == "Algae" && !Constants.newAlgae) {
+      m_robotDrive.isAutoRotate = RotationEnum.NONE;
     }
     toggle = true;
     if (Constants.scoringMode == "Coral") {
@@ -94,22 +101,58 @@ public class ElevatorToScore extends Command {
         }
       }
     else if (Constants.scoringMode == "Algae") {
-      // if (m_robotDrive.autoRotateSpeed == 0) {
-        // m_algae.intakeAlgae(0.2);
-        // m_robotDrive.isAutoYSpeed = true;
-        // m_robotDrive.isAutoXSpeed = true;
-      // if (Math.abs(m_robotDrive.autoXSpeed) == 0 && Math.abs(m_robotDrive.autoYSpeed) == 0) {
-          m_elevator.rotate(16.35 * Constants.ELEVATOR_GEARING * Constants.percentOfElevatorAlgae);
+      if (Constants.newAlgae) {
+        if (Constants.visionElevator) {
+          m_robotDrive.isAutoYSpeed = true;
+          m_robotDrive.isAutoXSpeed = true;
+          if (Math.abs(m_robotDrive.m_alignToPoleX.xOffset) <= 1.5 ) {
+            m_elevator.rotate(16.35 * Constants.ELEVATOR_GEARING * Constants.percentOfElevator); // 327
+            if (m_elevator.getMotorPosition() >= ((16.35 * Constants.ELEVATOR_GEARING * Constants.percentOfElevatorAlgae) * 0.50)) {
+              // if (Constants.visionElevator && (Constants.algaeScoringLevel == "L2" || Constants.algaeScoringLevel == "L3")) {
+              // }
+              m_scoringMechPivot.rotatePivot(Constants.scoringMechGoalAngleAlgae);
+              // toggle = false;
+            }
+          }
+      } else {
+            m_elevator.rotate(16.35 * Constants.ELEVATOR_GEARING * Constants.percentOfElevator); // 327
+            // double movingScoringMechPivotAngle = 1681.52953862 - 1613.42103817 * Math.log(m_robotDrive.m_alignToPoleX.robotX - 8.57);
+            if (m_elevator.getMotorPosition() >= ((16.35 * Constants.ELEVATOR_GEARING * Constants.percentOfElevatorAlgae) * 0.50)) {
+              // if (Constants.visionElevator && (Constants.algaeScoringLevel == "L2" || Constants.algaeScoringLevel == "L3")) {
+              // }
+              m_scoringMechPivot.rotatePivot(Constants.scoringMechGoalAngleAlgae);
+              // toggle = false;
+            }
+          // }
+      }
+      } else {
+        m_elevator.rotate(16.35 * Constants.ELEVATOR_GEARING * Constants.percentOfElevatorAlgae);
           if (m_elevator.getMotorPosition() >= ((16.35 * Constants.ELEVATOR_GEARING * Constants.percentOfElevatorAlgae) * 0.50)) {
             // if (Constants.visionElevator && (Constants.algaeScoringLevel == "L2" || Constants.algaeScoringLevel == "L3")) {
             // }
             m_scoringMechPivot.rotatePivot(Constants.scoringMechGoalAngleAlgae);
             // toggle = false;
           }
-        // }//
-      // }
-    }
+      }
   }
+}
+    // else if (Constants.scoringMode == "Algae") {
+    //   // if (m_robotDrive.autoRotateSpeed == 0) {
+    //     // m_algae.intakeAlgae(0.2);
+    //     // m_robotDrive.isAutoYSpeed = true;
+    //     // m_robotDrive.isAutoXSpeed = true;
+    //   // if (Math.abs(m_robotDrive.autoXSpeed) == 0 && Math.abs(m_robotDrive.autoYSpeed) == 0) {
+    //       m_elevator.rotate(16.35 * Constants.ELEVATOR_GEARING * Constants.percentOfElevatorAlgae);
+    //       if (m_elevator.getMotorPosition() >= ((16.35 * Constants.ELEVATOR_GEARING * Constants.percentOfElevatorAlgae) * 0.50)) {
+    //         // if (Constants.visionElevator && (Constants.algaeScoringLevel == "L2" || Constants.algaeScoringLevel == "L3")) {
+    //         // }
+    //         m_scoringMechPivot.rotatePivot(Constants.scoringMechGoalAngleAlgae);
+    //         // toggle = false;
+    //       }
+    //     // }//
+    //   // }
+    // }
+  
 
   // Called once the command ends or is interrupted.
   @Override
