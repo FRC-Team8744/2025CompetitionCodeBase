@@ -186,7 +186,7 @@ public class RobotContainer {
     .alongWith(Commands.runOnce(() -> Constants.scoringMode = "Coral")
     .alongWith(Commands.runOnce(() -> m_leds.SetSegmentByLevel(.25, ColorInterface.L1, 50)))));
     m_coDriver.pov(270)
-    .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(.33, 0, "L2", .30, -260, "L2"))
+    .whileTrue(Commands.runOnce(() -> m_elevator.setScoringPreset(.34, 0, "L2", .30, -260, "L2"))
     .alongWith(Commands.runOnce(() -> Constants.scoringMode = "Coral")
     .alongWith(Commands.runOnce(() -> m_leds.SetSegmentByLevel(.5, ColorInterface.L1, 50)))));
     m_coDriver.b()
