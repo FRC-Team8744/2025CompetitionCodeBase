@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import java.util.Arrays;
 import java.util.Vector;
 
 import com.ctre.phoenix6.hardware.Pigeon2;
@@ -44,6 +45,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.AutoCommandManager;
 import frc.robot.Constants;
+import frc.robot.DriveModifier;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.SwerveConstants;
 import frc.robot.subsystems.alignment.AlignToClimb;
@@ -77,9 +79,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   public double autoRotateSpeed = 0;
   public double autoYSpeed = 0;
-  public double autoXSpeed = 0;
-
-  public boolean leftPoint = true;
+  // public double autoXSpeed = 0;
 
   private double goalAngle = 0;
   private PIDController m_turnCtrl = new PIDController(0.03, 0.0065, 0.0035);
@@ -107,9 +107,10 @@ public class DriveSubsystem extends SubsystemBase {
   public final AlignToPoleX m_alignToPoleX;
   public final LEDS m_leds;
 
-  public RotationEnum isAutoRotate = RotationEnum.NONE;
+
   public boolean isAutoYSpeed = false;
-  public boolean isAutoXSpeed = false;
+  public DriveModifier[] driveModifiers;
+  // public boolean isAutoXSpeed = false;
   public boolean isAutoRotateToggle = true;
   public boolean isAutoYSpeedToggle = true;
   public boolean isAutoXSpeedToggle = true;
@@ -135,9 +136,10 @@ public class DriveSubsystem extends SubsystemBase {
   public Field2d m_field;
   
   /** Creates a new DriveSubsystem. */
-  public DriveSubsystem(PhotonVisionGS m_vision, PhotonVisionGS2 m_vision2, AlignToPoleX m_alignToPoleX, LEDS m_leds) {
+  public DriveSubsystem(PhotonVisionGS m_vision, PhotonVisionGS2 m_vision2, AlignToPoleX m_alignToPoleX, LEDS m_leds, DriveModifier...driveModifiers) {
     this.m_leds = m_leds;
-    
+    this.driveModifiers = driveModifiers;
+
     m_turnCtrl.setTolerance(10.00);
     this.m_vision = m_vision;
     this.m_vision2 = m_vision2;
@@ -341,12 +343,12 @@ public class DriveSubsystem extends SubsystemBase {
       robotVector.add(0.0);
     }
 
-    if (isAutoRotate == RotationEnum.STRAFEONTARGET) {
+    if (Constants.isAutoRotate == RotationEnum.STRAFEONTARGET) {
       autoRotateSpeed = m_lock.execute(m_poseEstimator.getEstimatedPosition());
     }
 
     if (isAutoYSpeed) {
-      autoYSpeed = m_alignToPole.execute(leftPoint, m_poseEstimator.getEstimatedPosition());
+      autoYSpeed = m_alignToPole.execute(Constants.leftPole, m_poseEstimator.getEstimatedPosition());
     }
 
     // if (autoYSpeed == 0) {
@@ -356,16 +358,18 @@ public class DriveSubsystem extends SubsystemBase {
     //   hasYFinished = false;
     // }
 
-    if (isAutoXSpeed) {
-      autoXSpeed = m_alignToPoleX.execute(leftPoint, m_poseEstimator.getEstimatedPosition());
-    }
+    // if (isAutoXSpeed) {
+    //   autoXSpeed = m_alignToPoleX.execute(Constants.leftPole, m_poseEstimator.getEstimatedPosition());
+    // }
 
-    if (isAutoRotate == RotationEnum.STRAFEONTARGET && isAutoRotateToggle) {
+    Arrays.stream(driveModifiers).forEach(((driveModifier) -> driveModifier.execute(this)));
+
+    if (Constants.isAutoRotate == RotationEnum.STRAFEONTARGET && isAutoRotateToggle) {
       m_lock.initialize();
       isAutoRotateToggle = false;
     }
 
-    else if (isAutoRotate == RotationEnum.NONE) {
+    else if (Constants.isAutoRotate == RotationEnum.NONE) {
       isAutoRotateToggle = true;
     }
 
@@ -378,25 +382,25 @@ public class DriveSubsystem extends SubsystemBase {
       isAutoYSpeedToggle = true;
     }
 
-    if (isAutoXSpeed && isAutoXSpeedToggle) {
-      m_alignToPoleX.initialize();
-      isAutoXSpeedToggle = false;
-    }
+    // if (isAutoXSpeed && isAutoXSpeedToggle) {
+    //   m_alignToPoleX.initialize();
+    //   isAutoXSpeedToggle = false;
+    // }
 
-    if (!isAutoXSpeed) {
-      isAutoXSpeedToggle = true;
-    }
+    // if (!isAutoXSpeed) {
+    //   isAutoXSpeedToggle = true;
+    // }
 
-    if (isAutoRotate == RotationEnum.ALIGNTOCLIMB) {
+    if (Constants.isAutoRotate == RotationEnum.ALIGNTOCLIMB) {
       autoRotateSpeed = m_alignToClimb.execute(getEstimatedPose());
     }
 
-    if (isAutoRotate == RotationEnum.ALIGNTOCLIMB && isAutoRotateToggle) {
+    if (Constants.isAutoRotate == RotationEnum.ALIGNTOCLIMB && isAutoRotateToggle) {
       m_alignToClimb.initialize();
       isAutoRotateToggle = false;
     }
 
-    SmartDashboard.putBoolean("Is Right", !leftPoint);
+    SmartDashboard.putBoolean("Is Right", !Constants.leftPole);
     
     getRobotVelocityX();
     getRobotVelocityY();
@@ -452,28 +456,28 @@ public class DriveSubsystem extends SubsystemBase {
    * @param fieldRelative Whether the provided x and y speeds are relative to the field.
    */
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
-    m_leds.SetSegmentByVision(m_alignToPoleX.hasReachedX, m_alignToPole.hasReachedY, isAutoYSpeed, isAutoXSpeed, Color.kRed, ColorInterface.L3, ColorInterface.L2, Color.kBlue, 50);
-    rot = isAutoRotate != RotationEnum.NONE ? autoRotateSpeed : rot;
+    m_leds.SetSegmentByVision(m_alignToPoleX.hasReachedX, m_alignToPole.hasReachedY, isAutoYSpeed, Constants.isAutoXSpeed, Color.kRed, ColorInterface.L3, ColorInterface.L2, Color.kBlue, 50);
+    rot = Constants.isAutoRotate != RotationEnum.NONE ? autoRotateSpeed : rot;
 
     if (isDrivingSlow) {
       ySpeed *= 0.1;
       xSpeed *= 0.1;
     }
 
-    if (isAutoYSpeed && isAutoRotate == RotationEnum.STRAFEONTARGET) {
+    if (isAutoYSpeed && Constants.isAutoRotate == RotationEnum.STRAFEONTARGET) {
       ySpeed = autoYSpeed;
     }
 
-    if (isAutoXSpeed && isAutoRotate == RotationEnum.STRAFEONTARGET) {
-      xSpeed = autoXSpeed;
+    if (Arrays.stream(driveModifiers).anyMatch(((driveModifier) -> driveModifier.actingOnX && driveModifier.shouldRun(this)))) {
+      xSpeed = Constants.autoXSpeed;
     }
 
     SmartDashboard.putBoolean("Is Driving Slow", isDrivingSlow);
 
     // Apply joystick deadband
-    xSpeed = isAutoXSpeed ? xSpeed : MathUtil.applyDeadband(xSpeed, OIConstants.kDeadband, 1.0);
+    xSpeed = Constants.isAutoXSpeed ? xSpeed : MathUtil.applyDeadband(xSpeed, OIConstants.kDeadband, 1.0);
     ySpeed = isAutoYSpeed ? ySpeed : MathUtil.applyDeadband(ySpeed, OIConstants.kDeadband, 1.0);
-    rot = isAutoRotate != RotationEnum.NONE ? rot : MathUtil.applyDeadband(rot, OIConstants.kRotationDeadband, 1.0);
+    rot = Constants.isAutoRotate != RotationEnum.NONE ? rot : MathUtil.applyDeadband(rot, OIConstants.kRotationDeadband, 1.0);
 
     // xSpeed *= Constants.SwerveConstants.kMaxSpeedTeleop;
     // ySpeed *= Constants.SwerveConstants.kMaxSpeedTeleop;
@@ -484,13 +488,13 @@ public class DriveSubsystem extends SubsystemBase {
     ySpeed = ySpeed * m_DriverSpeedScale;
     rot = rot * m_DriverSpeedScale;
     
-    if (isAutoRotate == RotationEnum.STRAFEONTARGET) {
+    if (Constants.isAutoRotate == RotationEnum.STRAFEONTARGET) {
       fieldRelative = false;
       ySpeed = -ySpeed;
       xSpeed = -xSpeed;
     }
 
-    /*if (isAutoRotate == false && Math.abs(rot / ConstantsOffboard.MAX_ANGULAR_RADIANS_PER_SECOND) <= 0.1 
+    /*if (Constants.isAutoRotate == false && Math.abs(rot / ConstantsOffboard.MAX_ANGULAR_RADIANS_PER_SECOND) <= 0.1 
     && rotationTimer.hasElapsed(0.1)
     ) {
       if (roboNoSpino) {
@@ -540,19 +544,19 @@ public class DriveSubsystem extends SubsystemBase {
   public void driveRobotRelative(ChassisSpeeds speeds){
     // SmartDashboard.putNumber("Robot Auto X", speeds.vxMetersPerSecond);
     // SmartDashboard.putNumber("Auto Rotate Speed", autoRotateSpeed);
-    // SmartDashboard.putBoolean("Auto Rotate", isAutoRotate == RotationEnum.STRAFEONTARGET);
+    // SmartDashboard.putBoolean("Auto Rotate", Constants.isAutoRotate == RotationEnum.STRAFEONTARGET);
 
-    speeds.omegaRadiansPerSecond = isAutoRotate != RotationEnum.NONE ? autoRotateSpeed : speeds.omegaRadiansPerSecond;
+    speeds.omegaRadiansPerSecond = Constants.isAutoRotate != RotationEnum.NONE ? autoRotateSpeed : speeds.omegaRadiansPerSecond;
 
-    if (isAutoYSpeed && isAutoRotate == RotationEnum.STRAFEONTARGET) {
+    if (isAutoYSpeed && Constants.isAutoRotate == RotationEnum.STRAFEONTARGET) {
       speeds.vyMetersPerSecond = autoYSpeed;
     }
 
-    if (isAutoXSpeed && isAutoRotate == RotationEnum.STRAFEONTARGET) {
-      speeds.vxMetersPerSecond = autoXSpeed;
+    if (Constants.isAutoXSpeed && Constants.isAutoRotate == RotationEnum.STRAFEONTARGET) {
+      speeds.vxMetersPerSecond = Constants.autoXSpeed;
     }
 
-    if (isAutoRotate == RotationEnum.STRAFEONTARGET) {
+    if (Constants.isAutoRotate == RotationEnum.STRAFEONTARGET) {
       // fieldRelative = false;
       // ySpeed = -ySpeed;
       speeds.vxMetersPerSecond = -speeds.vxMetersPerSecond;

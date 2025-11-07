@@ -13,10 +13,13 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
+import frc.robot.DriveModifier;
+import frc.robot.RotationEnum;
 import frc.robot.Constants.SwerveConstants;
 import frc.robot.isInAreaEnum;
+import frc.robot.subsystems.DriveSubsystem;
 
-public class AlignToPoleX {
+public class AlignToPoleX extends DriveModifier {
   /** Creates a new AlignToPole. */
   private PIDController m_driveCtrl = new PIDController(0.3, 0, 0);
   // private double heading;
@@ -24,15 +27,18 @@ public class AlignToPoleX {
   public boolean hasReachedX = false;  
   public double xOffset;
   public double robotX;
-  public AlignToPoleX() {}
+  public AlignToPoleX() {
+    super(true, false, false);
+  }
 
-  public void initialize() {
+  @Override
+  protected void initialize() {
     // m_driveCtrl.enableContinuousInput(-180, 180);
     m_driveCtrl.setTolerance(0.1);
     m_driveCtrl.reset();
   }
 
-  public double execute(boolean rightPoint, Pose2d estimatedPose2d) {
+  public double execute(Pose2d estimatedPose2d) {
     double[] translatedRobotPosition = calculateTransformation(new double[]{estimatedPose2d.getX(), estimatedPose2d.getY()}, isInAreaEnum.areaEnum.getAngle() * -1);
 
     robotX = translatedRobotPosition[0];
@@ -109,5 +115,15 @@ public class AlignToPoleX {
     Y += translationAmount[1];
 
     return new double[]{X, Y};
+  }
+
+  @Override
+  public boolean shouldRun(DriveSubsystem drive) {
+    return Constants.isAutoXSpeed && Constants.isAutoRotate == RotationEnum.STRAFEONTARGET;
+  }
+
+  @Override
+  protected void doExecute(DriveSubsystem drive) {
+    Constants.autoXSpeed = execute(drive.getEstimatedPose());
   }
 }

@@ -27,6 +27,7 @@ public final class Constants {
   public static String scoringMode = "Coral";
   public static String scoringLevel = "L4";
   public static String algaeScoringLevel = "L3";
+  public static boolean leftPole = true;
   public static double scoringMechGoalAngle = -200;
   public static double scoringMechGoalAngleAlgae = -200;
   public static double percentOfElevator = 0.9;
@@ -69,6 +70,10 @@ public final class Constants {
   public static final double[][] rotationMatrix = {{0.5, Math.sin(Math.PI / 3.0)}, {-Math.sin(Math.PI / 3.0), 0.5}};
 
   public static final double ELEVATOR_GEARING = 5.0;
+
+  public static RotationEnum isAutoRotate = RotationEnum.NONE;
+  public static boolean isAutoXSpeed = false;
+  public static double autoXSpeed = 0;
 
   public Constants() {
     configureKrakens();

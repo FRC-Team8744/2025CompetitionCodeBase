@@ -41,10 +41,10 @@ public class ElevatorToScore extends Command {
     // }
 
     if (Constants.visionElevator) {
-      m_robotDrive.isAutoRotate = RotationEnum.STRAFEONTARGET;
+      Constants.isAutoRotate = RotationEnum.STRAFEONTARGET;
     }
     if (Constants.scoringMode == "Algae" && !Constants.newAlgae) {
-      m_robotDrive.isAutoRotate = RotationEnum.NONE;
+      Constants.isAutoRotate = RotationEnum.NONE;
     }
     toggle = true;
     if (Constants.scoringMode == "Coral") {
@@ -64,7 +64,7 @@ public class ElevatorToScore extends Command {
     //     if (m_elevator.getMotorPosition() >= ((16.35 * Constants.ELEVATOR_GEARING * Constants.percentOfElevator) * .50) && toggle) {
     //       if (Constants.visionElevator) {
     //         m_robotDrive.isAutoYSpeed = true;
-    //         m_robotDrive.isAutoXSpeed = true;
+    //         Constants.isAutoXSpeed = true;
     //       }
     //       toggle = false;
     //     }
@@ -75,7 +75,7 @@ public class ElevatorToScore extends Command {
       // if (m_robotDrive.autoRotateSpeed == 0 && m_robotDrive.isAutoRotate == RotationEnum.STRAFEONTARGET) {
         if (Constants.visionElevator) {
           m_robotDrive.isAutoYSpeed = true;
-          m_robotDrive.isAutoXSpeed = true;
+          Constants.isAutoXSpeed = true;
           if (Math.abs(m_robotDrive.m_alignToPoleX.xOffset) <= 1.5 ) {
             m_elevator.rotate(16.35 * Constants.ELEVATOR_GEARING * Constants.percentOfElevator); // 327
             if (Constants.scoringLevel == "L4") {
@@ -104,7 +104,7 @@ public class ElevatorToScore extends Command {
       if (Constants.newAlgae) {
         if (Constants.visionElevator) {
           m_robotDrive.isAutoYSpeed = true;
-          m_robotDrive.isAutoXSpeed = true;
+          Constants.isAutoXSpeed = true;
           if (Math.abs(m_robotDrive.m_alignToPoleX.xOffset) <= 1.5 ) {
             m_elevator.rotate(16.35 * Constants.ELEVATOR_GEARING * Constants.percentOfElevator); // 327
             if (m_elevator.getMotorPosition() >= ((16.35 * Constants.ELEVATOR_GEARING * Constants.percentOfElevatorAlgae) * 0.50)) {
@@ -140,7 +140,7 @@ public class ElevatorToScore extends Command {
     //   // if (m_robotDrive.autoRotateSpeed == 0) {
     //     // m_algae.intakeAlgae(0.2);
     //     // m_robotDrive.isAutoYSpeed = true;
-    //     // m_robotDrive.isAutoXSpeed = true;
+    //     // Constants.isAutoXSpeed = true;
     //   // if (Math.abs(m_robotDrive.autoXSpeed) == 0 && Math.abs(m_robotDrive.autoYSpeed) == 0) {
     //       m_elevator.rotate(16.35 * Constants.ELEVATOR_GEARING * Constants.percentOfElevatorAlgae);
     //       if (m_elevator.getMotorPosition() >= ((16.35 * Constants.ELEVATOR_GEARING * Constants.percentOfElevatorAlgae) * 0.50)) {
@@ -168,8 +168,8 @@ public class ElevatorToScore extends Command {
       m_elevator.rotate(0);
       m_robotDrive.isDrivingSlow = false;
       m_robotDrive.isAutoYSpeed = false;
-      m_robotDrive.isAutoXSpeed = false;
-      m_robotDrive.isAutoRotate = RotationEnum.NONE;
+      Constants.isAutoXSpeed = false;
+      Constants.isAutoRotate = RotationEnum.NONE;
     }
   }
 

@@ -45,7 +45,7 @@ public class ElevatorToScoreAuto extends Command {
   @Override
   public void execute() {
     // m_timer.start();
-    m_robotDrive.isAutoRotate = RotationEnum.STRAFEONTARGET;
+    Constants.isAutoRotate = RotationEnum.STRAFEONTARGET;
 
     motorPosition = m_elevator.getMotorPosition();
 
@@ -54,7 +54,7 @@ public class ElevatorToScoreAuto extends Command {
           m_elevator.rotate(16.35 * Constants.ELEVATOR_GEARING * Constants.percentOfElevator); // 327
           if (m_elevator.getMotorPosition() >= ((16.35 * Constants.ELEVATOR_GEARING * Constants.percentOfElevator) * .50)) {
             m_robotDrive.isAutoYSpeed = true;
-            m_robotDrive.isAutoXSpeed = true;
+            Constants.isAutoXSpeed = true;
             if (Constants.scoringLevel == "L4") {
               double movingScoringMechPivotAngle;
               if (DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) {
@@ -78,7 +78,7 @@ public class ElevatorToScoreAuto extends Command {
         m_elevator.rotate(16.35 * Constants.ELEVATOR_GEARING * Constants.percentOfElevatorAlgae);
         if (m_elevator.getMotorPosition() >= ((16.35 * Constants.ELEVATOR_GEARING * Constants.percentOfElevatorAlgae) * 0.50)) {
           m_robotDrive.isAutoYSpeed = true;
-          m_robotDrive.isAutoXSpeed = true;
+          Constants.isAutoXSpeed = true;
           m_scoringMechPivot.rotatePivot(Constants.scoringMechGoalAngleAlgae);
           // toggle = false;
         }
