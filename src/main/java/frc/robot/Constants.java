@@ -73,7 +73,12 @@ public final class Constants {
 
   public static RotationEnum isAutoRotate = RotationEnum.NONE;
   public static boolean isAutoXSpeed = false;
+  public static boolean isAutoYSpeed = false;
   public static double autoXSpeed = 0;
+  public static double autoYSpeed = 0;
+  public static double autoRotateSpeed = 0;
+  public static boolean hasReachedX = false;
+  public static boolean hasReachedY = false;
 
   public Constants() {
     configureKrakens();

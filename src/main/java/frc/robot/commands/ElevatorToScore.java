@@ -74,7 +74,7 @@ public class ElevatorToScore extends Command {
       // SmartDashboard.putNumber("AutoRotateSpeed", m_robotDrive.autoRotateSpeed);
       // if (m_robotDrive.autoRotateSpeed == 0 && m_robotDrive.isAutoRotate == RotationEnum.STRAFEONTARGET) {
         if (Constants.visionElevator) {
-          m_robotDrive.isAutoYSpeed = true;
+          Constants.isAutoYSpeed = true;
           Constants.isAutoXSpeed = true;
           if (Math.abs(m_robotDrive.m_alignToPoleX.xOffset) <= 1.5 ) {
             m_elevator.rotate(16.35 * Constants.ELEVATOR_GEARING * Constants.percentOfElevator); // 327
@@ -103,7 +103,7 @@ public class ElevatorToScore extends Command {
     else if (Constants.scoringMode == "Algae") {
       if (Constants.newAlgae) {
         if (Constants.visionElevator) {
-          m_robotDrive.isAutoYSpeed = true;
+          Constants.isAutoYSpeed = true;
           Constants.isAutoXSpeed = true;
           if (Math.abs(m_robotDrive.m_alignToPoleX.xOffset) <= 1.5 ) {
             m_elevator.rotate(16.35 * Constants.ELEVATOR_GEARING * Constants.percentOfElevator); // 327
@@ -167,7 +167,7 @@ public class ElevatorToScore extends Command {
       m_scoringMechPivot.rotatePivot(0);
       m_elevator.rotate(0);
       m_robotDrive.isDrivingSlow = false;
-      m_robotDrive.isAutoYSpeed = false;
+      Constants.isAutoYSpeed = false;
       Constants.isAutoXSpeed = false;
       Constants.isAutoRotate = RotationEnum.NONE;
     }

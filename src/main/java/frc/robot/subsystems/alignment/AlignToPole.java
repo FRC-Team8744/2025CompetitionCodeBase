@@ -13,17 +13,21 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
+import frc.robot.DriveModifier;
 import frc.robot.Constants.SwerveConstants;
+import frc.robot.RotationEnum;
 import frc.robot.isInAreaEnum;
+import frc.robot.subsystems.DriveSubsystem;
 
-public class AlignToPole {
+public class AlignToPole extends DriveModifier{
   /** Creates a new AlignToPole. */
   private PIDController m_driveCtrl = new PIDController(0.45, 0, 0);
   // private double heading;
   private double m_output;
-  public boolean hasReachedY;
   public double yOffset;
-  public AlignToPole() {}
+  public AlignToPole() {
+    super(false, true, false);
+  }
 
   public void initialize() {
     // m_driveCtrl.enableContinuousInput(-180, 180);
@@ -31,9 +35,10 @@ public class AlignToPole {
     m_driveCtrl.reset();
   }
 
-  public double execute(boolean rightPoint, Pose2d estimatedPose2d) {
+  public double execute(Pose2d estimatedPose2d) {
     double[] translatedRobotPosition = calculateTransformation(new double[]{estimatedPose2d.getX(), estimatedPose2d.getY()}, isInAreaEnum.areaEnum.getAngle() * -1);
 
+    boolean rightPoint = !Constants.leftPole;
     double robotY = translatedRobotPosition[1];
     double goalY = rightPoint ? Constants.rightPoint[1] : Constants.leftPoint[1];
     if (Constants.scoringLevel == "L1") {
@@ -60,11 +65,11 @@ public class AlignToPole {
     m_output = MathUtil.clamp(m_driveCtrl.calculate(0), -1.0, 1.0);
 
     if (Math.abs(m_driveCtrl.getError()) <= m_driveCtrl.getErrorTolerance()) {
-      hasReachedY = true;
+      Constants.hasReachedY = true;
       return 0;
     }
     else {
-      hasReachedY = false;
+      Constants.hasReachedY = false;
       return m_output * SwerveConstants.kMaxSpeedTeleop;
     }
   }
@@ -90,5 +95,15 @@ public class AlignToPole {
     Y += translationAmount[1];
 
     return new double[]{X, Y};
+  }
+
+    @Override
+  public boolean shouldRun(DriveSubsystem drive) {
+    return Constants.isAutoYSpeed && Constants.isAutoRotate == RotationEnum.STRAFEONTARGET;
+  }
+
+  @Override
+  protected void doExecute(DriveSubsystem drive) {
+    Constants.autoYSpeed = execute(drive.getEstimatedPose());
   }
 }

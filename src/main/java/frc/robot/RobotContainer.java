@@ -65,7 +65,7 @@ public class RobotContainer {
   private ScoringMechSensor m_scoringMechSensor = new ScoringMechSensor();
   private AlignToPoleX m_alignToPoleX = new AlignToPoleX();
   private AlignToPole m_alignToPoleY = new AlignToPole();
-  private DriveSubsystem m_robotDrive = new DriveSubsystem(m_vision, m_vision2, m_alignToPoleX, m_leds, m_alignToPoleX);
+  private DriveSubsystem m_robotDrive = new DriveSubsystem(m_vision, m_vision2, m_alignToPoleX, m_leds, m_alignToPoleX, m_alignToPoleY);
   // The driver's controller
   private CommandXboxController m_driver = new CommandXboxController(OIConstants.kDriverControllerPort);
   private CommandXboxController m_coDriver = new CommandXboxController(1);
@@ -116,7 +116,7 @@ public class RobotContainer {
     .whileTrue(new SequentialCommandGroup(Commands.runOnce(() -> Constants.stopNoTwoPieces = true), new RunIntake(m_leds, m_intake, m_intakePivot, m_coral, m_scoringMechSensor, m_algae, new ElevatorToIntakeAlgae(m_elevator, m_robotDrive, m_scoringMechPivot, m_algae), new NoTwoPieces(m_intake, m_intakePivot))) );
  
     m_driver.y()
-    .whileTrue(new TeleopScore(m_coral, m_elevator, m_intake, m_intakePivot, m_scoringMechSensor, m_algae, m_scoringMechPivot, m_robotDrive).andThen(Commands.waitUntil((() -> m_alignToPoleX.hasReachedX))).finallyDo((() -> {m_robotDrive.isAutoYSpeed = false; Constants.isAutoXSpeed = false; Constants.isAutoRotate = RotationEnum.NONE;})));
+    .whileTrue(new TeleopScore(m_coral, m_elevator, m_intake, m_intakePivot, m_scoringMechSensor, m_algae, m_scoringMechPivot, m_robotDrive).andThen(Commands.waitUntil((() -> Constants.hasReachedX))).finallyDo((() -> {Constants.isAutoYSpeed = false; Constants.isAutoXSpeed = false; Constants.isAutoRotate = RotationEnum.NONE;})));
 
     m_driver.x()
     .whileTrue(new CoralEject(m_intake, m_coral));
@@ -168,7 +168,7 @@ public class RobotContainer {
     // .alongWith(Commands.runOnce(() -> m_leds.SetSegmentByIntakeMech(ColorInterface.Algae, 50))));
 
     m_driver.b()
-    .whileTrue(Commands.runOnce(() -> m_robotDrive.isAutoYSpeed = false).alongWith(Commands.runOnce(() -> Constants.isAutoXSpeed = false).alongWith(Commands.runOnce(() -> Constants.isAutoRotate = RotationEnum.NONE))));
+    .whileTrue(Commands.runOnce(() -> Constants.isAutoYSpeed = false).alongWith(Commands.runOnce(() -> Constants.isAutoXSpeed = false).alongWith(Commands.runOnce(() -> Constants.isAutoRotate = RotationEnum.NONE))));
 
     // m_coDriver.a()
     // .whileTrue(new TimerTest());

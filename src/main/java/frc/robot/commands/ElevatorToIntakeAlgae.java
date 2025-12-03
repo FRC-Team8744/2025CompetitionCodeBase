@@ -50,13 +50,13 @@ public class ElevatorToIntakeAlgae extends Command {
   @Override
   public void execute() {
     motorPosition = m_elevator.getMotorPosition();
-    m_robotDrive.isAutoYSpeed = false;
+    Constants.isAutoYSpeed = false;
     Constants.isAutoXSpeed = false;
     Constants.isAutoRotate = RotationEnum.NONE;
     m_robotDrive.isDrivingSlow = false;
 
     if (Constants.scoringMode == "Algae") {
-      if (m_robotDrive.autoRotateSpeed == 0) {
+      if (Constants.autoRotateSpeed == 0) {
         m_algae.intakeAlgae(0.2);
         m_elevator.rotate(16.35 * Constants.ELEVATOR_GEARING * Constants.percentOfElevatorAlgae);
         if (m_elevator.getMotorPosition() >= ((16.35 * Constants.ELEVATOR_GEARING * Constants.percentOfElevatorAlgae) * 0.50) && toggle) {
@@ -79,7 +79,7 @@ public class ElevatorToIntakeAlgae extends Command {
     m_algae.intakeAlgae(0.2);
     m_scoringMechPivot.rotatePivot(0);
     m_elevator.rotate(0);
-    m_robotDrive.isAutoYSpeed = false;
+    Constants.isAutoYSpeed = false;
     Constants.isAutoXSpeed = false;
     Constants.isAutoRotate = RotationEnum.NONE;
   }

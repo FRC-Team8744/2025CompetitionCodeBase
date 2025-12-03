@@ -24,7 +24,6 @@ public class AlignToPoleX extends DriveModifier {
   private PIDController m_driveCtrl = new PIDController(0.3, 0, 0);
   // private double heading;
   private double m_output;
-  public boolean hasReachedX = false;  
   public double xOffset;
   public double robotX;
   public AlignToPoleX() {
@@ -85,11 +84,11 @@ public class AlignToPoleX extends DriveModifier {
     m_output = MathUtil.clamp(m_driveCtrl.calculate(0), -1.0, 1.0);
 
     if (Math.abs(m_driveCtrl.getError()) <= m_driveCtrl.getErrorTolerance()) {
-      hasReachedX = true;
+      Constants.hasReachedX = true;
       return 0;
     }
     else {
-      hasReachedX = false;
+      Constants.hasReachedX = false;
       return m_output * SwerveConstants.kMaxSpeedTeleop;
     }
   }

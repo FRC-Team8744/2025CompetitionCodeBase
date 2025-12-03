@@ -53,7 +53,7 @@ public class ElevatorToScoreAuto extends Command {
         // if (!m_scoringMechSensor.getScoringSensor()) {
           m_elevator.rotate(16.35 * Constants.ELEVATOR_GEARING * Constants.percentOfElevator); // 327
           if (m_elevator.getMotorPosition() >= ((16.35 * Constants.ELEVATOR_GEARING * Constants.percentOfElevator) * .50)) {
-            m_robotDrive.isAutoYSpeed = true;
+            Constants.isAutoYSpeed = true;
             Constants.isAutoXSpeed = true;
             if (Constants.scoringLevel == "L4") {
               double movingScoringMechPivotAngle;
@@ -74,10 +74,10 @@ public class ElevatorToScoreAuto extends Command {
       }
     }
     else if (Constants.scoringMode == "Algae") {
-      if (m_robotDrive.autoRotateSpeed == 0) {
+      if (Constants.autoRotateSpeed == 0) {
         m_elevator.rotate(16.35 * Constants.ELEVATOR_GEARING * Constants.percentOfElevatorAlgae);
         if (m_elevator.getMotorPosition() >= ((16.35 * Constants.ELEVATOR_GEARING * Constants.percentOfElevatorAlgae) * 0.50)) {
-          m_robotDrive.isAutoYSpeed = true;
+          Constants.isAutoYSpeed = true;
           Constants.isAutoXSpeed = true;
           m_scoringMechPivot.rotatePivot(Constants.scoringMechGoalAngleAlgae);
           // toggle = false;
@@ -96,9 +96,9 @@ public class ElevatorToScoreAuto extends Command {
   @Override
   public boolean isFinished() {
     SmartDashboard.putBoolean("Elevator at setpoint", m_elevator.isAtSetpoint());
-    SmartDashboard.putBoolean("X at setpoint", m_robotDrive.m_alignToPoleX.hasReachedX);
-    SmartDashboard.putBoolean("Y at setpoint", m_robotDrive.m_alignToPole.hasReachedY);
-    if (m_elevator.isAtSetpoint() && m_robotDrive.m_alignToPoleX.hasReachedX && m_robotDrive.m_alignToPole.hasReachedY) {
+    SmartDashboard.putBoolean("X at setpoint", Constants.hasReachedX);
+    SmartDashboard.putBoolean("Y at setpoint", Constants.hasReachedY);
+    if (m_elevator.isAtSetpoint() && Constants.hasReachedX && Constants.hasReachedY) {
       // m_timer.stop();
       return true;
     }

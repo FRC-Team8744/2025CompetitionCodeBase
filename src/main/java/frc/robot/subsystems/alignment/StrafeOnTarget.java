@@ -10,17 +10,22 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
+import frc.robot.DriveModifier;
 import frc.robot.Constants.ConstantsOffboard;
+import frc.robot.RotationEnum;
 import frc.robot.isInAreaEnum;
+import frc.robot.subsystems.DriveSubsystem;
 
-public class StrafeOnTarget {
+public class StrafeOnTarget extends DriveModifier{
   private PIDController m_turnCtrl = new PIDController(0.014, 0.015, 0.0013);
   private double goalAngle;
   private double heading;
   private double m_output;
   private boolean inZone = false;
 
-public StrafeOnTarget() {}
+public StrafeOnTarget() {
+  super(false, false, true);
+}
 
   // Called when the command is initially scheduled.
   public void initialize() {
@@ -175,5 +180,15 @@ public StrafeOnTarget() {}
       }
     }
     return Math.abs(Math.round(degree) - 360) <= 3;
+  }
+
+    @Override
+  public boolean shouldRun(DriveSubsystem drive) {
+    return Constants.isAutoRotate == RotationEnum.STRAFEONTARGET;
+  }
+
+  @Override
+  protected void doExecute(DriveSubsystem drive) {
+    Constants.autoRotateSpeed = execute(drive.getEstimatedPose());
   }
 }
