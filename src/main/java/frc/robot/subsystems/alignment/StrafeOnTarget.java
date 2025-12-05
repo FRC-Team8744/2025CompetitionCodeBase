@@ -182,7 +182,7 @@ public StrafeOnTarget() {
     return Math.abs(Math.round(degree) - 360) <= 3;
   }
 
-    @Override
+  @Override
   public boolean shouldRun(DriveSubsystem drive) {
     return Constants.isAutoRotate == RotationEnum.STRAFEONTARGET;
   }

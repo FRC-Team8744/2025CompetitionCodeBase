@@ -23,6 +23,7 @@ import frc.robot.subsystems.LEDS;
 import frc.robot.subsystems.ScoringMechSensor;
 import frc.robot.subsystems.alignment.AlignToPole;
 import frc.robot.subsystems.alignment.AlignToPoleX;
+import frc.robot.subsystems.alignment.StrafeOnTarget;
 import frc.robot.subsystems.mechanisms.AlgaeMechanism;
 // import frc.robot.subsystems.mechanisms.AlgaeMechanism;
 import frc.robot.subsystems.mechanisms.Climber;
@@ -65,7 +66,8 @@ public class RobotContainer {
   private ScoringMechSensor m_scoringMechSensor = new ScoringMechSensor();
   private AlignToPoleX m_alignToPoleX = new AlignToPoleX();
   private AlignToPole m_alignToPoleY = new AlignToPole();
-  private DriveSubsystem m_robotDrive = new DriveSubsystem(m_vision, m_vision2, m_alignToPoleX, m_leds, m_alignToPoleX, m_alignToPoleY);
+  private StrafeOnTarget m_strafeOnTarget = new StrafeOnTarget();
+  private DriveSubsystem m_robotDrive = new DriveSubsystem(m_vision, m_vision2, m_alignToPoleX, m_leds, m_alignToPoleX, m_alignToPoleY, m_strafeOnTarget);
   // The driver's controller
   private CommandXboxController m_driver = new CommandXboxController(OIConstants.kDriverControllerPort);
   private CommandXboxController m_coDriver = new CommandXboxController(1);

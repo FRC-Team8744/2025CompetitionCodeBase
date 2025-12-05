@@ -38,7 +38,7 @@ public class AlignToPole extends DriveModifier{
   public double execute(Pose2d estimatedPose2d) {
     double[] translatedRobotPosition = calculateTransformation(new double[]{estimatedPose2d.getX(), estimatedPose2d.getY()}, isInAreaEnum.areaEnum.getAngle() * -1);
 
-    boolean rightPoint = !Constants.leftPole;
+    boolean rightPoint = Constants.leftPole;
     double robotY = translatedRobotPosition[1];
     double goalY = rightPoint ? Constants.rightPoint[1] : Constants.leftPoint[1];
     if (Constants.scoringLevel == "L1") {

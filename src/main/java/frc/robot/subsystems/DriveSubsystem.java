@@ -96,7 +96,7 @@ public class DriveSubsystem extends SubsystemBase {
   Joystick m_Joystick = new Joystick(OIConstants.kDriverControllerPort);
 
   // The imu sensor
-  public final StrafeOnTarget m_lock = new StrafeOnTarget();
+  // public final StrafeOnTarget m_lock = new StrafeOnTarget();
   public final Pigeon2 m_imu = new Pigeon2(Constants.SwerveConstants.kIMU_ID);
   private final PhotonVisionGS m_vision;
   private final PhotonVisionGS2 m_vision2;
@@ -291,6 +291,9 @@ public class DriveSubsystem extends SubsystemBase {
 
     double[] poseArray = {getEstimatedPose().getX(), getEstimatedPose().getY(), getEstimatedPose().getRotation().getRadians()};
     SmartDashboard.putNumberArray("Estimated Pose", poseArray);
+
+    SmartDashboard.putString("Is auto rotate", Constants.isAutoRotate.toString());
+    SmartDashboard.putNumber("Auto Rotate Speed", Constants.autoRotateSpeed);
 
     // SmartDashboard.putNumber("Yep", m_frontLeft.getVelocity());
 
